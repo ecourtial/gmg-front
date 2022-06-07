@@ -43,13 +43,13 @@
                         }
                     }
 
-                    var gameEntry = that.getBadges(value) + tools.filterContent(value.game_id) 
-                        + "- " + tools.filterContent(value.title) + " (" + tools.filterContent(value.platform) + ")";
-                    gameEntry += ' - <a data-link-type="gameDetails" id="entryD' + tools.filterContent(value.game_id) + '" href="">Détails</a>';
+                    var gameEntry = that.getBadges(value) + tools.filterContent(value.gameTitle) 
+                        + "- " + tools.filterContent(value.title) + " (" + tools.filterContent(value.platformName) + ")";
+                    gameEntry += ' - <a data-link-type="gameDetails" id="entryD' + tools.filterContent(value.id) + '" href="">Détails</a>';
 
                     if (logged) {
-                        gameEntry += ' - <a data-link-type="gameEdit" id="entryE' + tools.filterContent(value.game_id) + '" href="">Editer</a>';
-                        gameEntry += ' - <a data-link-type="gameDelete" id="entryR' + tools.filterContent(value.game_id) + '" href="">Supprimer</a>';
+                        gameEntry += ' - <a data-link-type="gameEdit" id="entryE' + tools.filterContent(value.id) + '" href="">Editer</a>';
+                        gameEntry += ' - <a data-link-type="gameDelete" id="entryR' + tools.filterContent(value.id) + '" href="">Supprimer</a>';
                         gameEntry += ' - <a data-link-type="tradingHistoryDelete" id="entryH' + tools.filterContent(value.id) + '" href="">Supprimer entrée historique</a>';
                     }
 
@@ -62,11 +62,11 @@
             },
 
             getBadges: function(value) {
-                if (value.type === 0) {
+                if (value.type === 'Bought') {
                     return  '<img title="J\'y ai vendu" src="' + outImageUrl + '"/> '
                 }
 
-                if (value.type === 1) {
+                if (value.type === 'Sold') {
                     return ' <img title="Je l\'ai acheté" src="' + inImageUrl + '"/> '
                 }
 

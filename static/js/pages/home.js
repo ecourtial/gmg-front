@@ -14,10 +14,13 @@ define(
                 $('#contentTitle').html('Bienvenue sur Games!');     
                 var content = "";
 
-                content += "Bonjour.";
+                content += "Bonjour ! Voici ma collection en quelques chiffres.";
                 content += "<ul>";
-                content += "<li>Il y a actuellement <strong>" + tools.filterContent(data.gameCount) + "</strong> jeux enregistrés dans l'application, pour <strong>" + tools.filterContent(data.platformCount) + "</strong> plateformes.</li>";
-                content += "<li>Parmi eux, j'en possède <strong>" + tools.filterContent(data.ownedGameCount) + "</strong></li>"
+                content += "<li>Il y a actuellement <strong>" + tools.filterContent(data.gameCount) + "</strong> jeux enregistrés dans l'application";
+                content += "<li>Pour un total de <strong>" + tools.filterContent(data.versionCount) + "</strong> versions différentes réparties sur <strong>" + tools.filterContent(data.platformCount) + "</strong> plateformes.</li>";
+                content += "<li>Pour ces versions :<ul>"
+                content += "<li>j'en possède <strong>" + tools.filterContent(data.ownedGameCount) + " ;</strong></li>"
+                content += "<li>j'en ai fini <strong>" + tools.filterContent(data.versionFinishedCount) + " ;</strong></li></ul>"
                 content += "<li>Il y a actuellement <strong>" + tools.filterContent(data.toDoSoloOrToWatch) + "</strong> jeux à jouer en solo ou à regarder.</li>";
                 content += "</ul>";
                 content += $('#hallOfFameCriteria').html();
@@ -44,7 +47,7 @@ define(
                 var that = this;
 
                 $.each(data.hallOfFameGames, function (index, value) {
-                    if (previousYear != value.meta.hall_of_fame_year) {
+                    if (previousYear != value.hallOfFameYear) {
                         if (previousYear != 0) {
                             content += that.getHallOfFameClosure(previousYear, currentYearContent, currentYearGameCount);
                             currentYearContent = "";
@@ -52,13 +55,13 @@ define(
                             liOpened = false;
                         }
                         currentYearGameCount = 0;
-                        previousYear = value.meta.hall_of_fame_year;
+                        previousYear = value.hallOfFameYear;
                         currentYearContent += ": <ul>";
                         liOpened = true;
                     }
-                    currentYear = value.meta.hall_of_fame_year;
+                    currentYear = value.hallOfFameYear;
                     currentYearGameCount++
-                    currentYearContent += "<li><i>" + tools.filterContent(value.title) + "</i> (" + tools.filterContent(value.platform_name) + ")</li>";
+                    currentYearContent += "<li><i>" + tools.filterContent(value.gameTitle) + "</i> (" + tools.filterContent(value.platformName) + ")</li>";
                 });
 
                 if (liOpened) {

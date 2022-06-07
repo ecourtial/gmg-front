@@ -26,11 +26,6 @@ class GameRepository(AbstractRepository):
         'to_do_position'
     ]
 
-    random_cases = [
-        'singleplayer_random',
-        'multiplayer_random'
-    ]
-
     @classmethod
     def get_main_request_start(cls, meta=False):
         """ Return the first part of the most used request """

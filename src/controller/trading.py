@@ -1,16 +1,17 @@
 """ Trading controller for the GMG project """
 from flask import jsonify, request, render_template, session
 from src.repository.trade_repository import TradeRepository
+from src.service.transaction_service import TransactionService
 
 class TradeController:
     """ Trading controller for the GMG project """
     @classmethod
-    def get_list(cls, mysql):
+    def get_list(cls):
         """Return the whole trading history."""
-        trade_repo = TradeRepository(mysql)
-        games_list = trade_repo.get_all()
+        service = TransactionService()
+
         return jsonify(
-            games=[game.serialize() for game in games_list]
+            games=service.get_history()
         )
 
     @classmethod

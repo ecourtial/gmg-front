@@ -1,5 +1,6 @@
 """ Games controller for the GMG project """
 from flask import jsonify, request, render_template, session
+from src.service.game_service import GameService
 from src.repository.game_repository import GameRepository
 from src.repository.platform_repository import PlatformRepository
 
@@ -29,33 +30,33 @@ class GameController:
         return jsonify(game=game.serialize())
 
     @classmethod
-    def get_random(cls, mysql, random_filter):
+    def get_random(cls, random_filter):
         """Return a random game."""
-        if random_filter not in GameRepository.random_cases:
+        if random_filter not in GameService.random_cases:
             return jsonify(message='Unknown random filter: ' + random_filter), 404
 
-        game_repo = GameRepository(mysql)
-        game = game_repo.get_random(random_filter)
+        game_service = GameService()
+        game = game_service.get_random_game(random_filter)
 
         if game is None:
             return jsonify(message='No result with filter ' + random_filter)
 
-        return jsonify(game=game.serialize())
+        return jsonify(game=game)
 
     @classmethod
-    def get_special_list(cls, mysql, special_filter):
+    def get_special_list(cls, special_filter):
         """Various lists of games"""
-        game_repo = GameRepository(mysql)
 
         if special_filter == 'search':
             query = request.args.get('query')
-            games_list = game_repo.get_search(query)
-        elif special_filter not in GameRepository.authorized_fields:
+            #games_list = game_repo.get_search(query)
+        elif special_filter not in GameService.authorized_fields:
             return jsonify('Unknown filter: ' + special_filter), 404
         else:
-            games_list = game_repo.get_special_list(special_filter)
+            game_service = GameService()
+            games_list = game_service.get_special_list(special_filter)
 
-        return jsonify(games=[game.serialize() for game in games_list])
+        return jsonify(games=games_list)
 
 
     @classmethod

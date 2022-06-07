@@ -1,15 +1,16 @@
 """ Platforms controller for the GMG project """
 from flask import jsonify, request, render_template, session
 from src.repository.platform_repository import PlatformRepository
+from src.service.platform_service import PlatformService
 
 class PlatformController:
     """ Platforms controller for the GMG project """
     @classmethod
-    def get_list(cls, mysql):
+    def get_list(cls):
         """Return the platform list."""
-        repo = PlatformRepository(mysql)
-        platform_list = repo.get_list()
-        return jsonify(platforms=[platform.serialize() for platform in platform_list])
+        service = PlatformService()
+
+        return jsonify(platforms=service.get_list())
 
     @classmethod
     def add(cls, mysql):

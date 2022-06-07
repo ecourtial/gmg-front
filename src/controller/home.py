@@ -1,8 +1,7 @@
 """ Home controller for the GMG project """
 
 from flask import render_template, jsonify, session
-from src.repository.platform_repository import PlatformRepository
-from src.repository.game_repository import GameRepository
+from src.service.home_service import HomeService
 
 class HomeController:
     """ Contains two methods: one for serving the website, one for the homepage content (async) """
@@ -17,17 +16,17 @@ class HomeController:
         )
 
     @classmethod
-    def get_home_content(cls, mysql):
+    def get_home_content(cls):
         """Return The payload for the homepage."""
-        game_repo = GameRepository(mysql)
-        platform_repo = PlatformRepository(mysql)
-
-        hall_of_fame_games = game_repo.get_hall_of_fame_data()
+        service = HomeService()
+        data = service.get_home_data()
 
         return jsonify(
-            gameCount=game_repo.get_total_count(),
-            platformCount=platform_repo.get_total_count(),
-            ownedGameCount=game_repo.get_owned_count(),
-            toDoSoloOrToWatch=game_repo.get_count_to_do_solo_or_to_watch(),
-            hallOfFameGames=[game.serialize() for game in hall_of_fame_games]
+            gameCount=data['game_count'],
+            versionCount=data['versionCount'],
+            versionFinishedCount = data['versionFinishedCount'],
+            platformCount=data['platformCount'],
+            ownedGameCount=data['ownedGameCount'],
+            toDoSoloOrToWatch=data['toDoSoloOrToWatch'],
+            hallOfFameGames=data['hallOfFameGames']
         )

@@ -1,16 +1,17 @@
 """ History controller for the GMG project """
 from flask import jsonify, request, render_template, session
 from src.repository.history_repository import HistoryRepository
+from src.service.history_service import HistoryService
 
 class HistoryController:
     """ History controller for the GMG project """
     @classmethod
-    def get_list(cls, mysql):
+    def get_list(cls):
         """Return the whole history."""
-        history_repo = HistoryRepository(mysql)
-        games_list = history_repo.get_all()
+        service = HistoryService()
+
         return jsonify(
-            games=[game.serialize() for game in games_list]
+            games=service.get_history()
         )
 
     @classmethod

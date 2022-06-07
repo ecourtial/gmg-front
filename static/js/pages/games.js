@@ -19,9 +19,9 @@ define(
                 var flagFilter = null;
 
                 if (context == "to_do") {
-                    flagFilter = "to_do_position";
+                    flagFilter = "toDoPosition";
                 } else if(context == "to_watch_background" || context == "to_watch_serious") {
-                    flagFilter = "to_watch_position";
+                    flagFilter = "toWatchPosition";
                 }
 
 
@@ -31,10 +31,8 @@ define(
 
                 content += '<ul>';
 
-                data.games = that.order(data.games, context);
-
                 $.each(data.games, function (index, value) {
-                    if (flagFilter != null && (value.meta[flagFilter] == 0 || value.meta[flagFilter] == null) && flagged == 0) {
+                    if (flagFilter != null && (value[flagFilter] == 0 || value[flagFilter] == null) && flagged == 0) {
                         content += '</ul>';
                         content += "<strong>Sans priorité</strong>";
                         content += '<ul>';
@@ -42,20 +40,20 @@ define(
                     }
                     
                     count++;
-                    var gameEntry = tools.filterContent(value.title);
+                    var gameEntry = tools.filterContent(value.gameTitle);
                     gameEntry = that.getStartIcon(value) + gameEntry;
 
                     if (context !== 'gamePerPlatform') {
-                        gameEntry += ' (' + tools.filterContent(value.platform_name) + ')';
+                        gameEntry += ' (' + tools.filterContent(value.platformName) + ')';
                     }
 
-                    gameEntry += " - " + value.game_id;
+                    gameEntry += " - " + value.id;
                     gameEntry = that.getBadges(gameEntry, value);
-                    gameEntry += ' - <a data-link-type="gameDetails" id="entryD' + tools.filterContent(value.game_id) + '" href="">Détails</a>';
+                    gameEntry += ' - <a data-link-type="gameDetails" id="entryD' + tools.filterContent(value.id) + '" href="">Détails</a>';
 
                     if (logged) {
-                        gameEntry += ' - <a data-link-type="gameEdit" id="entryE' + tools.filterContent(value.game_id) + '" href="">Editer</a>';
-                        gameEntry += ' - <a data-link-type="gameDelete" id="entryR' + tools.filterContent(value.game_id) + '" href="">Supprimer</a>';
+                        gameEntry += ' - <a data-link-type="gameEdit" id="entryE' + tools.filterContent(value.id) + '" href="">Editer</a>';
+                        gameEntry += ' - <a data-link-type="gameDelete" id="entryR' + tools.filterContent(value.id) + '" href="">Supprimer</a>';
                     }
 
                     content += '<li>' + gameEntry + '</li>'
@@ -75,7 +73,7 @@ define(
                     'multiplayer_recurring': 'A jouer régulièrement en multijoueur',
                     'todo_solo_sometimes': "A jouer parfois en solo",
                     'todo_multiplayer_sometimes':  "A jouer parfois en multijoueur",
-                    'original': "Version originale - non copiée",
+                    'originals': "Version originale - non copiée",
                     'to_do': "A faire",
                     'to_buy': "A acheter",
                     'to_watch_background': "A regarder en fond",
@@ -117,7 +115,7 @@ define(
             },
 
             getStartIcon: function(value) {
-                if (value.meta.original === 1 || value.meta.copy === 1) {
+                if (value.copyCount > 0) {
                     return '<img title="Je possède une version" src="' + checkImageUrl + '"/>'
                 } else {
                     return '<img title="Je ne possède aucune version" src="' + noImageUrl + '"/>'
@@ -125,72 +123,32 @@ define(
             },
 
             getBadges: function(gameEntry, value) {
-                if (value.meta.hall_of_fame === 1) {
+                if (value.hallOfFame === 1) {
                     gameEntry += ' <img title="Dans le hall of fame" src="' + hallOfFameImageUrl + '"/>'
                 }
 
-                if (value.meta.bgf === 1) {
+                if (value.bestGameForever === 1) {
                     gameEntry += ' <img title="Membre des Best Games Forever" src="' + diamondImageUrl + '"/>'
                 }
 
-                if (value.meta.top_game === 1) {
+                if (value.topGame === 1) {
                     gameEntry += ' <img title="Top jeu" src="' + topImageUrl + '"/>'
                 }
 
-                if (value.meta.played_it_often === 1) {
+                if (value.playedItOften === 1) {
                     gameEntry += ' <img title="Beaucoup joué" src="' + playedOftenImageUrl + '"/>'
                 }
 
-                if (value.meta.to_buy === 1) {
+                if (value.toBuy === 1) {
                     gameEntry += ' <img title="À acheter" src="' + toBuyImageUrl + '"/>'
                 }
 
-                if (value.meta.to_do == 1 && value.meta.todo_with_help === 1) {
+                if (value.toDo == 1 && value.todo_with_help === 1) {
                     gameEntry += ' <img title="À faire avec aide ou solution" src="' + withHelpImageUrl + '"/>'
-                }
-
-                if (value.meta.has_box == 1) {
-                    gameEntry += ' <img title="Possède la boite originale (DVD ou carton, pas une réédition)" src="' + hasBoxImageUrl + '"/>'
                 }
 
                 return gameEntry;
             },
-
-            order: function(entries, context) {
-                var filter = null;
-
-                if (context == "to_do") {
-                    filter = "to_do_position";
-                } else if(context == "to_watch_background" || context == "to_watch_serious") {
-                    filter = "to_watch_position";
-                }
-
-                if (filter !== null ) {
-                    entries.sort(function(x, y) {
-                        x = x.meta[filter];
-                        y = y.meta[filter];
-
-                        if (x == 0) {
-                            x = 9999;
-                        }
-
-                        if (y == 0) {
-                            y = 9999;
-                        }
-
-                        if (x < y) {
-                          return -1;
-                        }
-                        if (x > y) {
-                          return 1;
-                        }
-
-                        return 0;
-                      });
-                }
-                
-                return entries;
-            }
         };
     }
 );
