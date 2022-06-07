@@ -5,6 +5,11 @@ body {
     color: rgb(191, 191, 191);
 }
 
+.bg-light {
+    --bs-bg-opacity: 0.5;
+    background-color: rgb(33, 33, 33);
+}
+
 .navbar {
     background-color: rgb(33, 33, 33);
     border-color: rgb(48, 48, 48);

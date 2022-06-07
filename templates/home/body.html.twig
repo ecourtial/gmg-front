@@ -1,4 +1,31 @@
 {% extends 'base.html.twig' %}
 {% block body %}
+    {% trans %}greetings_collection{% endtrans %}
+    <ul>
+        <li>{% trans with {'%count%': data['gameCount']}%}app_figure_records{% endtrans %}</li>
+        <li>{% trans with {'%count%': data['versionCount'], '%platform_count%': data['platformCount']}%}app_figure_versions{% endtrans %}</li>
+        <li>{% trans %}app_figure_for_these_versions{% endtrans %}:
+            <ul>
+                <li>{% trans with {'%count%': data['ownedGameCount']}%}app_figure_records_own{% endtrans %}</li>
+                <li>{% trans with {'%count%': data['versionFinishedCount']}%}app_figure_records_finished{% endtrans %}</li>
+            </ul>
+        <li>{% trans with {'%count%': data['toDoSoloOrToWatch']}%}app_figure_records_to_do_or_to_watch{% endtrans %}</li>
+    </ul>
     {% include 'game/hall-of-fame-criteria.html.twig' %}
+    {% trans with {'%count%': data['hallOfFameGamesCount']}%}hall_of_fame_title{% endtrans %}:
+
+    <ul>
+    {% set previousYear = 0 %}
+    {% for year, games in data['hallOfFameGames'] %}
+        {% if previousYear != year %}
+            {% set previousYear = year %}
+            <li><strong>{{ year }}</strong> ({{ games|length }}) {% trans %}entries{% endtrans %}:</li>
+            <ul>
+                {% for game in games %}
+                    <li><i>{{ game['gameTitle'] }}</i> ({{ game['platformName'] }})</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endfor %}
+    </ul>
 {% endblock %}

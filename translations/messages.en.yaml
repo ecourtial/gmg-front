@@ -1,8 +1,19 @@
 # Menu
-menu.home: Home
+menu.home: Give Me a Game (GMG)
+greetings_collection: Greetings. Below are a few figures about my collection.
 
 # Hall of game
 hof-criteria-reminder: Here are the criteria of the Hall of fame
 hof-desc1: the year is not the one when the game was released. It can be the one when the player played at this game for the first time, or even later when it played a lot to it, enough to make it enter the Hall of Fame;
 hof-desc2: the game must have had an impact on the player (scenario, content, graphics, context...);
 hof-desc3: the ranking in the Hall of fame does not represent the CURRENT value of the game. It is all related to the context.
+app_figure_records: There are currently <strong>%count%</strong> games registered in the application.
+app_figure_versions: For a total of <strong>%count%</strong> different versions of these games, across <strong>%platform_count%</strong> platforms.
+app_figure_for_these_versions: For these versions
+app_figure_records_own: I own <strong>%count%</strong> of them;
+app_figure_records_finished: I have finished <strong>%count%</strong> of them.
+app_figure_records_to_do_or_to_watch: There are <strong>%count%</strong> versions to watch or to do.
+hall_of_fame_title: There are currently <strong>%count%</strong> versions in the Hall of fame
+entries: entries
+  
+  

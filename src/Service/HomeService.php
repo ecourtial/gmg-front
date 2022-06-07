@@ -34,6 +34,7 @@ class HomeService
         }
 
         $responses['toDoSoloOrToWatch'] = $responses['toDoCount'] + $responses['toWatchBackgroundCount']+ $responses['toWatchSeriousCount'];
+        $responses['hallOfFameGamesCount'] = \count($requests['hallOfFameGames']['result']);
         $responses['hallOfFameGames'] = $this->orderGames($requests['hallOfFameGames']['result']);
 
         return $responses;
