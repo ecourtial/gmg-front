@@ -1,0 +1,8 @@
+# Menu
+menu.home: Home
+
+# Hall of game
+hof-criteria-reminder: Here are the criteria of the Hall of fame
+hof-desc1: the year is not the one when the game was released. It can be the one when the player played at this game for the first time, or even later when it played a lot to it, enough to make it enter the Hall of Fame;
+hof-desc2: the game must have had an impact on the player (scenario, content, graphics, context...);
+hof-desc3: the ranking in the Hall of fame does not represent the CURRENT value of the game. It is all related to the context.
