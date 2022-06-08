@@ -4,14 +4,8 @@ declare(strict_types=1);
 
 namespace App\Service;
 
-use App\Client\ClientFactory;
-
-class HomeService
+class HomeService extends AbstractService
 {
-    public function __construct(private readonly ClientFactory $clientFactory)
-    {
-    }
-
     public function getHomeData(): array
     {
         $requests = [
@@ -23,7 +17,13 @@ class HomeService
             'toDoCount' => $this->clientFactory->getReadOnlyClient()->get('versions?toDo[]=1&page=1&limit=1'),
             'toWatchBackgroundCount' => $this->clientFactory->getReadOnlyClient()->get('versions?toWatchBackground[]=1&page=1&limit=1'),
             'toWatchSeriousCount' => $this->clientFactory->getReadOnlyClient()->get('versions?toWatchSerious[]=1&page=1&limit=1'),
-            'hallOfFameGames' => $this->clientFactory->getReadOnlyClient()->get('versions?hallOfFame[]=1&hallOfFameYear[]=neq-0&hallOfFamePosition[]=neq-0&orderBy[]=hallOfFameYear-asc&orderBy[]=hallOfFamePosition-asc&limit=200'),
+            'hallOfFameGames' => $this
+                ->clientFactory
+                ->getReadOnlyClient()
+                ->get(
+                    'versions?hallOfFame[]=1&hallOfFameYear[]=neq-0&hallOfFamePosition[]=neq-0'
+                        . '&orderBy[]=hallOfFameYear-asc&orderBy[]=hallOfFamePosition-asc&limit=' . self::MAX_RESULT_COUNT
+                ),
         ];
 
         $responses = [];

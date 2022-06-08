@@ -13,11 +13,12 @@ use App\Service\HomeService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class HomeController extends AbstractController
 {
     #[Route('/', methods: ['GET'], name: 'homepage')]
-    public function __invoke(HomeService $service): Response
+    public function __invoke(HomeService $service, TranslatorInterface $translator): Response
     {
         return $this->render(
             'home/body.html.twig',

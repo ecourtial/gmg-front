@@ -1,6 +1,7 @@
 # Menu
 menu.home: Give Me a Game (GMG)
 greetings_collection: Greetings. Below are a few figures about my collection.
+menu.platforms: Platforms
 
 # Hall of game
 hof-criteria-reminder: Here are the criteria of the Hall of fame
@@ -15,5 +16,21 @@ app_figure_records_finished: I have finished <strong>%count%</strong> of them.
 app_figure_records_to_do_or_to_watch: There are <strong>%count%</strong> versions to watch or to do.
 hall_of_fame_title: There are currently <strong>%count%</strong> versions in the Hall of fame
 entries: entries
-  
-  
+
+# Platforms
+
+platforms.title: Platforms
+games.for.platform.title: Games for the platform <strong>%name%</strong> (%count% entries)
+
+# Versions
+have_one_copy: I have at least one copy of this version.
+have_no_copy: I don't have any copy of this version.
+best_game_forever: Is in the Best Games Forever list.
+in_the_hall_of_fame: Is in the hall of fame.
+to_do_with_help: To do with help.
+played_it_a_lot: I played at it a lot.
+to_buy: To buy.
+top_game: Is a top game.
+
+# Various
+see.games: See games

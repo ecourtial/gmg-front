@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <ul>
+        {% for game in games %}
+            <li>
+                <i>
+                    {% if game['copyCount'] > 0 %}
+                        {% set file = 'check' %}
+                        {% set alt = 'have_one_copy' %}
+                    {% else %}
+                        {% set file = 'no' %}
+                        {% set alt = 'have_no_copy' %}
+                    {% endif %}
+                    {% set path = 'assets/img/badges/' ~ file ~ '.png' %}
+                    <img src="{{ asset(path) }}" title="{{ alt|trans }}"/>
+                    {{ game['gameTitle'] }}
+                </i>
+                ({{ game['id'] }})
+                {% for badge, alt in get_badges_for_version(game) %}
+                    {% set path = 'assets/img/badges/' ~ badge ~ '.png' %}
+                    <img src="{{ asset(path) }}" title="{{ alt|trans }}"/>
+                {% endfor %}
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

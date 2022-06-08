@@ -17,7 +17,7 @@
     <body>
         {{ include('general/menu.html.twig') }}
         <div id="content" class="container">
-            {% block screenTitle %}<h1>{{ screenTitle|trans }}</h1>{% endblock %}
+            {% block screenTitle %}<h1>{{ screenTitle|trans|raw }}</h1>{% endblock %}
             {% block body %}{% endblock %}
         </div>
     </body>

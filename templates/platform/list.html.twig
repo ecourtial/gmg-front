@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <ul>
+        {% for platform in data['result'] %}
+                <li>{{ platform['name'] }} ({{ platform['versionCount'] }})
+                    <a href="{{ path('games_per_platform', {id: platform['id']}) }}">{{ 'see.games'|trans }}</a> </li>
+        {% endfor %}
+    </ul>
+{% endblock %}
