@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <ul>
+        {% for copy in copies %}
+            <li>
+                {{ copy['id'] }} - 
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

@@ -20,24 +20,22 @@ class GameController extends AbstractController
     ) {
     }
 
-    #[Route('/platforms/{id<\d+>}', methods: ['GET'], name: 'games_per_platform')]
-    public function perPlatformList(int $id): Response
+    #[Route('/game/{id<\d+>}', methods: ['GET'], name: 'version_details')]
+    public function versionDetails(int $id): Response
     {
-        $data = $this->service->getByPlatform($id);
-        $games = $data['games'];
-        $platform = $data['platform'];
+        $version = $this->service->getVersionById($id);
 
         return $this->render(
-            'game/standard-list.html.twig',
+            'game/version-details.html.twig',
             [
                 'screenTitle' => $this->translator
                     ->trans(
-                        'games.for.platform.title',
+                        'game.version_details',
                         [
-                            '%name%' => $platform['name'],
-                            '%count%' => $games['totalResultCount']
+                            '%title%' => $version['gameTitle'],
+                            '%platform%' => $version['platformName']
                         ]),
-                'games' => $games['result']
+                'version' => $version
             ]);
     }
 

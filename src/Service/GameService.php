@@ -10,6 +10,13 @@ class GameService extends AbstractService
         'toto' => 'toto.translation.key'
     ];
 
+    public function getVersionById(int $gameId): array
+    {
+        return $this->clientFactory
+            ->getReadOnlyClient()
+            ->get("version/{$gameId}");
+    }
+
     public function getByPlatform(int $platformId): array
     {
         $games = $this->clientFactory

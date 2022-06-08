@@ -19,11 +19,11 @@ entries: entries
 
 # Platforms
 
-platforms.title: Platforms
-games.for.platform.title: Games for the platform <strong>%name%</strong> (%count% entries)
+platforms.title: Platforms (%count% entries)
+games_for_platform_title: Games for the platform <strong>%name%</strong> (%count%)
 
 # Versions
-have_one_copy: I have at least one copy of this version.
+have_at_least_one_copy: I have at least one copy of this version.
 have_no_copy: I don't have any copy of this version.
 best_game_forever: Is in the Best Games Forever list.
 in_the_hall_of_fame: Is in the hall of fame.
@@ -31,6 +31,45 @@ to_do_with_help: To do with help.
 played_it_a_lot: I played at it a lot.
 to_buy: To buy.
 top_game: Is a top game.
+game.version_details: Details of the game <strong>%title%</strong> on <strong>%platform%</strong>
+see_copies: See the copies for this game
 
 # Various
 see.games: See games
+see.details: Details
+see.not_available: Not available
+see.yes: Yes
+see.no: No
+
+# Generic fields for entities
+entity.id: Id
+entity.badges: Badges
+entity.platformId: Platform id
+entity.gameId: Game id
+entity.releaseYear: Release year
+entity.todoSoloSometimes: To do sometimes in solo mode
+entity.todoMultiplayerSometimes: To do sometimes in multiplayer mode
+entity.singleplayerRecurring: To do, regularly, in solo mode
+entity.multiplayerRecurring: To do, regularly, in multiplayer mode
+entity.toDo: To do
+entity.toDoPosition: Position in the to do list
+entity.todoWithHelp: To do with Help
+entity.toBuy: To buy
+entity.toWatchBackground: To watch, in background
+entity.toWatchSerious: To watch, with focus
+entity.toWatchPosition: Position in the to watch list
+entity.toRewatch: To watch again later
+entity.topGame: Top game
+entity.hallOfFame: In the hall of fame
+entity.hallOfFameYear: Year of the presence in the hall of fame
+entity.hallOfFamePosition: Position, int the given year, in the hall of fame
+entity.playedItOften: I played at it a lot, often
+entity.ongoing: I am currently playing at it
+entity.bestGameForever: In the "Best games forever list"
+entity.finished: Did I finish this game at least once?
+entity.comments: Comments
+entity.storyCount: This version has %count% story/stories related to it.
+entity.copyCount: This version has %count% copy/copies.
+
+# Copies
+copies_for_version_title: Copies for the version <strong>%title%</strong> on <strong>%platform%</strong> (%count%)
