@@ -6,6 +6,7 @@ namespace App\Controller;
 
 use App\Service\GameService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
@@ -146,5 +147,37 @@ class VersionController extends AbstractController
                     ->trans(GameService::FILTERS_WITH_PRIORITY[$filter]['description']),
                 'data' => $data
             ]);
+    }
+
+    #[Route('/games/search', methods: ['POST'], name: 'version_search')]
+    public function search(Request $request): Response
+    {
+        $query = \trim($request->get('query', ''));
+        if ($query !== '') {
+            $data = $this->service->search($query);
+        } else {
+            $data = ['result' => [], 'totalResultCount' => 0];
+        };
+
+        $params = [
+            'screenTitle' => $this->translator
+                ->trans(
+                    'search_results',
+                    ['%count%' => $data['totalResultCount']]
+                ),
+            'screenSubTitle' => $this->translator->trans(
+                'search_results_subtitle',
+                ['%query%' => $query]
+            ),
+            'games' => $data['result']
+        ];
+
+        if ($data['totalResultCount'] > 0) {
+            $params['screenDescription'] = $this->translator
+                ->trans('have_copy_for_x_of_them', ['%count%' => $data['ownedCount']]);
+        }
+
+        return $this->render(
+            'game/standard-list.html.twig', $params);
     }
 }

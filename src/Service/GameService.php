@@ -196,4 +196,21 @@ class GameService extends AbstractService
             ->getReadOnlyClient()
             ->get("versions?{$filter}[]=1'&orderBy[]=rand&limit=1");
     }
+
+    public function search(string $keywords): array
+    {
+        $data = $this->clientFactory
+            ->getReadOnlyClient()
+            ->get("versions?gameTitle[]={$keywords}&orderBy[]=gameTitle-asc&limit=" . self::MAX_RESULT_COUNT);
+
+        $count = 0;
+        foreach ($data['result'] as $game) {
+            if ((int)$game['copyCount'] > 0) {
+                $count++;
+            }
+        }
+        $data['ownedCount'] = $count;
+
+        return  $data;
+    }
 }

@@ -17,7 +17,7 @@ menu.to_watch_serious: To watch with attention
 menu.stories: Stories
 menu.transactions: Transactions
 menu.search.button: Search
-menu.search.request: Enter keywords
+menu.search.request: Enter game title keywords
 
 # Hall of game
 hof-criteria-reminder: Here are the criteria of the Hall of fame
@@ -77,6 +77,8 @@ stories_title: Stories (%count% entries)
 stories_description: Games I watched or played at
 transactions_title: Transactions (%count% entries)
 transactions_description: Buying and selling games
+search_results: Search results (%count% entries)
+search_results_subtitle: For the query '%query%'
 
 
 # Various
