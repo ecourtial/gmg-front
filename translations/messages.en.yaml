@@ -46,6 +46,7 @@ to_do_with_help: To do with help.
 played_it_a_lot: I played at it a lot.
 to_buy: To buy.
 top_game: Is a top game.
+best_game_forever: In the 'best games forever list'
 game.version_details: Details of the game <strong>%title%</strong> on <strong>%platform%</strong>
 see_copies: See the copies for this game
 have_copy_for_x_of_them: I have a copy for %count% of them

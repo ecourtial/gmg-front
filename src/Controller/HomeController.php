@@ -23,7 +23,7 @@ class HomeController extends AbstractController
         return $this->render(
             'home/body.html.twig',
             [
-                'screenTitle' => 'menu.home',
+                'screenTitle' => $translator->trans('menu.home'),
                 'data' => $service->getHomeData()
             ]);
     }

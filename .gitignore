@@ -18,16 +18,5 @@ var/
 # Docker
 docker/dev/.env
 docker/dev/docker/
-
-###> phpunit/phpunit ###
-/phpunit.xml
-.phpunit.result.cache
-###< phpunit/phpunit ###
-
-###> symfony/phpunit-bridge ###
-.phpunit.result.cache
-/phpunit.xml
-###< symfony/phpunit-bridge ###
-
 # Dev
 public/adminer.php

@@ -17,15 +17,15 @@
     <body>
         {{ include('general/menu.html.twig') }}
         <div id="content" class="container">
-            {% block screenTitle %}<h1>{{ screenTitle|trans|raw }}</h1>{% endblock %}
+            {% block screenTitle %}<h1>{{ screenTitle|raw }}</h1>{% endblock %}
             {% block screenSubTitle %}
                 {% if screenSubTitle is defined %}
-                    <p class="subtitle">{{ screenSubTitle|trans|raw }}</p>
+                    <p class="subtitle">{{ screenSubTitle|raw }}</p>
                 {% endif %}
             {% endblock %}
             {% block screenDescription %}
                 {% if screenDescription is defined %}
-                    <p class="description">{{ screenDescription|trans|raw }}</p>
+                    <p class="description">{{ screenDescription|raw }}</p>
                 {% endif %}
             {% endblock %}
             {% block body %}{% endblock %}
