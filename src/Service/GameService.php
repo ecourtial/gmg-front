@@ -80,9 +80,17 @@ class GameService extends AbstractService
 
         $platform = $this->clientFactory->getReadOnlyClient()->get("platform/{$platformId}");
 
+        $count = 0;
+        foreach ($games['result'] as $game) {
+            if ((int)$game['copyCount'] > 0) {
+                $count++;
+            }
+        }
+
         return [
             'games' => $games,
-            'platform' => $platform
+            'platform' => $platform,
+            'ownedCount' => $count
         ];
     }
 
@@ -90,9 +98,19 @@ class GameService extends AbstractService
     {
         $filter = self::FILTERS[$filter]['attribute'];
 
-        return $this->clientFactory
+        $data = $this->clientFactory
             ->getReadOnlyClient()
             ->get("versions?{$filter}[]=1&orderBy[]=gameTitle-asc&limit=" . self::MAX_RESULT_COUNT);
+
+        $count = 0;
+        foreach ($data['result'] as $game) {
+            if ((int)$game['copyCount'] > 0) {
+                $count++;
+            }
+        }
+        $data['ownedCount'] = $count;
+
+        return  $data;
     }
 
     public function getFilteredListWithPrio(string $filter): array
@@ -118,6 +136,16 @@ class GameService extends AbstractService
                 $orderedResult['withoutPriority'][] = $version;
             }
         }
+
+        $count = 0;
+        foreach ($orderedResult as $subset) {
+            foreach ($subset as $game) {
+                if ((int)$game['copyCount'] > 0) {
+                    $count++;
+                }
+            }
+        }
+        $orderedResult['ownedCount'] = $count;
 
         return $orderedResult;
     }

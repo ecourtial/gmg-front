@@ -23,9 +23,14 @@ class BadgeExtension extends AbstractExtension
         'topGame' => ['img' => 'top', 'title' => 'top_game'],
     ];
 
-    private const OWNERSHIP_BADGE = [
+    private const OWNERSHIP_BADGES = [
         'no' => ['img' => 'no', 'title' => 'have_no_copy'],
         'yes' => ['img' => 'check', 'title' => 'have_at_least_one_copy'],
+    ];
+
+    private const STORIES_BADGES = [
+        'watched' => ['img' => 'eye', 'title' => 'entity.watched_it'],
+        'played' => ['img' => 'controller', 'title' => 'entity.played_at_it'],
     ];
 
     public function getFunctions()
@@ -34,6 +39,7 @@ class BadgeExtension extends AbstractExtension
             new TwigFunction('get_ownership_badge', [$this, 'getOwnershipBadge']),
             new TwigFunction('get_badges_for_version', [$this, 'getBadgesForVersion']),
             new TwigFunction('get_status_badge', [$this, 'getStatusBadge']),
+            new TwigFunction('get_story_badges', [$this, 'getStoryBadges']),
         ];
     }
 
@@ -45,9 +51,8 @@ class BadgeExtension extends AbstractExtension
             $key = 'yes';
         }
 
-        return [self::OWNERSHIP_BADGE[$key]['img'] => self::OWNERSHIP_BADGE[$key]['title']];
+        return [self::OWNERSHIP_BADGES[$key]['img'] => self::OWNERSHIP_BADGES[$key]['title']];
     }
-
 
     public function getBadgesForVersion(array $version, bool $setOwnershipBadge = false): array
     {
@@ -67,7 +72,7 @@ class BadgeExtension extends AbstractExtension
                 $key = 'yes';
             }
 
-            $ownerShipBadge = [self::OWNERSHIP_BADGE[$key]['img'] => self::OWNERSHIP_BADGE[$key]['title']];
+            $ownerShipBadge = [self::OWNERSHIP_BADGES[$key]['img'] => self::OWNERSHIP_BADGES[$key]['title']];
         }
 
         return \array_merge($ownerShipBadge, $badges);
@@ -81,8 +86,21 @@ class BadgeExtension extends AbstractExtension
             $key = 'yes';
         }
 
-        $img = self::OWNERSHIP_BADGE[$key]['img'];
+        $img = self::OWNERSHIP_BADGES[$key]['img'];
 
         return $this->packages->getUrl("assets/img/badges/{$img}.png");
+    }
+
+    public function getStoryBadges(array $story): array
+    {
+        $badges = [];
+
+        foreach (self::STORIES_BADGES as $key => $attributes) {
+            if ((int)$story[$key] === 1) {
+                $badges[$attributes['img']] = $attributes['title'];
+            }
+        }
+
+        return $badges;
     }
 }

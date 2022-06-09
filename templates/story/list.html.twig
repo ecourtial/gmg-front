@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    {% for year, entries in stories %}
+        <strong>{{ year }}</strong>
+        <ul>
+        {% for story in entries %}
+            <li>
+                ({{ story['id'] }})- {{ story['gameTitle'] }} ({{ story['platformName'] }})
+                {% for badge, alt in get_story_badges(story) %}
+                    {% set path = 'assets/img/badges/' ~ badge ~ '.png' %}
+                    <img src="{{ asset(path) }}" title="{{ alt|trans }}"/>
+                {% endfor %}
+            </li>
+        {% endfor %}
+        </ul>
+    {% endfor %}
+{% endblock %}

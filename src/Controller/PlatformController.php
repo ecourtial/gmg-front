@@ -40,13 +40,6 @@ class PlatformController extends AbstractController
         $games = $data['games'];
         $platform = $data['platform'];
 
-        $count = 0;
-        foreach ($games['result'] as $game) {
-            if ((int)$game['copyCount'] > 0) {
-                $count++;
-            }
-        }
-
         return $this->render(
             'game/standard-list.html.twig',
             [
@@ -58,7 +51,7 @@ class PlatformController extends AbstractController
                             '%count%' => $games['totalResultCount']
                         ]),
                 'screenSubTitle' => $this->translator
-                    ->trans('have_copy_for_x_of_them', ['%count%' => $count]),
+                    ->trans('have_copy_for_x_of_them', ['%count%' => $data['ownedCount']]),
                 'games' => $games['result']
             ]);
     }

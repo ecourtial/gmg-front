@@ -14,6 +14,7 @@ menu.to_do: To do
 menu.to_buy: To buy
 menu.to_watch_background: To watch in background
 menu.to_watch_serious: To watch with attention
+menu.stories: Stories
 
 # Hall of game
 hof-criteria-reminder: Here are the criteria of the Hall of fame
@@ -69,6 +70,8 @@ to_watch_background_title: To watch in background (%count% entries)
 to_watch_background_description: ''
 to_watch_serious_title: To watch with attention (%count% entries)
 to_watch_serious_description: ''
+stories_title: Stories (%count% entries)
+stories_description: Games I watched or played at
 
 
 # Various
@@ -121,6 +124,8 @@ entity.reedition: Reedition
 entity.hasManual: Has manual
 entity.transactionCount: Transaction count
 entity.status: Status
+entity.played_at_it: I played at it
+entity.watched_it: I watched it
 
 # Copies
 copies_for_version_title: Copies for the version <strong>%title%</strong> on <strong>%platform%</strong> (%count%)
