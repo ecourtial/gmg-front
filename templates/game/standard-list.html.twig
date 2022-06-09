@@ -1,22 +1,4 @@
 {% extends 'base.html.twig' %}
 {% block body %}
-    <ul>
-        {% for game in games %}
-            <li>
-                <i>
-                    {% for badge, alt in get_ownership_badge(game) %}
-                        {% set path = 'assets/img/badges/' ~ badge ~ '.png' %}
-                        <img src="{{ asset(path) }}" title="{{ alt|trans }}"/>
-                    {% endfor %}
-                    {{ game['gameTitle'] }}
-                </i>
-                ({{ game['id'] }})
-                {% for badge, alt in get_badges_for_version(game) %}
-                    {% set path = 'assets/img/badges/' ~ badge ~ '.png' %}
-                    <img src="{{ asset(path) }}" title="{{ alt|trans }}"/>
-                {% endfor %}
-                <a href="{{ path('version_details', {id: game['id']}) }}">{% trans %}see.details{% endtrans %}</a>
-            </li>
-        {% endfor %}
-    </ul>
+    {% include 'game/list-content.html.twig' %}
 {% endblock %}

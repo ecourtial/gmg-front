@@ -21,28 +21,40 @@
                     </ul>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ path('games_filtered_list', {filter: 'bgf'}) }}">{{ 'menu.bgf'|trans }}</a>
+                    <a class="nav-link" href="{{ path('versions_filtered_list', {filter: 'bgf'}) }}">{{ 'menu.bgf'|trans }}</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        {{ 'menu.see.recurring'|trans }}
+                        {{ 'menu.recurring'|trans }}
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="{{ path('games_filtered_list', {filter: 'solo_recurring'}) }}">{{ 'see.solo'|trans }}</a></li>
-                        <li><a class="dropdown-item" href="{{ path('games_filtered_list', {filter: 'multi_recurring'}) }}">{{ 'see.multiplayer'|trans }}</a></li>
+                        <li><a class="dropdown-item" href="{{ path('versions_filtered_list', {filter: 'solo_recurring'}) }}">{{ 'see.solo'|trans }}</a></li>
+                        <li><a class="dropdown-item" href="{{ path('versions_filtered_list', {filter: 'multi_recurring'}) }}">{{ 'see.multiplayer'|trans }}</a></li>
                     </ul>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        {{ 'menu.see.sometimes'|trans }}
+                        {{ 'menu.sometimes'|trans }}
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="{{ path('games_filtered_list', {filter: 'sometimes_solo'}) }}">{{ 'see.solo'|trans }}</a></li>
-                        <li><a class="dropdown-item" href="{{ path('games_filtered_list', {filter: 'multi_sometimes'}) }}">{{ 'see.multiplayer'|trans }}</a></li>
+                        <li><a class="dropdown-item" href="{{ path('versions_filtered_list', {filter: 'sometimes_solo'}) }}">{{ 'see.solo'|trans }}</a></li>
+                        <li><a class="dropdown-item" href="{{ path('versions_filtered_list', {filter: 'multi_sometimes'}) }}">{{ 'see.multiplayer'|trans }}</a></li>
                     </ul>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ url('version_originals') }}">{{ 'menu.originals'|trans }}</a>
+                    <a class="nav-link" href="{{ url('versions_originals') }}">{{ 'menu.originals'|trans }}</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        {{ 'menu.schedule'|trans }}
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="{{ path('versions_filtered_list', {filter: 'on_going'}) }}">{{ 'menu.on_going'|trans }}</a></li>
+                        <li><a class="dropdown-item" href="{{ path('versions_with_priority', {filter: 'to_do'}) }}">{{ 'menu.to_do'|trans }}</a></li>
+                        <li><a class="dropdown-item" href="{{ path('versions_with_priority', {filter: 'to_watch_in_background'}) }}">{{ 'menu.to_watch_background'|trans }}</a></li>
+                        <li><a class="dropdown-item" href="{{ path('versions_with_priority', {filter: 'to_watch_serious'}) }}">{{ 'menu.to_watch_serious'|trans }}</a></li>
+                        <li><a class="dropdown-item" href="{{ path('versions_filtered_list', {filter: 'to_buy'}) }}">{{ 'menu.to_buy'|trans }}</a></li>
+                    </ul>
                 </li>
                 <form class="d-flex" method="post" action="">
                     <input class="form-control me-2" name="query" type="search" placeholder="{{ 'menu.search.request'|trans }}" aria-label="Search" required>

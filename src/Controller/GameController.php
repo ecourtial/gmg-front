@@ -19,7 +19,7 @@ class GameController extends AbstractController
     ) {
     }
 
-    #[Route('/game/{id<\d+>}', methods: ['GET'], name: 'version_details')]
+    #[Route('/version/{id<\d+>}', methods: ['GET'], name: 'version_details')]
     public function versionDetails(int $id): Response
     {
         $version = $this->service->getVersionById($id);
@@ -39,7 +39,7 @@ class GameController extends AbstractController
         );
     }
 
-    #[Route('/games/filtered/{filter<\w+>}', methods: ['GET'], name: 'games_filtered_list')]
+    #[Route('/games/filtered/{filter<\w+>}', methods: ['GET'], name: 'versions_filtered_list')]
     public function filteredList(string $filter): Response
     {
         if (false === \array_key_exists($filter, GameService::FILTERS)) {
@@ -102,7 +102,7 @@ class GameController extends AbstractController
         );
     }
 
-    #[Route('/game/originals', methods: ['GET'], name: 'version_originals')]
+    #[Route('/games/originals', methods: ['GET'], name: 'versions_originals')]
     public function getOriginals(): Response
     {
         $data = $this->service->getOriginals();
@@ -125,8 +125,41 @@ class GameController extends AbstractController
                         ['%count%' => $data['totalResultCount']]
                     ),
                 'screenDescription' => $this->translator
-                    ->trans('originals.subtitle'),
+                    ->trans('originals.description'),
                 'games' => $data['result']
+            ]);
+    }
+
+    #[Route('/game/with-priority/{filter<\w+>}', methods: ['GET'], name: 'versions_with_priority')]
+    public function getListWithPriority(string $filter): Response
+    {
+        if (false === \array_key_exists($filter, GameService::FILTERS_WITH_PRIORITY)) {
+            throw new NotFoundHttpException();
+        }
+
+        $data = $this->service->getFilteredListWithPrio($filter);
+        $count = 0;
+        foreach ($data as $subset) {
+            foreach ($subset as $game) {
+                if ((int)$game['copyCount'] > 0) {
+                    $count++;
+                }
+            }
+        }
+
+        return $this->render(
+            'game/list-with-priority.html.twig',
+            [
+                'screenTitle' => $this->translator
+                    ->trans(
+                        GameService::FILTERS_WITH_PRIORITY[$filter]['title'],
+                        ['%count%' => \count($data['withPriority']) + \count($data['withoutPriority'])]
+                    ),
+                'screenSubTitle' => $this->translator
+                    ->trans('have_copy_for_x_of_them', ['%count%' => $count]),
+                'screenDescription' => $this->translator
+                    ->trans(GameService::FILTERS_WITH_PRIORITY[$filter]['description']),
+                'data' => $data
             ]);
     }
 }

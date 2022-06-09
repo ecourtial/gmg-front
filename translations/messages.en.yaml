@@ -5,9 +5,15 @@ menu.platforms: Platforms
 menu.one_random_solo: One random in solo
 menu.one_random_multi: One random in multiplayer
 menu.bgf: Best Games Forever
-menu.see.recurring: Recurring
-menu.see.sometimes: Sometimes
+menu.recurring: Recurring
+menu.sometimes: Sometimes
 menu.originals: Originals
+menu.schedule: Schedule
+menu.on_going: On going
+menu.to_do: To do
+menu.to_buy: To buy
+menu.to_watch_background: To watch in background
+menu.to_watch_serious: To watch with attention
 
 # Hall of game
 hof-criteria-reminder: Here are the criteria of the Hall of fame
@@ -49,8 +55,20 @@ single_player_solo_title: To do in single player sometimes (%count% entries)
 single_player_sometimes_description: To play at it in solo mode, from times to times
 multi_player_sometimes_title: To do in multiplayer sometimes (%count% entries)
 multi_player_sometimes_description: To play at it in multiplayer mode, from times to times
-originals.title: Originals
-originals.subtitle: Game for which I have an original (legit) copy.
+originals.title: Originals (%count% entries)
+originals.description: Game for which I have an original (legit) copy.
+on_going_title: Ongoing (%count% entries)
+on_going_description: Games I am currently playing at
+to_do_title: To do (%count% entries)
+to_do_description: Versions I would like to play at
+to_buy_title: To buy (%count% entries)
+to_buy_description: Versions I would like to buy
+with_priority: With priority
+without_priority: Without priority
+to_watch_background_title: To watch in background (%count% entries)
+to_watch_background_description: ''
+to_watch_serious_title: To watch with attention (%count% entries)
+to_watch_serious_description: ''
 
 
 # Various
