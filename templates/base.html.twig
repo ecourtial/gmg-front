@@ -23,6 +23,11 @@
                     <p class="subtitle">{{ screenSubTitle|trans|raw }}</p>
                 {% endif %}
             {% endblock %}
+            {% block screenDescription %}
+                {% if screenDescription is defined %}
+                    <p class="description">{{ screenDescription|trans|raw }}</p>
+                {% endif %}
+            {% endblock %}
             {% block body %}{% endblock %}
         </div>
     </body>

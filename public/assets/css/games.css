@@ -101,6 +101,11 @@ textarea {
     text-align: center;
 }
 
+.description {
+    text-align: center;
+    font-weight: bold;
+}
+
 th {
     color: rgb(191, 191, 191)
 }

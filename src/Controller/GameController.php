@@ -10,7 +10,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Symfony\Component\HttpFoundation\Request;
 
 class GameController extends AbstractController
 {
@@ -36,23 +35,98 @@ class GameController extends AbstractController
                             '%platform%' => $version['platformName']
                         ]),
                 'version' => $version
-            ]);
+            ]
+        );
     }
 
-    #[Route('/games', methods: ['GET'], name: 'games_filtered_list')]
-    public function filteredList(Request $request): Response
+    #[Route('/games/filtered/{filter<\w+>}', methods: ['GET'], name: 'games_filtered_list')]
+    public function filteredList(string $filter): Response
     {
-        $filter = $this->request->get('filter');
-
         if (false === \array_key_exists($filter, GameService::FILTERS)) {
             throw new NotFoundHttpException();
+        }
+
+        $data = $this->service->getFilteredList($filter);
+
+        $count = 0;
+        foreach ($data['result'] as $game) {
+            if ((int)$game['copyCount'] > 0) {
+                $count++;
+            }
         }
 
         return $this->render(
             'game/standard-list.html.twig',
             [
-                'screenTitle' => $this->translator->trans(GameService::FILTERS[$filter]),
-                'data' => $this->service->getFilteredList($filter)
+                'screenTitle' => $this->translator
+                    ->trans(
+                        GameService::FILTERS[$filter]['title'],
+                        ['%count%' => $data['totalResultCount']]
+                    ),
+                'screenSubTitle' => $this->translator
+                    ->trans('have_copy_for_x_of_them', ['%count%' => $count]),
+                'screenDescription' => $this->translator
+                    ->trans(GameService::FILTERS[$filter]['description']),
+                'games' => $data['result']
+            ]);
+    }
+
+    #[Route('/game/random/{filter<\w+>}', methods: ['GET'], name: 'version_random')]
+    public function getRandom(string $filter): Response
+    {
+        $result = $this->service->getRandom($filter);
+
+        if ((int)$result['totalResultCount'] === 0) {
+            return $this->render(
+                'general/no-result.html.twig',
+                [
+                    'screenTitle' => $this->translator->trans('no_result')
+                ]
+            );
+        }
+
+        $version = $result['result'][0];
+
+        return $this->render(
+            'game/version-details.html.twig',
+            [
+                'screenTitle' => $this->translator
+                    ->trans(
+                        'game.version_details',
+                        [
+                            '%title%' => $version['gameTitle'],
+                            '%platform%' => $version['platformName']
+                        ]),
+                'version' => $version
+            ]
+        );
+    }
+
+    #[Route('/game/originals', methods: ['GET'], name: 'version_originals')]
+    public function getOriginals(): Response
+    {
+        $data = $this->service->getOriginals();
+
+        if ((int)$data['totalResultCount'] === 0) {
+            return $this->render(
+                'general/no-result.html.twig',
+                [
+                    'screenTitle' => $this->translator->trans('no_result')
+                ]
+            );
+        }
+
+        return $this->render(
+            'game/standard-list.html.twig',
+            [
+                'screenTitle' => $this->translator
+                    ->trans(
+                        'originals.title',
+                        ['%count%' => $data['totalResultCount']]
+                    ),
+                'screenDescription' => $this->translator
+                    ->trans('originals.subtitle'),
+                'games' => $data['result']
             ]);
     }
 }

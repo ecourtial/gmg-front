@@ -13,17 +13,42 @@
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        {{ 'menu.profile'|trans }}
+                        {{ 'see.random'|trans }}
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="">{{ 'menu.profile.account'|trans }}</a></li>
-                        <li><a class="dropdown-item" href="">{{ 'menu.profile.password'|trans }}</a></li>
+                        <li><a class="dropdown-item" href="{{ path('version_random', {filter: 'singleplayer_random'}) }}">{{ 'menu.one_random_solo'|trans }}</a></li>
+                        <li><a class="dropdown-item" href="{{ path('version_random', {filter: 'multiplayer_random'}) }}">{{ 'menu.one_random_multi'|trans }}</a></li>
                     </ul>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('games_filtered_list', {filter: 'bgf'}) }}">{{ 'menu.bgf'|trans }}</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        {{ 'menu.see.recurring'|trans }}
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="{{ path('games_filtered_list', {filter: 'solo_recurring'}) }}">{{ 'see.solo'|trans }}</a></li>
+                        <li><a class="dropdown-item" href="{{ path('games_filtered_list', {filter: 'multi_recurring'}) }}">{{ 'see.multiplayer'|trans }}</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        {{ 'menu.see.sometimes'|trans }}
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="{{ path('games_filtered_list', {filter: 'sometimes_solo'}) }}">{{ 'see.solo'|trans }}</a></li>
+                        <li><a class="dropdown-item" href="{{ path('games_filtered_list', {filter: 'multi_sometimes'}) }}">{{ 'see.multiplayer'|trans }}</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url('version_originals') }}">{{ 'menu.originals'|trans }}</a>
                 </li>
                 <form class="d-flex" method="post" action="">
                     <input class="form-control me-2" name="query" type="search" placeholder="{{ 'menu.search.request'|trans }}" aria-label="Search" required>
                     <button class="btn btn-outline-success" id="searchPostsButton" type="submit">{{ 'menu.search.button'|trans }}</button>
                 </form>
+            </ul>
         </div>
     </div>
 </nav>

@@ -2,6 +2,12 @@
 menu.home: Give Me a Game (GMG)
 greetings_collection: Greetings. Below are a few figures about my collection.
 menu.platforms: Platforms
+menu.one_random_solo: One random in solo
+menu.one_random_multi: One random in multiplayer
+menu.bgf: Best Games Forever
+menu.see.recurring: Recurring
+menu.see.sometimes: Sometimes
+menu.originals: Originals
 
 # Hall of game
 hof-criteria-reminder: Here are the criteria of the Hall of fame
@@ -25,7 +31,6 @@ games_for_platform_title: Games for the platform <strong>%name%</strong> (%count
 # Versions
 have_at_least_one_copy: I have at least one copy of this version.
 have_no_copy: I don't have any copy of this version.
-best_game_forever: Is in the Best Games Forever list.
 in_the_hall_of_fame: Is in the hall of fame.
 to_do_with_help: To do with help.
 played_it_a_lot: I played at it a lot.
@@ -34,6 +39,19 @@ top_game: Is a top game.
 game.version_details: Details of the game <strong>%title%</strong> on <strong>%platform%</strong>
 see_copies: See the copies for this game
 have_copy_for_x_of_them: I have a copy for %count% of them
+best_game_forever_title: Best Games Forever (%count% entries)
+best_game_forever_description: Games that, despite their age, are timeless and still gems today (different of the hall of fame entries, since the hall of fame is on the context of the era)
+single_player_recurring_title: Single player recurring (%count% entries)
+single_player_recurring_description: To play in solo regularly
+multi_player_recurring_title: Single player recurring (%count% entries)
+multi_player_recurring_description: To play in multiplayer regularly
+single_player_solo_title: To do in single player sometimes (%count% entries)
+single_player_sometimes_description: To play at it in solo mode, from times to times
+multi_player_sometimes_title: To do in multiplayer sometimes (%count% entries)
+multi_player_sometimes_description: To play at it in multiplayer mode, from times to times
+originals.title: Originals
+originals.subtitle: Game for which I have an original (legit) copy.
+
 
 # Various
 see.games: See games
@@ -41,6 +59,10 @@ see.details: Details
 see.not_available: Not available
 see.yes: Yes
 see.no: No
+see.random: Random
+no_result: No result
+see.solo: Solo
+see.multiplayer: Multiplayer
 
 # Generic fields for entities
 entity.id: Id
