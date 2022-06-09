@@ -117,3 +117,8 @@ td {
 .navbar-light .navbar-nav .nav-link {
     color: black;
 }
+
+.year {
+    font-weight: bold;
+    color: yellow;
+}

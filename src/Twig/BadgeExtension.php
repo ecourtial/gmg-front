@@ -33,6 +33,13 @@ class BadgeExtension extends AbstractExtension
         'played' => ['img' => 'controller', 'title' => 'entity.played_at_it'],
     ];
 
+    private const TRANSACTIONS_BADGES = [
+        'in' => ['img' => 'in', 'title' => 'entity.transaction_in'],
+        'out' => ['img' => 'out', 'title' => 'entity.transaction_out'],
+    ];
+
+    private const TRANSACTIONS_IN_BADGE = ['Bought', 'Loan-out-return', 'Loan-in'];
+
     public function getFunctions()
     {
         return [
@@ -40,6 +47,7 @@ class BadgeExtension extends AbstractExtension
             new TwigFunction('get_badges_for_version', [$this, 'getBadgesForVersion']),
             new TwigFunction('get_status_badge', [$this, 'getStatusBadge']),
             new TwigFunction('get_story_badges', [$this, 'getStoryBadges']),
+            new TwigFunction('get_transaction_type_badge', [$this, 'getTransactionTypeBadge']),
         ];
     }
 
@@ -103,4 +111,18 @@ class BadgeExtension extends AbstractExtension
 
         return $badges;
     }
+
+    public function getTransactionTypeBadge(string $transactionType): string
+    {
+        $key = 'out';
+
+        if (\in_array($transactionType, self::TRANSACTIONS_IN_BADGE)) {
+            $key = 'in';
+        }
+
+        $img = self::TRANSACTIONS_BADGES[$key]['img'];
+
+        return $this->packages->getUrl("assets/img/badges/{$img}.png");
+    }
+
 }

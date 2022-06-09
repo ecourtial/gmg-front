@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    {% for year, transactionOfTheYear in transactions %}
+        <p class="year">{{ year }}</p>
+        {% for month, transactions in transactionOfTheYear %}
+            <p>{{ get_month_label(month) }}</p>
+            <ul>
+                {% for transaction in transactions %}
+                    <li>
+                        <img src="{{ get_transaction_type_badge(transaction['type']) }}"/>
+                        {{ transaction['id'] }} - {{ transaction['gameTitle'] }} ({{ transaction['platformName'] }})
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endfor %}
+    {% endfor %}
+{% endblock %}

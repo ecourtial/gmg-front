@@ -15,6 +15,7 @@ menu.to_buy: To buy
 menu.to_watch_background: To watch in background
 menu.to_watch_serious: To watch with attention
 menu.stories: Stories
+menu.transactions: Transactions
 
 # Hall of game
 hof-criteria-reminder: Here are the criteria of the Hall of fame
@@ -72,6 +73,8 @@ to_watch_serious_title: To watch with attention (%count% entries)
 to_watch_serious_description: ''
 stories_title: Stories (%count% entries)
 stories_description: Games I watched or played at
+transactions_title: Transactions (%count% entries)
+transactions_description: Buying and selling games
 
 
 # Various
@@ -126,6 +129,21 @@ entity.transactionCount: Transaction count
 entity.status: Status
 entity.played_at_it: I played at it
 entity.watched_it: I watched it
+entity.transaction_in: In
+entity.transaction_out: Out
 
 # Copies
 copies_for_version_title: Copies for the version <strong>%title%</strong> on <strong>%platform%</strong> (%count%)
+
+month.january: January
+month.february: February
+month.march: March
+month.april: April
+month.may: May
+month.june: June
+month.july: July
+month.august: August
+month.september: September
+month.october: October
+month.november: November
+month.december: December

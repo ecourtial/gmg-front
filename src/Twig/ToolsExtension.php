@@ -10,6 +10,21 @@ use Twig\TwigFunction;
 
 class ToolsExtension extends AbstractExtension
 {
+    private const MONTHS = [
+        'month.january',
+        'month.february',
+        'month.march',
+        'month.april',
+        'month.may',
+        'month.june',
+        'month.july',
+        'month.august',
+        'month.september',
+        'month.october',
+        'month.november',
+        'month.december',
+    ];
+
     public function __construct(private readonly TranslatorInterface $translator)
     {
     }
@@ -19,6 +34,7 @@ class ToolsExtension extends AbstractExtension
     {
         return [
             new TwigFunction('get_yes_no_key', [$this, 'getYesNoKey']),
+            new TwigFunction('get_month_label', [$this, 'getMonthLabel']),
         ];
     }
 
@@ -29,5 +45,10 @@ class ToolsExtension extends AbstractExtension
         }
 
         return $this->translator->trans('see.no');
+    }
+
+    public function getMonthLabel(int $monthId): string
+    {
+        return $this->translator->trans(self::MONTHS[$monthId]);
     }
 }

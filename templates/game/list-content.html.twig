@@ -8,7 +8,8 @@
                 {% endfor %}
                 {{ game['gameTitle'] }}
             </i>
-            ({{ game['id'] }})
+            ({{ game['platformName'] }})
+            - {{ game['id'] }}
             {% for badge, alt in get_badges_for_version(game) %}
                 {% set path = 'assets/img/badges/' ~ badge ~ '.png' %}
                 <img src="{{ asset(path) }}" title="{{ alt|trans }}"/>
