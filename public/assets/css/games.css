@@ -122,3 +122,11 @@ td {
     font-weight: bold;
     color: yellow;
 }
+
+.btn {
+    background-color: #1f1f1f;
+}
+
+.btn-outline-success {
+    color: white;
+}

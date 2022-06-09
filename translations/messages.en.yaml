@@ -16,6 +16,8 @@ menu.to_watch_background: To watch in background
 menu.to_watch_serious: To watch with attention
 menu.stories: Stories
 menu.transactions: Transactions
+menu.search.button: Search
+menu.search.request: Enter keywords
 
 # Hall of game
 hof-criteria-reminder: Here are the criteria of the Hall of fame
