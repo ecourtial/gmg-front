@@ -18,6 +18,11 @@
         {{ include('general/menu.html.twig') }}
         <div id="content" class="container">
             {% block screenTitle %}<h1>{{ screenTitle|trans|raw }}</h1>{% endblock %}
+            {% block screenSubTitle %}
+                {% if screenSubTitle is defined %}
+                    <p class="subtitle">{{ screenSubTitle|trans|raw }}</p>
+                {% endif %}
+            {% endblock %}
             {% block body %}{% endblock %}
         </div>
     </body>

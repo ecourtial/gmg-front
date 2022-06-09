@@ -4,7 +4,12 @@ declare(strict_types=1);
 
 namespace App\Client;
 
+use App\Exception\GenericApiException;
 use Symfony\Component\HttpClient\HttpClient;
+use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class Client
@@ -26,11 +31,17 @@ class Client
             ]
         );
 
-        return \json_decode(
-            $this->client->request(
-                'GET',
-                $this->backendUrl . $query,
-                ['headers' => $headers]
-            )->getContent(), true);
+        try {
+            return \json_decode(
+                $this->client->request(
+                    'GET',
+                    $this->backendUrl . $query,
+                    ['headers' => $headers]
+                )->getContent(), true);
+        } catch (
+            ClientExceptionInterface|TransportExceptionInterface $e
+        ) {
+            throw new GenericApiException($e);
+        }
     }
 }

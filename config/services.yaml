@@ -28,6 +28,10 @@ services:
         $backendUrl: '%env(BACK_END_URL)%'
         $readOnlyToken: '%env(READ_ONLY_TOKEN)%'
 
+    App\EventListener\ExceptionListener:
+        tags:
+            - { name: kernel.event_listener, event: kernel.exception }
+
 when@test:
     services:
         test.user_password_hasher:

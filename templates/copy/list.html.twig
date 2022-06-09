@@ -1,10 +1,39 @@
 {% extends 'base.html.twig' %}
 {% block body %}
-    <ul>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">{% trans %} entity.id {% endtrans %}</th>
+                <th scope="col">{% trans %} entity.versionId {% endtrans %}</th>
+                <th scope="col">{% trans %} entity.type {% endtrans %}</th>
+                <th scope="col">{% trans %} entity.original {% endtrans %}</th>
+                <th scope="col">{% trans %} entity.boxType {% endtrans %}</th>
+                <th scope="col">{% trans %} entity.casingType {% endtrans %}</th>
+                <th scope="col">{% trans %} entity.onCompilation {% endtrans %}</th>
+                <th scope="col">{% trans %} entity.reedition {% endtrans %}</th>
+                <th scope="col">{% trans %} entity.hasManual {% endtrans %}</th>
+                <th scope="col">{% trans %} entity.transactionCount {% endtrans %}</th>
+                <th scope="col">{% trans %} entity.status {% endtrans %}</th>
+                <th scope="col">{% trans %} entity.comments {% endtrans %}</th>
+            </tr>
+        </thead>
+        <tbody>
         {% for copy in copies %}
-            <li>
-                {{ copy['id'] }} - 
-            </li>
+            <tr>
+                <th scope="row">{{ copy['id'] }}</th>
+                <td>{{ copy['versionId'] }}</td>
+                <td>{{ copy['type'] }}</td>
+                <td><img src="{{ get_status_badge(copy['original']) }}"/></td>
+                <td>{{ copy['boxType'] }}</td>
+                <td>{{ copy['casingType'] }}</td>
+                <td><img src="{{ get_status_badge(copy['onCompilation']) }}"/></td>
+                <td><img src="{{ get_status_badge(copy['reedition']) }}"/></td>
+                <td><img src="{{ get_status_badge(copy['hasManual']) }}"/></td>
+                <td>{{ copy['transactionCount'] }}</td>
+                <td>{{ copy['status'] }}</td>
+                <td>{{ copy['comments'] }}</td>
+            </tr>
         {% endfor %}
-    </ul>
+        </tbody>
+    </table>
 {% endblock %}

@@ -96,3 +96,19 @@ textarea {
     width: 640px;
     height: 280px;
 }
+
+.subtitle {
+    text-align: center;
+}
+
+th {
+    color: rgb(191, 191, 191)
+}
+
+td {
+    color: rgb(191, 191, 191)
+}
+
+.navbar-light .navbar-nav .nav-link {
+    color: black;
+}

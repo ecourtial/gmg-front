@@ -6,9 +6,14 @@ namespace App\Twig;
 
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
+use Symfony\Component\Asset\Packages;
 
 class BadgeExtension extends AbstractExtension
 {
+    public function __construct(private readonly Packages $packages)
+    {
+    }
+
     private const VERSIONS_BADGES = [
         'bestGameForever' => ['img' => 'diamond', 'title' => 'best_game_forever'],
         'hallOfFame' => ['img' => 'hall-of-fame', 'title' => 'in_the_hall_of_fame'],
@@ -28,6 +33,7 @@ class BadgeExtension extends AbstractExtension
         return [
             new TwigFunction('get_ownership_badge', [$this, 'getOwnershipBadge']),
             new TwigFunction('get_badges_for_version', [$this, 'getBadgesForVersion']),
+            new TwigFunction('get_status_badge', [$this, 'getStatusBadge']),
         ];
     }
 
@@ -65,5 +71,18 @@ class BadgeExtension extends AbstractExtension
         }
 
         return \array_merge($ownerShipBadge, $badges);
+    }
+
+    public function getStatusBadge(bool $status): string
+    {
+        $key = 'no';
+
+        if ($status) {
+            $key = 'yes';
+        }
+
+        $img = self::OWNERSHIP_BADGE[$key]['img'];
+
+        return $this->packages->getUrl("assets/img/badges/{$img}.png");
     }
 }
