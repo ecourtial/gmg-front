@@ -2,8 +2,8 @@
 {% block body %}
     <p><strong>{{ 'with_priority'|trans }}</strong></p>
     {% set games = data['withPriority'] %}
-    {% include 'game/list-content.html.twig' %}
+    {% include 'version/list-content.html.twig' %}
     <p><strong>{{ 'without_priority'|trans }}</strong></p>
     {% set games = data['withoutPriority'] %}
-    {% include 'game/list-content.html.twig' %}
+    {% include 'version/list-content.html.twig' %}
 {% endblock %}

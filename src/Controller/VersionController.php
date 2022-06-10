@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Service\GameService;
+use App\Service\VersionService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,7 +15,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class VersionController extends AbstractController
 {
     public function __construct(
-        private readonly GameService $service,
+        private readonly VersionService $service,
         private readonly TranslatorInterface $translator
     ) {
     }
@@ -26,7 +26,7 @@ class VersionController extends AbstractController
         $version = $this->service->getVersionById($id);
 
         return $this->render(
-            'game/version-details.html.twig',
+            'version/version-details.html.twig',
             [
                 'screenTitle' => $this->translator
                     ->trans(
@@ -43,24 +43,24 @@ class VersionController extends AbstractController
     #[Route('/games/filtered/{filter<\w+>}', methods: ['GET'], name: 'versions_filtered_list')]
     public function filteredList(string $filter): Response
     {
-        if (false === \array_key_exists($filter, GameService::FILTERS)) {
+        if (false === \array_key_exists($filter, VersionService::FILTERS)) {
             throw new NotFoundHttpException();
         }
 
         $data = $this->service->getFilteredList($filter);
 
         return $this->render(
-            'game/standard-list.html.twig',
+            'version/standard-list.html.twig',
             [
                 'screenTitle' => $this->translator
                     ->trans(
-                        GameService::FILTERS[$filter]['title'],
+                        VersionService::FILTERS[$filter]['title'],
                         ['%count%' => $data['totalResultCount']]
                     ),
                 'screenSubTitle' => $this->translator
                     ->trans('have_copy_for_x_of_them', ['%count%' => $data['ownedCount']]),
                 'screenDescription' => $this->translator
-                    ->trans(GameService::FILTERS[$filter]['description']),
+                    ->trans(VersionService::FILTERS[$filter]['description']),
                 'games' => $data['result']
             ]);
     }
@@ -82,7 +82,7 @@ class VersionController extends AbstractController
         $version = $result['result'][0];
 
         return $this->render(
-            'game/version-details.html.twig',
+            'version/version-details.html.twig',
             [
                 'screenTitle' => $this->translator
                     ->trans(
@@ -111,7 +111,7 @@ class VersionController extends AbstractController
         }
 
         return $this->render(
-            'game/standard-list.html.twig',
+            'version/standard-list.html.twig',
             [
                 'screenTitle' => $this->translator
                     ->trans(
@@ -127,24 +127,24 @@ class VersionController extends AbstractController
     #[Route('/game/with-priority/{filter<\w+>}', methods: ['GET'], name: 'versions_with_priority')]
     public function getListWithPriority(string $filter): Response
     {
-        if (false === \array_key_exists($filter, GameService::FILTERS_WITH_PRIORITY)) {
+        if (false === \array_key_exists($filter, VersionService::FILTERS_WITH_PRIORITY)) {
             throw new NotFoundHttpException();
         }
 
         $data = $this->service->getFilteredListWithPrio($filter);
 
         return $this->render(
-            'game/list-with-priority.html.twig',
+            'version/list-with-priority.html.twig',
             [
                 'screenTitle' => $this->translator
                     ->trans(
-                        GameService::FILTERS_WITH_PRIORITY[$filter]['title'],
+                        VersionService::FILTERS_WITH_PRIORITY[$filter]['title'],
                         ['%count%' => \count($data['withPriority']) + \count($data['withoutPriority'])]
                     ),
                 'screenSubTitle' => $this->translator
                     ->trans('have_copy_for_x_of_them', ['%count%' => $data['ownedCount']]),
                 'screenDescription' => $this->translator
-                    ->trans(GameService::FILTERS_WITH_PRIORITY[$filter]['description']),
+                    ->trans(VersionService::FILTERS_WITH_PRIORITY[$filter]['description']),
                 'data' => $data
             ]);
     }
@@ -178,6 +178,6 @@ class VersionController extends AbstractController
         }
 
         return $this->render(
-            'game/standard-list.html.twig', $params);
+            'version/standard-list.html.twig', $params);
     }
 }

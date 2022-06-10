@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Service\CopyService;
-use App\Service\GameService;
+use App\Service\VersionService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -15,7 +15,7 @@ class CopyController extends AbstractController
 {
     public function __construct(
         private readonly CopyService $service,
-        private readonly GameService $gameService,
+        private readonly VersionService $versionService,
         private readonly TranslatorInterface $translator
     ) {
     }
@@ -23,7 +23,7 @@ class CopyController extends AbstractController
     #[Route('/copies/version/{versionId<\d+>}', methods: ['GET'], name: 'copies_per_version')]
     public function perVersion(int $versionId): Response
     {
-        $version = $this->gameService->getVersionById($versionId);
+        $version = $this->versionService->getVersionById($versionId);
         $copies = $this->service->getByVersion($versionId);
 
         return $this->render(

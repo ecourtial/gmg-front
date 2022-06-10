@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Service\GameService;
+use App\Service\VersionService;
 use App\Service\PlatformService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,13 +15,13 @@ class PlatformController extends AbstractController
 {
     public function __construct(
         private readonly PlatformService $service,
-        private readonly GameService $gameService,
+        private readonly VersionService $versionService,
         private readonly TranslatorInterface $translator
     ) {
     }
 
     #[Route('/platforms', methods: ['GET'], name: 'platforms_list')]
-    public function __invoke(): Response
+    public function list(): Response
     {
         $data = $this->service->getList();
 
@@ -36,12 +36,12 @@ class PlatformController extends AbstractController
     #[Route('/platform/{id<\d+>}', methods: ['GET'], name: 'games_per_platform')]
     public function perPlatformList(int $id): Response
     {
-        $data = $this->gameService->getByPlatform($id);
+        $data = $this->versionService->getByPlatform($id);
         $games = $data['games'];
         $platform = $data['platform'];
 
         return $this->render(
-            'game/standard-list.html.twig',
+            'version/standard-list.html.twig',
             [
                 'screenTitle' => $this->translator
                     ->trans(
