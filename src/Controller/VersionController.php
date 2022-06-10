@@ -61,7 +61,7 @@ class VersionController extends AbstractController
                     ->trans('have_copy_for_x_of_them', ['%count%' => $data['ownedCount']]),
                 'screenDescription' => $this->translator
                     ->trans(VersionService::FILTERS[$filter]['description']),
-                'games' => $data['result']
+                'versions' => $data['result']
             ]);
     }
 
@@ -120,7 +120,7 @@ class VersionController extends AbstractController
                     ),
                 'screenDescription' => $this->translator
                     ->trans('originals.description'),
-                'games' => $data['result']
+                'versions' => $data['result']
             ]);
     }
 
@@ -169,7 +169,7 @@ class VersionController extends AbstractController
                 'search_results_subtitle',
                 ['%query%' => $query]
             ),
-            'games' => $data['result']
+            'versions' => $data['result']
         ];
 
         if ($data['totalResultCount'] > 0) {

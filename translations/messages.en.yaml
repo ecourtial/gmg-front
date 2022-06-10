@@ -18,6 +18,7 @@ menu.stories: Stories
 menu.transactions: Transactions
 menu.search.button: Search
 menu.search.request: Enter game title keywords
+menu.games: Games
 
 # Hall of game
 hof-criteria-reminder: Here are the criteria of the Hall of fame
@@ -34,9 +35,14 @@ hall_of_fame_title: There are currently <strong>%count%</strong> versions in the
 entries: entries
 
 # Platforms
-
 platforms.title: Platforms (%count% entries)
 games_for_platform_title: Games for the platform <strong>%name%</strong> (%count%)
+
+# Games
+games_list_title: Games (%count% entries)
+games_list_subtitle: Games registered in the application, for %count% version(s)
+game_versions_list: Version(s) registered for the game <strong>%title%</strong>
+games_versions_subtitle: There are %resultCount% results. I have a copy for %copyCount% of them.
 
 # Versions
 have_at_least_one_copy: I have at least one copy of this version.
@@ -54,7 +60,7 @@ best_game_forever_title: Best Games Forever (%count% entries)
 best_game_forever_description: Games that, despite their age, are timeless and still gems today (different of the hall of fame entries, since the hall of fame is on the context of the era)
 single_player_recurring_title: Single player recurring (%count% entries)
 single_player_recurring_description: To play in solo regularly
-multi_player_recurring_title: Single player recurring (%count% entries)
+multi_player_recurring_title: Multiplayer recurring (%count% entries)
 multi_player_recurring_description: To play in multiplayer regularly
 single_player_solo_title: To do in single player sometimes (%count% entries)
 single_player_sometimes_description: To play at it in solo mode, from times to times
@@ -81,7 +87,6 @@ transactions_description: Buying and selling games
 search_results: Search results (%count% entries)
 search_results_subtitle: For the query '%query%'
 
-
 # Various
 see.games: See games
 see.details: Details
@@ -92,6 +97,7 @@ see.random: Random
 no_result: No result
 see.solo: Solo
 see.multiplayer: Multiplayer
+see.versions: "{0}%qty% version|{1}%qty% version|]1,Inf[ %qty% versions"
 
 # Generic fields for entities
 entity.id: Id

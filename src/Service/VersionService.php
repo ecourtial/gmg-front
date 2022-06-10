@@ -74,22 +74,44 @@ class VersionService extends AbstractService
 
     public function getByPlatform(int $platformId): array
     {
-        $games = $this->clientFactory
+        $versions = $this->clientFactory
             ->getReadOnlyClient()
             ->get("versions?platformId[]={$platformId}&orderBy[]=gameTitle-asc&limit=" . self::MAX_RESULT_COUNT);
 
         $platform = $this->clientFactory->getReadOnlyClient()->get("platform/{$platformId}");
 
         $count = 0;
-        foreach ($games['result'] as $game) {
-            if ((int)$game['copyCount'] > 0) {
+        foreach ($versions['result'] as $version) {
+            if ((int)$version['copyCount'] > 0) {
                 $count++;
             }
         }
 
         return [
-            'games' => $games,
+            'versions' => $versions,
             'platform' => $platform,
+            'ownedCount' => $count
+        ];
+    }
+
+    public function getByGame(int $gameId): array
+    {
+        $versions = $this->clientFactory
+            ->getReadOnlyClient()
+            ->get("versions?gameId[]={$gameId}&orderBy[]=gameTitle-asc&limit=" . self::MAX_RESULT_COUNT);
+
+        $game = $this->clientFactory->getReadOnlyClient()->get("game/{$gameId}");
+
+        $count = 0;
+        foreach ($versions['result'] as $version) {
+            if ((int)$version['copyCount'] > 0) {
+                $count++;
+            }
+        }
+
+        return [
+            'versions' => $versions,
+            'game' => $game,
             'ownedCount' => $count
         ];
     }

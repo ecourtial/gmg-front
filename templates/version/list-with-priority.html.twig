@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 {% block body %}
     <p><strong>{{ 'with_priority'|trans }}</strong></p>
-    {% set games = data['withPriority'] %}
+    {% set versions = data['withPriority'] %}
     {% include 'version/list-content.html.twig' %}
     <p><strong>{{ 'without_priority'|trans }}</strong></p>
-    {% set games = data['withoutPriority'] %}
+    {% set versions = data['withoutPriority'] %}
     {% include 'version/list-content.html.twig' %}
 {% endblock %}

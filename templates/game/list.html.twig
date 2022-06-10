@@ -1,0 +1,8 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <ul>
+    {% for game in games %}
+        <li>{{ game['title'] }} ({{ 'see.versions'|trans({'%qty%': game['versionCount'],'%count%': game['versionCount']}) }}) - <a href="{{ path('game_details', {id: game['id']}) }}">{{ 'see.details'|trans }}</a></li>
+    {% endfor %}
+    </ul>
+{% endblock %}

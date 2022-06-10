@@ -1,20 +1,20 @@
 <ul>
-    {% for game in games %}
+    {% for version in versions %}
         <li>
             <i>
-                {% for badge, alt in get_ownership_badge(game) %}
+                {% for badge, alt in get_ownership_badge(version) %}
                     {% set path = 'assets/img/badges/' ~ badge ~ '.png' %}
                     <img src="{{ asset(path) }}" title="{{ alt|trans }}"/>
                 {% endfor %}
-                {{ game['gameTitle'] }}
+                {{ version['gameTitle'] }}
             </i>
-            ({{ game['platformName'] }})
-            - {{ game['id'] }}
-            {% for badge, alt in get_badges_for_version(game) %}
+            ({{ version['platformName'] }})
+            - {{ version['id'] }}
+            {% for badge, alt in get_badges_for_version(version) %}
                 {% set path = 'assets/img/badges/' ~ badge ~ '.png' %}
                 <img src="{{ asset(path) }}" title="{{ alt|trans }}"/>
             {% endfor %}
-            <a href="{{ path('version_details', {id: game['id']}) }}">{% trans %}see.details{% endtrans %}</a>
+            <a href="{{ path('version_details', {id: version['id']}) }}">{% trans %}see.details{% endtrans %}</a>
         </li>
     {% endfor %}
 </ul>

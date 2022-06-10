@@ -37,7 +37,7 @@ class PlatformController extends AbstractController
     public function perPlatformList(int $id): Response
     {
         $data = $this->versionService->getByPlatform($id);
-        $games = $data['games'];
+        $versions = $data['versions'];
         $platform = $data['platform'];
 
         return $this->render(
@@ -48,11 +48,11 @@ class PlatformController extends AbstractController
                         'games_for_platform_title',
                         [
                             '%name%' => $platform['name'],
-                            '%count%' => $games['totalResultCount']
+                            '%count%' => $versions['totalResultCount']
                         ]),
                 'screenSubTitle' => $this->translator
                     ->trans('have_copy_for_x_of_them', ['%count%' => $data['ownedCount']]),
-                'games' => $games['result']
+                'versions' => $versions['result']
             ]);
     }
 }
