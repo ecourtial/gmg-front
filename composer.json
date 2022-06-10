@@ -17,6 +17,7 @@
         "symfony/http-client": "6.0.*",
         "symfony/monolog-bundle": "^3.7",
         "symfony/runtime": "6.0.*",
+        "symfony/security-bundle": "6.0.*",
         "symfony/security-core": "6.0.*",
         "symfony/translation": "6.0.*",
         "symfony/validator": "6.0.*",

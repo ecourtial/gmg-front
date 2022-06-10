@@ -158,3 +158,10 @@ month.september: September
 month.october: October
 month.november: November
 month.december: December
+
+# Security
+user.connexion.title: Connexion
+user.label.form.label: Login form
+user.label.form.username: Username
+user.label.form.password: Password
+user.label.form.authenticate: Connexion

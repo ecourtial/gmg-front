@@ -61,6 +61,11 @@
                         <li><a class="dropdown-item" href="{{ url('transaction_list') }}">{{ 'menu.transactions'|trans }}</a></li>
                     </ul>
                 </li>
+                {% if is_granted('ROLE_USER') %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ logout_path() }}">{{ 'menu.logout'|trans }}</a>
+                    </li>
+                {% endif %}
                 <form class="d-flex" method="post" action="{{ url('version_search') }}">
                     <input class="form-control me-2" name="query" type="search" placeholder="{{ 'menu.search.request'|trans }}" aria-label="{{ 'menu.search.button'|trans }}" required>
                     <button class="btn btn-outline-success" id="searchPostsButton" type="submit">{{ 'menu.search.button'|trans }}</button>
