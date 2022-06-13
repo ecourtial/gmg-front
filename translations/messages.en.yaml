@@ -19,6 +19,8 @@ menu.transactions: Transactions
 menu.search.button: Search
 menu.search.request: Enter game title keywords
 menu.games: Games
+menu.login: Login
+menu.logout: Logout
 
 # Hall of game
 hof-criteria-reminder: Here are the criteria of the Hall of fame

@@ -13,6 +13,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         private readonly int $id,
         private readonly string $username,
         private readonly string $email,
+        private readonly bool $active,
+        private readonly ?string $password = null,
         private readonly ?string $token = null
     ) {
     }
@@ -32,6 +34,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->email;
     }
 
+    public function isActive(): bool
+    {
+        return $this->active;
+    }
+
     public function getToken(): string
     {
         return $this->token;
@@ -39,7 +46,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getRoles(): array
     {
-        // TODO: Implement getRoles() method.
+        return ['ROLE_USER'];
     }
 
     public function eraseCredentials()
@@ -54,6 +61,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getPassword(): ?string
     {
-        // TODO: Implement getPassword() method.
+        return $this->password;
     }
 }

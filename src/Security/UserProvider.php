@@ -27,11 +27,19 @@ class UserProvider implements UserProviderInterface, PasswordUpgraderInterface
     public function loadUserByIdentifier(string $identifier): UserInterface
     {
         try {
-            return $this->service->getByUsername($identifier);
+            $user = $this->service->getByUsername($identifier);
+
+            if ($user->isActive() === false) {
+                throw new UserNotFoundException();
+            }
+
+            return $user;
         } catch (GenericApiException $exception) {
             if ($exception->getCode() === 404) {
                 throw new UserNotFoundException();
             }
+
+            throw $exception;
         }
     }
 
@@ -54,9 +62,21 @@ class UserProvider implements UserProviderInterface, PasswordUpgraderInterface
             throw new UnsupportedUserException(sprintf('Invalid user class "%s".', get_class($user)));
         }
 
-        // Return a User object after making sure its data is "fresh".
-        // Or throw a UserNotFoundException if the user no longer exists.
-        throw new \Exception('TODO: fill in refreshUser() inside '.__FILE__);
+        try {
+            $user = $this->service->getByUsername($user->getUsername());
+
+            if ($user->isActive() === false) {
+                throw new UserNotFoundException();
+            }
+
+            return $user;
+        } catch (GenericApiException $exception) {
+            if ($exception->getCode() === 404) {
+                throw new UserNotFoundException();
+            }
+
+            throw $exception;
+        }
     }
 
     /**

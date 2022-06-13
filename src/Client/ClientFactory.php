@@ -11,16 +11,16 @@ namespace App\Client;
 
 class ClientFactory
 {
-    private ?Client $readOnlyClient = null;
+    private ?ReadOnlyClient $readOnlyClient = null;
 
     public function __construct(private readonly string $backendUrl, private readonly string $readOnlyToken)
     {
     }
 
-    public function getReadOnlyClient(): Client
+    public function getReadOnlyClient(): ReadOnlyClient
     {
-        if (false === $this->readOnlyClient instanceof Client) {
-            $this->readOnlyClient = new Client($this->backendUrl, $this->readOnlyToken);
+        if (false === $this->readOnlyClient instanceof ReadOnlyClient) {
+            $this->readOnlyClient = new ReadOnlyClient($this->backendUrl, $this->readOnlyToken);
         }
 
         return $this->readOnlyClient;

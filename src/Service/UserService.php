@@ -14,6 +14,20 @@ class UserService extends AbstractService
             ->getReadOnlyClient()
             ->get("user?filter=username&value={$username}");
 
-        return new User($result['id'], $result['username'], $result['email']);
+        return new User($result['id'], $result['username'], $result['email'], $result['active']);
+    }
+
+    public function getAuthenticatedUser(string $username, string $password): User
+    {
+        $result = $this->clientFactory->getReadOnlyClient()->authenticateUser($username, $password);
+
+        return new User(
+            $result['id'],
+            $username,
+            $result['email'],
+            $result['active'],
+            $password,
+            $result['token']
+        );
     }
 }
