@@ -4,10 +4,3 @@ parameters:
         - src/
     checkGenericClassInNonGenericObjectType: false
     ignoreErrors:
-
-        # Totally legit: 'alias', 'columnName' and 'computed' are not always present so PHPStan should not complain
-        - "#Strict comparison using === between 'alias' and 'computed' will always evaluate to false.#"
-        - "#Offset 'columnName' does not exist on array{source: 'alias', columnName?: 'created_at'|'updated_at'}.#"
-
-        # Alias in a SQL request
-        - "#Cannot access offset 'count' on array<string, mixed>\\|false.#"
