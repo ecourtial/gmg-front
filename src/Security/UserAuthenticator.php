@@ -9,7 +9,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
-use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
+use Symfony\Component\Security\Core\Exception\BadCredentialsException;
+use Symfony\Component\Security\Core\Exception\DisabledException;
+use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 use Symfony\Component\Security\Http\Authenticator\AbstractAuthenticator;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
@@ -40,8 +42,16 @@ class UserAuthenticator extends AbstractAuthenticator
         try {
             $user = $this->userService->getAuthenticatedUser($this->getUsernameFromRequest($request), $this->getRawPasswordFromRequest($request));
         } catch (GenericApiException $exception) {
-            if ($exception->getCode() === 404) {
-                throw new CustomUserMessageAuthenticationException('User not found!');
+            if ($exception->getCode() === 403) {
+                if ($exception->getApiReturnCode() === 1) {
+                    throw new UserNotFoundException();
+                }
+                if ($exception->getApiReturnCode() === 2) {
+                    throw new BadCredentialsException();
+                }
+                if ($exception->getApiReturnCode() === 3) {
+                    throw new DisabledException();
+                }
             }
 
             throw $exception;

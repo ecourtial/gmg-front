@@ -4,6 +4,7 @@ namespace App\Security;
 
 use App\Exception\GenericApiException;
 use App\Service\UserService;
+use Symfony\Component\Security\Core\Exception\DisabledException;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -30,12 +31,12 @@ class UserProvider implements UserProviderInterface, PasswordUpgraderInterface
             $user = $this->service->getByUsername($identifier);
 
             if ($user->isActive() === false) {
-                throw new UserNotFoundException();
+                throw new DisabledException();
             }
 
             return $user;
         } catch (GenericApiException $exception) {
-            if ($exception->getCode() === 404) {
+            if ($exception->getApiReturnCode() === 1) {
                 throw new UserNotFoundException();
             }
 
@@ -66,7 +67,7 @@ class UserProvider implements UserProviderInterface, PasswordUpgraderInterface
             $user = $this->service->getByUsername($user->getUsername());
 
             if ($user->isActive() === false) {
-                throw new UserNotFoundException();
+                throw new DisabledException();
             }
 
             return $user;
