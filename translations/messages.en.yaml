@@ -23,6 +23,10 @@ menu.login: Login
 menu.user: User
 menu.change_password: Change my password
 menu.logout: Logout
+menu.add_game: Add a new game
+menu.save: Save
+menu.edit_game: "Edit a game: <i>%title%</i>"
+menu.edit: Edit
 
 # Hall of game
 hof-criteria-reminder: Here are the criteria of the Hall of fame
@@ -47,6 +51,9 @@ games_list_title: Games (%count% entries)
 games_list_subtitle: Games registered in the application, for %count% version(s)
 game_versions_list: Version(s) registered for the game <strong>%title%</strong>
 games_versions_subtitle: There are %resultCount% results. I have a copy for %copyCount% of them.
+games_has_versions: Cannot delete this game because it has versions.
+games_title: Title
+games_notes: Notes
 
 # Versions
 have_at_least_one_copy: I have at least one copy of this version.
@@ -90,6 +97,9 @@ transactions_title: Transactions (%count% entries)
 transactions_description: Buying and selling games
 search_results: Search results (%count% entries)
 search_results_subtitle: For the query '%query%'
+entry_deleted_with_success: Entry deleted with success.
+delete_entry_confirmation: Are you sure you want to delete this entry?
+delete_action: Delete this entry
 
 # Various
 see.games: See games

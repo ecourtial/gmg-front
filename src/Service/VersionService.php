@@ -100,8 +100,6 @@ class VersionService extends AbstractService
             ->getReadOnlyClient()
             ->get("versions?gameId[]={$gameId}&orderBy[]=gameTitle-asc&limit=" . self::MAX_RESULT_COUNT);
 
-        $game = $this->clientFactory->getReadOnlyClient()->get("game/{$gameId}");
-
         $count = 0;
         foreach ($versions['result'] as $version) {
             if ((int)$version['copyCount'] > 0) {
@@ -111,7 +109,6 @@ class VersionService extends AbstractService
 
         return [
             'versions' => $versions,
-            'game' => $game,
             'ownedCount' => $count
         ];
     }

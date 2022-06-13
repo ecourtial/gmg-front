@@ -59,18 +59,17 @@ class SecurityController extends AbstractController
         throw new \Exception('This should never be reached (should be caught and managed by Symfony!');
     }
 
-    #[Route('/change-password', methods: ['GET'], name: 'change_password_form'), IsGranted('ROLE_USER')]
-    public function changePasswordForm(Request $request): Response
-    {
-        return $this->render(
-            'user/password_form.html.twig',
-            ['screenTitle' => $this->translator->trans('menu.change_password')]
-        );
-    }
-
-    #[Route('/change-password', methods: ['POST'], name: 'change_password'), IsGranted('ROLE_USER')]
+    #[Route('/change-password', methods: ['GET', 'POST'], name: 'change_password'), IsGranted('ROLE_USER')]
     public function changePassword(Request $request): Response
     {
+        if ($request->getMethod() === 'GET') {
+            return $this->render(
+                'user/password_form.html.twig',
+                ['screenTitle' => $this->translator->trans('menu.change_password')]
+            );
+        }
+
+        // Form is submitted
         if (false === $this->isCsrfTokenValid('change_password', $request->get('_csrf_token'))) {
             $request->getSession()->getFlashBag()->add('alert', 'see.invalid_csrf_token');
 

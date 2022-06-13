@@ -9,6 +9,7 @@ use Symfony\Contracts\HttpClient\Exception\HttpExceptionInterface;
 class GenericApiException extends \Exception
 {
     private ?int $apiReturnCode = null;
+    private ?string $apiOriginalMessage = null;
 
     public function __construct(\Throwable $previous)
     {
@@ -22,6 +23,7 @@ class GenericApiException extends \Exception
 
                 if (is_array($content) and array_key_exists('message', $content)) {
                     $message .= " The message returned was the following: '{$content['message']}'.";
+                    $this->apiOriginalMessage = $content['message'];
 
                     if (array_key_exists('code', $content)) {
                         $this->apiReturnCode = $content['code'];
@@ -39,5 +41,10 @@ class GenericApiException extends \Exception
     public function getApiReturnCode(): ?int
     {
         return $this->apiReturnCode;
+    }
+
+    public function getApiOriginalMessage(): ?string
+    {
+        return $this->apiOriginalMessage;
     }
 }

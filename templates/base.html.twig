@@ -12,22 +12,38 @@
         {% endblock %}
         {% block javascripts %}
             <script src="{{ asset('assets/js/bootstrap/bootstrap.bundle.min.js') }}"></script>
+            <script src="{{ asset('assets/js/functions.js') }}"></script>
         {% endblock %}
     </head>
     <body>
         {{ include('general/menu.html.twig') }}
         <div id="content" class="container">
             {% block screenTitle %}<h1>{{ screenTitle|raw }}</h1>{% endblock %}
+
             {% block screenSubTitle %}
                 {% if screenSubTitle is defined %}
                     <p class="subtitle">{{ screenSubTitle|raw }}</p>
                 {% endif %}
             {% endblock %}
+
             {% block screenDescription %}
                 {% if screenDescription is defined %}
                     <p class="description">{{ screenDescription|raw }}</p>
                 {% endif %}
             {% endblock %}
+
+            {% for message in app.flashes('alert') %}
+                <div class="alert alert-danger">
+                    {{ message|trans }}
+                </div>
+            {% endfor %}
+
+            {% for message in app.flashes('success') %}
+                <div class="alert alert-success">
+                    {{ message|trans }}
+                </div>
+            {% endfor %}
+
             {% block body %}{% endblock %}
         </div>
     </body>

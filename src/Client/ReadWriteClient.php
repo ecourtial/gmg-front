@@ -14,4 +14,14 @@ class ReadWriteClient extends ReadOnlyClient
     {
         return $this->execute('PATCH', $query, true, $headers, $payload);
     }
+
+    public function delete(string $query, array $headers = [], array $payload = []): array
+    {
+        return $this->execute('DELETE', $query, true, $headers, $payload);
+    }
+
+    public function post(string $query, array $headers = [], array $payload = []): array
+    {
+        return $this->execute('POST', $query, true, $headers, $payload);
+    }
 }

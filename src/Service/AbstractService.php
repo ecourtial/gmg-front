@@ -13,4 +13,9 @@ abstract class AbstractService
     public function __construct(protected readonly ClientFactory $clientFactory)
     {
     }
+
+    public function delete(int $gameId): void
+    {
+        $this->clientFactory->getReadWriteClient()->delete('game/' . $gameId);
+    }
 }
