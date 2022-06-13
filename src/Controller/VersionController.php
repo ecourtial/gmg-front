@@ -34,7 +34,8 @@ class VersionController extends AbstractController
                         [
                             '%title%' => $version['gameTitle'],
                             '%platform%' => $version['platformName']
-                        ]),
+                        ]
+                    ),
                 'version' => $version
             ]
         );
@@ -62,7 +63,8 @@ class VersionController extends AbstractController
                 'screenDescription' => $this->translator
                     ->trans(VersionService::FILTERS[$filter]['description']),
                 'versions' => $data['result']
-            ]);
+            ]
+        );
     }
 
     #[Route('/game/random/{filter<\w+>}', methods: ['GET'], name: 'version_random')]
@@ -90,7 +92,8 @@ class VersionController extends AbstractController
                         [
                             '%title%' => $version['gameTitle'],
                             '%platform%' => $version['platformName']
-                        ]),
+                        ]
+                    ),
                 'version' => $version
             ]
         );
@@ -121,7 +124,8 @@ class VersionController extends AbstractController
                 'screenDescription' => $this->translator
                     ->trans('originals.description'),
                 'versions' => $data['result']
-            ]);
+            ]
+        );
     }
 
     #[Route('/game/with-priority/{filter<\w+>}', methods: ['GET'], name: 'versions_with_priority')]
@@ -146,7 +150,8 @@ class VersionController extends AbstractController
                 'screenDescription' => $this->translator
                     ->trans(VersionService::FILTERS_WITH_PRIORITY[$filter]['description']),
                 'data' => $data
-            ]);
+            ]
+        );
     }
 
     #[Route('/games/search', methods: ['POST'], name: 'version_search')]
@@ -178,6 +183,8 @@ class VersionController extends AbstractController
         }
 
         return $this->render(
-            'version/standard-list.html.twig', $params);
+            'version/standard-list.html.twig',
+            $params
+        );
     }
 }

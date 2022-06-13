@@ -6,7 +6,7 @@ namespace App\Service;
 
 class VersionService extends AbstractService
 {
-    public CONST FILTERS = [
+    public const FILTERS = [
         'bgf' => [
             'attribute' => 'bestGameForever',
             'title' => 'best_game_forever_title',
@@ -44,7 +44,7 @@ class VersionService extends AbstractService
         ],
     ];
 
-    public CONST FILTERS_WITH_PRIORITY = [
+    public const FILTERS_WITH_PRIORITY = [
         'to_do' => [
             'attribute1' => 'toDo',
             'attribute2' => 'toDoPosition',
@@ -149,7 +149,7 @@ class VersionService extends AbstractService
         ];
 
         foreach ($result['result'] as $version) {
-            if($version[$filter2] > 0) {
+            if ($version[$filter2] > 0) {
                 $orderedResult['withPriority'][] = $version;
             } else {
                 $orderedResult['withoutPriority'][] = $version;

@@ -36,8 +36,10 @@ class CopyController extends AbstractController
                             '%title%' => $version['gameTitle'],
                             '%platform%' => $version['platformName'],
                             '%count%' => $copies['totalResultCount']
-                        ]),
+                        ]
+                    ),
                 'copies' => $copies['result']
-            ]);
+            ]
+        );
     }
 }

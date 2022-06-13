@@ -33,11 +33,13 @@ class GameController extends AbstractController
                 'screenTitle' => $this->translator
                     ->trans(
                         'games_list_title',
-                        ['%count%' => $data['totalResultCount']]),
+                        ['%count%' => $data['totalResultCount']]
+                    ),
                 'screenSubTitle' => $this->translator
                     ->trans('games_list_subtitle', ['%count%' => $data['versionCount']]),
                 'games' => $data['result']
-            ]);
+            ]
+        );
     }
 
     #[Route('/game/{id<\d+>}', methods: ['GET'], name: 'game_details')]
@@ -52,7 +54,9 @@ class GameController extends AbstractController
             [
                 'screenTitle' => $this->translator
                     ->trans(
-                        'game_versions_list', ['%title%' => $game['title']]),
+                        'game_versions_list',
+                        ['%title%' => $game['title']]
+                    ),
                 'screenSubTitle' => $this->translator
                     ->trans(
                         'games_versions_subtitle',
@@ -63,7 +67,8 @@ class GameController extends AbstractController
                     ),
                 'versions' => $versions['result'],
                 'game' => $game
-            ]);
+            ]
+        );
     }
 
     #[Route('/game/delete/{id<\d+>}', methods: ['POST'], name: 'delete_game')]

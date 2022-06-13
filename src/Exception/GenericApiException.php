@@ -28,7 +28,6 @@ class GenericApiException extends \Exception
                     if (array_key_exists('code', $content)) {
                         $this->apiReturnCode = $content['code'];
                     }
-
                 }
 
                 $message .= " If you were submitting a form, please just click on the 'Previous' button of your browser.";

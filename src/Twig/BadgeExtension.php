@@ -124,5 +124,4 @@ class BadgeExtension extends AbstractExtension
 
         return $this->packages->getUrl("assets/img/badges/{$img}.png");
     }
-
 }

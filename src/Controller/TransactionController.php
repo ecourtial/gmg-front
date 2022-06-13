@@ -33,6 +33,7 @@ class TransactionController extends AbstractController
                     ),
                 'screenDescription' => $this->translator->trans('transactions_description'),
                 'transactions' => $data['transactions']
-            ]);
+            ]
+        );
     }
 }

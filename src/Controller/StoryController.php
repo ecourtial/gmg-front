@@ -33,6 +33,7 @@ class StoryController extends AbstractController
                     ),
                 'screenDescription' => $this->translator->trans('stories_description'),
                 'stories' => $data['stories']
-            ]);
+            ]
+        );
     }
 }

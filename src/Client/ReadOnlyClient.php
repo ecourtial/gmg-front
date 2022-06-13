@@ -51,7 +51,9 @@ class ReadOnlyClient
                     $method,
                     $this->backendUrl . $query,
                     ['headers' => $headers, 'body' => \json_encode($payload)]
-                )->getContent(), true);
+                )->getContent(),
+                true
+            );
         } catch (
             ClientExceptionInterface|TransportExceptionInterface $e
         ) {

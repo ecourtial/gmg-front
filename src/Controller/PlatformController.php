@@ -30,7 +30,8 @@ class PlatformController extends AbstractController
             [
                 'screenTitle' => $this->translator->trans('platforms.title', ['%count%' => $data['totalResultCount']]),
                 'data' => $data
-            ]);
+            ]
+        );
     }
 
     #[Route('/platform/{id<\d+>}', methods: ['GET'], name: 'games_per_platform')]
@@ -49,10 +50,12 @@ class PlatformController extends AbstractController
                         [
                             '%name%' => $platform['name'],
                             '%count%' => $versions['totalResultCount']
-                        ]),
+                        ]
+                    ),
                 'screenSubTitle' => $this->translator
                     ->trans('have_copy_for_x_of_them', ['%count%' => $data['ownedCount']]),
                 'versions' => $versions['result']
-            ]);
+            ]
+        );
     }
 }

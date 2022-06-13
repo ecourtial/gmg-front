@@ -8,7 +8,7 @@ use App\Client\ClientFactory;
 
 abstract class AbstractService
 {
-    protected CONST MAX_RESULT_COUNT = 500;
+    protected const MAX_RESULT_COUNT = 500;
 
     public function __construct(protected readonly ClientFactory $clientFactory)
     {

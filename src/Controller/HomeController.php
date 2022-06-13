@@ -25,6 +25,7 @@ class HomeController extends AbstractController
             [
                 'screenTitle' => $translator->trans('menu.home'),
                 'data' => $service->getHomeData()
-            ]);
+            ]
+        );
     }
 }
