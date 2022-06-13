@@ -38,6 +38,9 @@ services:
     App\Security\UserAuthenticator:
         $router: '@router'
 
+    App\Controller\SecurityController:
+        $logoutUrlGenerator: '@security.logout_url_generator'
+
 when@test:
     services:
         test.user_password_hasher:

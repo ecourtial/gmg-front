@@ -20,6 +20,8 @@ menu.search.button: Search
 menu.search.request: Enter game title keywords
 menu.games: Games
 menu.login: Login
+menu.user: User
+menu.change_password: Change my password
 menu.logout: Logout
 
 # Hall of game
@@ -100,6 +102,9 @@ no_result: No result
 see.solo: Solo
 see.multiplayer: Multiplayer
 see.versions: "{0}%qty% version|{1}%qty% version|]1,Inf[ %qty% versions"
+see.update: Update
+see.invalid_csrf_token: Invalid CSRF token.
+see.password_changed_with_success: The password has been changed with success.
 
 # Generic fields for entities
 entity.id: Id
@@ -167,10 +172,15 @@ user.label.form.label: Login form
 user.label.form.username: Username
 user.label.form.password: Password
 user.label.form.authenticate: Connexion
+user.label.form.current_password: Current password
+user.label.form.new_password: New password
+user.label.form.new_password_confirm: Confirm new password
+user.label.form.new_password_no_match: The new password confirmation must be identical to the new password.
 
 # Authentication
 authentication.unknown_error: Unknown authentication error.
 authentication.user_not_found_error: User not found.
 authentication.bad_credentials_error: Bad credentials.
+authentication.bad_current_password: The current password is invalid.
 authentication.inactive_account_error: User account is not active.
 authentication.invalid_captcha_error: Invalid captcha answer.

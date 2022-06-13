@@ -30,4 +30,17 @@ class UserService extends AbstractService
             $result['token']
         );
     }
+
+    public function changePassword(int $userId, string $username, string $oldPassword, string $newPassword): User
+    {
+        $this->getAuthenticatedUser($username, $oldPassword);
+
+        $this->clientFactory->getReadWriteClient()->patch(
+            "user/{$userId}",
+            [],
+            ['password' => $newPassword]
+        );
+
+        return $this->getAuthenticatedUser($username, $newPassword);
+    }
 }

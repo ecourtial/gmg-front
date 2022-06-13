@@ -19,6 +19,7 @@ class GenericApiException extends \Exception
 
             if ($previous instanceof HttpExceptionInterface) {
                 $content = \json_decode($previous->getResponse()->getContent(false), true);
+
                 if (is_array($content) and array_key_exists('message', $content)) {
                     $message .= " The message returned was the following: '{$content['message']}'.";
 

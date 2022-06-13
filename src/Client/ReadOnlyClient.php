@@ -31,7 +31,7 @@ class ReadOnlyClient
         return $this->execute('POST', 'user/authenticate', false, $customHeaders);
     }
 
-    protected function execute(string $method, string $query, bool $auth = true, $headers = []): array
+    protected function execute(string $method, string $query, bool $auth = true, $headers = [], $payload = []): array
     {
         $headers = \array_merge(
             $headers,
@@ -50,7 +50,7 @@ class ReadOnlyClient
                 $this->client->request(
                     $method,
                     $this->backendUrl . $query,
-                    ['headers' => $headers]
+                    ['headers' => $headers, 'body' => \json_encode($payload)]
                 )->getContent(), true);
         } catch (
             ClientExceptionInterface|TransportExceptionInterface $e
