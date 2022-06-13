@@ -167,3 +167,9 @@ user.label.form.label: Login form
 user.label.form.username: Username
 user.label.form.password: Password
 user.label.form.authenticate: Connexion
+
+# Authentication
+authentication.unknown_error: Unknown authentication error.
+authentication.user_not_found_error: User not found.
+authentication.bad_credentials_error: Bad credentials.
+authentication.inactive_account_error: User account is not active.

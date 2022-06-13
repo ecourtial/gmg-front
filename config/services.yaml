@@ -35,6 +35,9 @@ services:
         tags:
             - { name: kernel.event_listener, event: kernel.exception }
 
+    App\Security\UserAuthenticator:
+        $router: '@router'
+
 when@test:
     services:
         test.user_password_hasher:

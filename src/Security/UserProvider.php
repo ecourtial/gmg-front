@@ -7,12 +7,10 @@ use App\Service\UserService;
 use Symfony\Component\Security\Core\Exception\DisabledException;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UserNotFoundException;
-use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
-use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
-class UserProvider implements UserProviderInterface, PasswordUpgraderInterface
+class UserProvider implements UserProviderInterface
 {
     public function __construct(private readonly UserService $service)
     {
@@ -65,7 +63,6 @@ class UserProvider implements UserProviderInterface, PasswordUpgraderInterface
 
         try {
             $user = $this->service->getByUsername($user->getUsername());
-
             if ($user->isActive() === false) {
                 throw new DisabledException();
             }
@@ -86,15 +83,5 @@ class UserProvider implements UserProviderInterface, PasswordUpgraderInterface
     public function supportsClass(string $class): bool
     {
         return User::class === $class || is_subclass_of($class, User::class);
-    }
-
-    /**
-     * Upgrades the hashed password of a user, typically for using a better hash algorithm.
-     */
-    public function upgradePassword(PasswordAuthenticatedUserInterface $user, string $newHashedPassword): void
-    {
-        // TODO: when hashed passwords are in use, this method should:
-        // 1. persist the new password in the user storage
-        // 2. update the $user object with $user->setPassword($newHashedPassword);
     }
 }

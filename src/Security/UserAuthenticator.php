@@ -4,9 +4,10 @@ namespace App\Security;
 
 use App\Exception\GenericApiException;
 use App\Service\UserService;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Router;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;
@@ -19,7 +20,7 @@ use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPasspor
 
 class UserAuthenticator extends AbstractAuthenticator
 {
-    public function __construct(private readonly UserService $userService)
+    public function __construct(private readonly UserService $userService, private readonly Router $router)
     {
     }
 
@@ -40,7 +41,12 @@ class UserAuthenticator extends AbstractAuthenticator
     public function authenticate(Request $request): Passport
     {
         try {
-            $user = $this->userService->getAuthenticatedUser($this->getUsernameFromRequest($request), $this->getRawPasswordFromRequest($request));
+            $user = $this->userService->getAuthenticatedUser(
+                $this->getUsernameFromRequest($request),
+                $this->getRawPasswordFromRequest($request)
+            );
+
+            $request->getSession()->set('apiToken', $user->getToken());
         } catch (GenericApiException $exception) {
             if ($exception->getCode() === 403) {
                 if ($exception->getApiReturnCode() === 1) {
@@ -68,15 +74,23 @@ class UserAuthenticator extends AbstractAuthenticator
 
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception): ?Response
     {
-        $data = [
-            // you may want to customize or obfuscate the message first
-            'message' => strtr($exception->getMessageKey(), $exception->getMessageData())
+        $message = 'authentication.unknown_error';
 
-            // or to translate this message
-            // $this->translator->trans($exception->getMessageKey(), $exception->getMessageData())
-        ];
+        if ($exception instanceof UserNotFoundException) {
+            $message = 'authentication.user_not_found_error';
+        }
 
-        return new JsonResponse($data, Response::HTTP_UNAUTHORIZED);
+        if ($exception instanceof BadCredentialsException) {
+            $message = 'authentication.bad_credentials_error';
+        }
+
+        if ($exception instanceof DisabledException) {
+            $message = 'authentication.inactive_account_error';
+        }
+
+        $request->getSession()->getFlashBag()->add('alert', $message);
+
+        return new RedirectResponse($this->router->generate('security_login'));
     }
 
     private function getUsernameFromRequest(Request $request): string
