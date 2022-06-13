@@ -3,6 +3,7 @@
 namespace App\Security;
 
 use App\Exception\GenericApiException;
+use App\Exception\Security\InvalidCaptchaException;
 use App\Service\UserService;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -52,9 +53,11 @@ class UserAuthenticator extends AbstractAuthenticator
                 if ($exception->getApiReturnCode() === 1) {
                     throw new UserNotFoundException();
                 }
+
                 if ($exception->getApiReturnCode() === 2) {
                     throw new BadCredentialsException();
                 }
+
                 if ($exception->getApiReturnCode() === 3) {
                     throw new DisabledException();
                 }
@@ -86,6 +89,10 @@ class UserAuthenticator extends AbstractAuthenticator
 
         if ($exception instanceof DisabledException) {
             $message = 'authentication.inactive_account_error';
+        }
+
+        if ($exception instanceof InvalidCaptchaException) {
+            $message = 'authentication.invalid_captcha_error';
         }
 
         $request->getSession()->getFlashBag()->add('alert', $message);

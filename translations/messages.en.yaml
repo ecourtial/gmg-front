@@ -173,3 +173,4 @@ authentication.unknown_error: Unknown authentication error.
 authentication.user_not_found_error: User not found.
 authentication.bad_credentials_error: Bad credentials.
 authentication.inactive_account_error: User account is not active.
+authentication.invalid_captcha_error: Invalid captcha answer.
