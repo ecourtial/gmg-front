@@ -233,7 +233,7 @@ class VersionController extends AbstractController
             return $this->render(
                 'version/form.html.twig',
                 [
-                    'screenTitle' => $this->translator->trans('menu.add_version'),
+                    'screenTitle' => $this->translator->trans('menu.edit_version'),
                     'games' => $this->gameService->getList()['result'],
                     'platforms' => $this->platformService->getList()['result'],
                     'selectedPlatform' => $version['platformId'],

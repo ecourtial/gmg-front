@@ -9,6 +9,12 @@
             </button>
         </form>
         <br/>
+        <a href="{{ url('add_story') }}?version={{ version['id'] }}">
+            <button type="submit" class="btn btn-lg btn-block btn-success">
+                <i class="fa fa-trash" aria-hidden="true"></i>
+                {{ 'menu.add_story'|trans }}
+            </button>
+        </a>
     {% endif %}
     <hr>
     <p>{% trans with {'%count%': version['storyCount']}%} entity.storyCount {% endtrans %}

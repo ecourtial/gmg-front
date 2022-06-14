@@ -6,6 +6,13 @@ namespace App\Service;
 
 class StoryService extends AbstractService
 {
+    public function getById(int $storyId): array
+    {
+        return $this->clientFactory
+            ->getReadOnlyClient()
+            ->get("story/{$storyId}");
+    }
+
     public function getList(): array
     {
         $data = $this->clientFactory
@@ -26,5 +33,29 @@ class StoryService extends AbstractService
         }
 
         return $result;
+    }
+
+
+    public function add(array $data): array
+    {
+        return $this->clientFactory->getReadWriteClient()->post(
+            'story',
+            [],
+            $data
+        );
+    }
+
+    public function update(int $id, array $data): array
+    {
+        return $this->clientFactory->getReadWriteClient()->patch(
+            'story/' . $id,
+            [],
+            $data
+        );
+    }
+
+    public function delete(int $versionId): void
+    {
+        parent::removeEntry('story', $versionId);
     }
 }

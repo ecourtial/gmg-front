@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <form method="POST" action="">
+        <fieldset>
+            <div class="form-group">
+                <label>
+                    {{ 'entity.version'|trans }}
+                    <select name="versionId">
+                        {% for version in versions %}
+                            <option value="{{ version['id'] }}" {% if version['id'] == selectedVersion %}selected{% endif %}>{{ version['gameTitle'] }} ({{ version['platformName'] }})</option>
+                        {% endfor %}
+                    </select>
+                </label>
+            </div>
+
+            <div class="form-group">
+                <label for="year">{{ 'see.year'|trans }}</label>
+                <input type="text" name="year" value="{{ story['year']|default('') }}" class="form-control"/>
+            </div>
+
+            <div class="form-group">
+                <label for="position">{{ 'story_position'|trans }}</label>
+                <input type="text" name="position" value="{{ story['position']|default('') }}" class="form-control"/>
+            </div>
+
+            <div class="form-group">
+                <label for="watched">{{ 'entity.watched_it'|trans }}</label>
+                <select name="watched">
+                    <option value="0" {% if story['watched']|default(0) == 0 %}selected{% endif %}>{{ 'see.no'|trans }}</option>
+                    <option value="1" {% if story['watched']|default(0) == 1 %}selected{% endif %}>{{ 'see.yes'|trans }}</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="played">{{ 'entity.played_at_it'|trans }}</label>
+                <select name="played">
+                    <option value="0" {% if story['played']|default(0) == 0 %}selected{% endif %}>{{ 'see.no'|trans }}</option>
+                    <option value="1" {% if story['played']|default(0) == 1 %}selected{% endif %}>{{ 'see.yes'|trans }}</option>
+                </select>
+            </div>
+
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('add_story') }}" />
+            <button type="submit" id="loginSubmitButton" class="btn btn-primary">
+                <i class="fa fa-sign-in" aria-hidden="true"></i> {{ 'menu.save'|trans }}
+            </button>
+        </fieldset>
+    </form>
+    {% if story is defined %}
+        <hr>
+        <form action="{{ url('delete_story', {id: story['id']}) }}" method="post" data-confirmation="true" id="delete-form">
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('delete_story') }}" />
+            <button type="submit" id="deletePostSubmitButton" class="btn btn-lg btn-block btn-danger" onclick="return areYouSure('{{ 'delete_entry_confirmation'|trans }}');">
+                <i class="fa fa-trash" aria-hidden="true"></i>
+                {{ 'delete_action'|trans }}
+            </button>
+        </form>
+    {% endif %}
+{% endblock %}

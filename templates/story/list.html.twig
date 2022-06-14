@@ -10,6 +10,9 @@
                     {% set path = 'assets/img/badges/' ~ badge ~ '.png' %}
                     <img src="{{ asset(path) }}" title="{{ alt|trans }}"/>
                 {% endfor %}
+                {% if is_granted('ROLE_USER') %}
+                    - <a href="{{ url('edit_story', {id: story['id']}) }}">{{ 'menu.edit'|trans }}</a>
+                {% endif %}
             </li>
         {% endfor %}
         </ul>

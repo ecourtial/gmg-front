@@ -30,6 +30,9 @@ menu.edit: Edit
 menu.add_platform: Add a platform
 menu.edit_platform: "Edit a platform: <i>%name%</i>"
 menu.add_version: Add a new version
+menu.edit_version: Edit a version
+menu.add_story: Add a new story
+menu.edit_story: Edit a story
 
 # Hall of game
 hof-criteria-reminder: Here are the criteria of the Hall of fame
@@ -121,6 +124,7 @@ see.versions: "{0}%qty% version|{1}%qty% version|]1,Inf[ %qty% versions"
 see.update: Update
 see.invalid_csrf_token: Invalid CSRF token.
 see.password_changed_with_success: The password has been changed with success.
+see.year: Year
 
 # Generic fields for entities
 entity.id: Id
@@ -130,6 +134,7 @@ entity.platform: Platform
 entity.gameId: Game id
 entity.game: Game
 entity.versionId: Version id
+entity.version: Which game version?
 entity.releaseYear: Release year
 entity.todoSoloSometimes: To do sometimes in solo mode
 entity.todoMultiplayerSometimes: To do sometimes in multiplayer mode
@@ -170,6 +175,9 @@ entity.transaction_out: Out
 
 # Copies
 copies_for_version_title: Copies for the version <strong>%title%</strong> on <strong>%platform%</strong> (%count%)
+
+# Stories
+story_position: Position in the year
 
 month.january: January
 month.february: February
