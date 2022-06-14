@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Exception\GenericApiException;
 use App\Service\GameService;
 use App\Service\PlatformService;
 use App\Service\VersionService;
@@ -254,5 +255,31 @@ class VersionController extends AbstractController
         $this->service->update($id, $payload)['id'];
 
         return $this->redirectToRoute('version_details', ['id' => $id]);
+    }
+
+
+    #[Route('/version/delete/{id<\d+>}', methods: ['POST'], name: 'delete_version'), IsGranted('ROLE_USER')]
+    public function delete(Request $request, int $id): Response
+    {
+        if (false === $this->isCsrfTokenValid('delete_version', $request->get('_csrf_token'))) {
+            $request->getSession()->getFlashBag()->add('alert', 'see.invalid_csrf_token');
+
+            return $this->redirectToRoute('version_details', ['id' => $id]);
+        }
+
+        try {
+            $this->service->delete($id);
+            $request->getSession()->getFlashBag()->add('alert', 'entry_deleted_with_success');
+        } catch (GenericApiException $exception) {
+            if ($exception->getCode() === 404) {
+                // Ignore, not a problem because someone might have done it
+            } elseif ($exception->getCode() === 400 && $exception->getApiReturnCode() === 9) {
+                $request->getSession()->getFlashBag()->add('alert', 'version_has_children');
+
+                return $this->redirectToRoute('version_details', ['id' => $id]);
+            }
+        }
+
+        return $this->redirectToRoute('games_list');
     }
 }

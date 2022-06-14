@@ -69,7 +69,7 @@ class PlatformController extends AbstractController
         if (false === $this->isCsrfTokenValid('delete_platform', $request->get('_csrf_token'))) {
             $request->getSession()->getFlashBag()->add('alert', 'see.invalid_csrf_token');
 
-            return $this->redirectToRoute('delete_platform', ['id' => $id]);
+            return $this->redirectToRoute('platform_details', ['id' => $id]);
         }
 
         try {

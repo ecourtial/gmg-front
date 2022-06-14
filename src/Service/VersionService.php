@@ -247,4 +247,9 @@ class VersionService extends AbstractService
             $data
         );
     }
+
+    public function delete(int $versionId): void
+    {
+        parent::removeEntry('version', $versionId);
+    }
 }

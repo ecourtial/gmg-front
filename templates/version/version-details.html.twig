@@ -1,5 +1,16 @@
 {% extends 'base.html.twig' %}
 {% block body %}
+    {% if is_granted('ROLE_USER') %}
+        <form action="{{ url('delete_version', {id: version['id']}) }}" method="post" data-confirmation="true" id="delete-form">
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('delete_version') }}" />
+            <button type="submit" id="deletePostSubmitButton" class="btn btn-lg btn-block btn-danger" onclick="return areYouSure('{{ 'delete_entry_confirmation'|trans }}');">
+                <i class="fa fa-trash" aria-hidden="true"></i>
+                {{ 'delete_action'|trans }}
+            </button>
+        </form>
+        <br/>
+    {% endif %}
+    <hr>
     <p>{% trans with {'%count%': version['storyCount']}%} entity.storyCount {% endtrans %}
     <p>{% trans with {'%count%': version['copyCount']}%} entity.copyCount {% endtrans %} <a href="{{ path('copies_per_version', {versionId: version['id']}) }}">{% trans %} see_copies {% endtrans %}</a> </p>
     <p><strong>{% trans %} entity.id {% endtrans %}:</strong> {{ version['id'] }}</p>
