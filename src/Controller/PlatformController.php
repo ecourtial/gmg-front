@@ -7,6 +7,7 @@ namespace App\Controller;
 use App\Exception\GenericApiException;
 use App\Service\VersionService;
 use App\Service\PlatformService;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -62,7 +63,7 @@ class PlatformController extends AbstractController
         );
     }
 
-    #[Route('/platform/delete/{id<\d+>}', methods: ['POST'], name: 'delete_platform')]
+    #[Route('/platform/delete/{id<\d+>}', methods: ['POST'], name: 'delete_platform'), IsGranted('ROLE_USER')]
     public function delete(Request $request, int $id): Response
     {
         if (false === $this->isCsrfTokenValid('delete_platform', $request->get('_csrf_token'))) {
@@ -87,7 +88,7 @@ class PlatformController extends AbstractController
         return $this->redirectToRoute('platforms_list');
     }
 
-    #[Route('/platform/add', methods: ['GET', 'POST'], name: 'add_platform')]
+    #[Route('/platform/add', methods: ['GET', 'POST'], name: 'add_platform'), IsGranted('ROLE_USER')]
     public function add(Request $request): Response
     {
         if ($request->getMethod() === 'GET') {
@@ -108,7 +109,7 @@ class PlatformController extends AbstractController
         return $this->redirectToRoute('platform_details', ['id' => $id]);
     }
 
-    #[Route('/platform/edit/{id<\d+>}', methods: ['GET', 'POST'], name: 'edit_platform')]
+    #[Route('/platform/edit/{id<\d+>}', methods: ['GET', 'POST'], name: 'edit_platform'), IsGranted('ROLE_USER')]
     public function edit(Request $request, int $id): Response
     {
         $platform = $this->service->get($id);

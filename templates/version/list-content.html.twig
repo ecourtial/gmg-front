@@ -15,6 +15,9 @@
                 <img src="{{ asset(path) }}" title="{{ alt|trans }}"/>
             {% endfor %}
             <a href="{{ path('version_details', {id: version['id']}) }}">{% trans %}see.details{% endtrans %}</a>
+            {% if is_granted('ROLE_USER') %}
+                - <a href="{{ url('edit_version', {id: version['id']}) }}">{{ 'menu.edit'|trans }}</a>
+            {% endif %}
         </li>
     {% endfor %}
 </ul>

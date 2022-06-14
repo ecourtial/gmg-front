@@ -7,6 +7,7 @@ namespace App\Controller;
 use App\Service\GameService;
 use App\Service\PlatformService;
 use App\Service\VersionService;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,7 +28,7 @@ class VersionController extends AbstractController
     #[Route('/version/{id<\d+>}', methods: ['GET'], name: 'version_details')]
     public function versionDetails(int $id): Response
     {
-        $version = $this->service->getVersionById($id);
+        $version = $this->service->getById($id);
 
         return $this->render(
             'version/version-details.html.twig',
@@ -192,7 +193,7 @@ class VersionController extends AbstractController
         );
     }
 
-    #[Route('/version/add', methods: ['GET', 'POST'], name: 'add_version')]
+    #[Route('/version/add', methods: ['GET', 'POST'], name: 'add_version'), IsGranted('ROLE_USER')]
     public function add(Request $request): Response
     {
         if ($request->getMethod() === 'GET') {
@@ -216,8 +217,41 @@ class VersionController extends AbstractController
 
         $payload = $request->request->all();
         unset($payload['_csrf_token']);
-        //dd($payload);
+
         $id = $this->service->add($payload)['id'];
+
+        return $this->redirectToRoute('version_details', ['id' => $id]);
+    }
+
+    #[Route('/version/edit/{id<\d+>}', methods: ['GET', 'POST'], name: 'edit_version'), IsGranted('ROLE_USER')]
+    public function edit(Request $request, int $id): Response
+    {
+        $version = $this->service->getById($id);
+
+        if ($request->getMethod() === 'GET') {
+            return $this->render(
+                'version/form.html.twig',
+                [
+                    'screenTitle' => $this->translator->trans('menu.add_version'),
+                    'games' => $this->gameService->getList()['result'],
+                    'platforms' => $this->platformService->getList()['result'],
+                    'selectedPlatform' => $version['platformId'],
+                    'selectedGame' => $version['gameId'],
+                    'version' => $version,
+                ]
+            );
+        }
+
+        if (false === $this->isCsrfTokenValid('add_version', $request->get('_csrf_token'))) {
+            $request->getSession()->getFlashBag()->add('alert', 'see.invalid_csrf_token');
+
+            return $this->redirectToRoute('edit_version', ['id' => $id]);
+        }
+
+        $payload = $request->request->all();
+        unset($payload['_csrf_token']);
+
+        $this->service->update($id, $payload)['id'];
 
         return $this->redirectToRoute('version_details', ['id' => $id]);
     }

@@ -23,7 +23,7 @@ class CopyController extends AbstractController
     #[Route('/copies/version/{versionId<\d+>}', methods: ['GET'], name: 'copies_per_version')]
     public function perVersion(int $versionId): Response
     {
-        $version = $this->versionService->getVersionById($versionId);
+        $version = $this->versionService->getById($versionId);
         $copies = $this->service->getByVersion($versionId);
 
         return $this->render(

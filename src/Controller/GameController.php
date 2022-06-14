@@ -7,6 +7,7 @@ namespace App\Controller;
 use App\Exception\GenericApiException;
 use App\Service\GameService;
 use App\Service\VersionService;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -71,7 +72,7 @@ class GameController extends AbstractController
         );
     }
 
-    #[Route('/game/delete/{id<\d+>}', methods: ['POST'], name: 'delete_game')]
+    #[Route('/game/delete/{id<\d+>}', methods: ['POST'], name: 'delete_game'), IsGranted('ROLE_USER')]
     public function delete(Request $request, int $id): Response
     {
         if (false === $this->isCsrfTokenValid('delete_game', $request->get('_csrf_token'))) {
@@ -96,7 +97,7 @@ class GameController extends AbstractController
         return $this->redirectToRoute('games_list');
     }
 
-    #[Route('/game/add', methods: ['GET', 'POST'], name: 'add_game')]
+    #[Route('/game/add', methods: ['GET', 'POST'], name: 'add_game'), IsGranted('ROLE_USER')]
     public function add(Request $request): Response
     {
         if ($request->getMethod() === 'GET') {
@@ -117,7 +118,7 @@ class GameController extends AbstractController
         return $this->redirectToRoute('game_details', ['id' => $id]);
     }
 
-    #[Route('/game/edit/{id<\d+>}', methods: ['GET', 'POST'], name: 'edit_game')]
+    #[Route('/game/edit/{id<\d+>}', methods: ['GET', 'POST'], name: 'edit_game'), IsGranted('ROLE_USER')]
     public function edit(Request $request, int $id): Response
     {
         $game = $this->service->get($id);

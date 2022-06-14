@@ -65,7 +65,7 @@ class VersionService extends AbstractService
         ],
     ];
 
-    public function getVersionById(int $gameId): array
+    public function getById(int $gameId): array
     {
         return $this->clientFactory
             ->getReadOnlyClient()
@@ -234,6 +234,15 @@ class VersionService extends AbstractService
     {
         return $this->clientFactory->getReadWriteClient()->post(
             'version',
+            [],
+            $data
+        );
+    }
+
+    public function update(int $id, array $data): array
+    {
+        return $this->clientFactory->getReadWriteClient()->patch(
+            'version/' . $id,
             [],
             $data
         );
