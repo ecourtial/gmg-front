@@ -1,0 +1,97 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <form method="POST" action="">
+        <fieldset>
+            <div class="form-group">
+                <label>
+                    {{ 'entity.version'|trans }}
+                    <select name="versionId">
+                        {% for version in versions %}
+                            <option value="{{ version['id'] }}" {% if version['id'] == selectedVersion %}selected{% endif %}>{{ version['gameTitle'] }} ({{ version['platformName'] }})</option>
+                        {% endfor %}
+                    </select>
+                </label>
+            </div>
+
+            <div class="form-group">
+                <label for="type">{{ 'entity.type'|trans }}</label>
+                <select name="type">
+                    {% for type in constant('App\\Service\\CopyService::TYPES') %}
+                        <option value="{{ type }}" {% if copy['type']|default('') == type %}selected{% endif %}>{{ type }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="original">{{ 'entity.original'|trans }}</label>
+                <select name="original">
+                    <option value="0" {% if copy['original']|default(0) == 0 %}selected{% endif %}>{{ 'see.no'|trans }}</option>
+                    <option value="1" {% if copy['original']|default(0) == 1 %}selected{% endif %}>{{ 'see.yes'|trans }}</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="boxType">{{ 'entity.boxType'|trans }}</label>
+                <select name="boxType">
+                    {% for type in constant('App\\Service\\CopyService::BOX_TYPES') %}
+                        <option value="{{ type }}" {% if copy['boxType']|default('') == type %}selected{% endif %}>{{ type }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="casingType">{{ 'entity.casingType'|trans }}</label>
+                <select name="casingType">
+                    {% for type in constant('App\\Service\\CopyService::CASING_TYPES') %}
+                        <option value="{{ type }}" {% if copy['casingType']|default('') == type %}selected{% endif %}>{{ type }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="onCompilation">{{ 'entity.onCompilation'|trans }}</label>
+                <select name="onCompilation">
+                    <option value="0" {% if copy['onCompilation']|default(0) == 0 %}selected{% endif %}>{{ 'see.no'|trans }}</option>
+                    <option value="1" {% if copy['onCompilation']|default(0) == 1 %}selected{% endif %}>{{ 'see.yes'|trans }}</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="reedition">{{ 'entity.reedition'|trans }}</label>
+                <select name="reedition">
+                    <option value="0" {% if copy['reedition']|default(0) == 0 %}selected{% endif %}>{{ 'see.no'|trans }}</option>
+                    <option value="1" {% if copy['reedition']|default(0) == 1 %}selected{% endif %}>{{ 'see.yes'|trans }}</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="hasManual">{{ 'entity.hasManual'|trans }}</label>
+                <select name="hasManual">
+                    <option value="0" {% if copy['hasManual']|default(0) == 0 %}selected{% endif %}>{{ 'see.no'|trans }}</option>
+                    <option value="1" {% if copy['hasManual']|default(0) == 1 %}selected{% endif %}>{{ 'see.yes'|trans }}</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="comments">{{ 'entity.comments'|trans }}</label>
+                <br/>
+                <textarea name="comments">{{ copy['comments']|default('') }}</textarea>
+            </div>
+
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('add_copy') }}" />
+            <button type="submit" id="loginSubmitButton" class="btn btn-primary">
+                <i class="fa fa-sign-in" aria-hidden="true"></i> {{ 'menu.save'|trans }}
+            </button>
+        </fieldset>
+    </form>
+    {% if story is defined %}
+        <hr>
+        <form action="{{ url('delete_story', {id: story['id']}) }}" method="post" data-confirmation="true" id="delete-form">
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('delete_story') }}" />
+            <button type="submit" id="deletePostSubmitButton" class="btn btn-lg btn-block btn-danger" onclick="return areYouSure('{{ 'delete_entry_confirmation'|trans }}');">
+                <i class="fa fa-trash" aria-hidden="true"></i>
+                {{ 'delete_action'|trans }}
+            </button>
+        </form>
+    {% endif %}
+{% endblock %}

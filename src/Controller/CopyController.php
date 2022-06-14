@@ -6,7 +6,9 @@ namespace App\Controller;
 
 use App\Service\CopyService;
 use App\Service\VersionService;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -21,7 +23,7 @@ class CopyController extends AbstractController
     }
 
     #[Route('/copies/version/{versionId<\d+>}', methods: ['GET'], name: 'copies_per_version')]
-    public function perVersion(int $versionId): Response
+    public function getByVersion(int $versionId): Response
     {
         $version = $this->versionService->getById($versionId);
         $copies = $this->service->getByVersion($versionId);
@@ -42,4 +44,34 @@ class CopyController extends AbstractController
             ]
         );
     }
+
+    #[Route('/copy/add', methods: ['GET', 'POST'], name: 'add_copy'), IsGranted('ROLE_USER')]
+    public function add(Request $request): Response
+    {
+        if ($request->getMethod() === 'GET') {
+            return $this->render(
+                'copy/form.html.twig',
+                [
+                    'screenTitle' => $this->translator->trans('menu.add_copy'),
+                    'versions' => $this->versionService->getList()['result'],
+                    'selectedVersion' => $request->get('version', 0),
+                ]
+            );
+        }
+
+        if (false === $this->isCsrfTokenValid('add_copy', $request->get('_csrf_token'))) {
+            $request->getSession()->getFlashBag()->add('alert', 'see.invalid_csrf_token');
+
+            return $this->redirectToRoute('add_copy');
+        }
+
+        $payload = $request->request->all();
+        $payload['status'] = 'In';
+        unset($payload['_csrf_token']);
+
+        $copy = $this->service->add($payload);
+
+        return $this->redirectToRoute('version_details', ['id' => $copy['versionId']]);
+    }
 }
+

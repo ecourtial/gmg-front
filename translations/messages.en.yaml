@@ -34,6 +34,7 @@ menu.edit_version: Edit a version
 menu.add_story: Add a new story
 menu.edit_story: Edit a story
 menu.add_version_on_platform: Add a new game on this platform
+menu.add_copy: Add a new copy
 
 # Hall of game
 hof-criteria-reminder: Here are the criteria of the Hall of fame

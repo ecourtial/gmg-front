@@ -32,7 +32,7 @@ class VersionController extends AbstractController
         $version = $this->service->getById($id);
 
         return $this->render(
-            'version/version-details.html.twig',
+            'version/details.html.twig',
             [
                 'screenTitle' => $this->translator
                     ->trans(
@@ -90,7 +90,7 @@ class VersionController extends AbstractController
         $version = $result['result'][0];
 
         return $this->render(
-            'version/version-details.html.twig',
+            'version/details.html.twig',
             [
                 'screenTitle' => $this->translator
                     ->trans(
