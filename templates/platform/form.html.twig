@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <form method="POST" action="">
+        <fieldset>
+            <div class="form-group">
+                <label for="title">{{ 'platform_name'|trans }}</label>
+                <input type="text" id="title" name="_name" value="{{ platform['name']|default('') }}" class="form-control"/>
+            </div>
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('add_platform') }}" />
+            <button type="submit" id="loginSubmitButton" class="btn btn-primary">
+                <i class="fa fa-sign-in" aria-hidden="true"></i> {{ 'menu.save'|trans }}
+            </button>
+        </fieldset>
+    </form>
+{% endblock %}

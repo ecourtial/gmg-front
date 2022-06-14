@@ -2,7 +2,7 @@
 {% block body %}
     {% if is_granted('ROLE_USER') %}
         <a href="{{ url('add_game') }}">
-            <button type="submit" id="deletePostSubmitButton" class="btn btn-lg btn-block btn-success">
+            <button type="submit" class="btn btn-lg btn-block btn-success">
                 <i class="fa fa-trash" aria-hidden="true"></i>
                 {{ 'menu.add_game'|trans }}
             </button>

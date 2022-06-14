@@ -44,4 +44,9 @@ class GameService extends AbstractService
             ['title' => $title, 'notes' => $notes]
         );
     }
+
+    public function delete(int $gameId): void
+    {
+        parent::removeEntry('game', $gameId);
+    }
 }

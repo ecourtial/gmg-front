@@ -14,8 +14,8 @@ abstract class AbstractService
     {
     }
 
-    public function delete(int $gameId): void
+    protected function removeEntry(string $resourceType, int $resourceId): void
     {
-        $this->clientFactory->getReadWriteClient()->delete('game/' . $gameId);
+        $this->clientFactory->getReadWriteClient()->delete($resourceType . '/' . $resourceId);
     }
 }

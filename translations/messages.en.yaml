@@ -27,6 +27,8 @@ menu.add_game: Add a new game
 menu.save: Save
 menu.edit_game: "Edit a game: <i>%title%</i>"
 menu.edit: Edit
+menu.add_platform: Add a platform
+menu.edit_platform: "Edit a platform: <i>%name%</i>"
 
 # Hall of game
 hof-criteria-reminder: Here are the criteria of the Hall of fame
@@ -45,6 +47,8 @@ entries: entries
 # Platforms
 platforms.title: Platforms (%count% entries)
 games_for_platform_title: Games for the platform <strong>%name%</strong> (%count%)
+platform_has_versions: Cannot delete this platform because it has versions.
+platform_name: Name
 
 # Games
 games_list_title: Games (%count% entries)
