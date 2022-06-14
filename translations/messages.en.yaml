@@ -33,6 +33,7 @@ menu.add_version: Add a new version
 menu.edit_version: Edit a version
 menu.add_story: Add a new story
 menu.edit_story: Edit a story
+menu.add_version_on_platform: Add a new game on this platform
 
 # Hall of game
 hof-criteria-reminder: Here are the criteria of the Hall of fame
@@ -57,8 +58,8 @@ platform_name: Name
 # Games
 games_list_title: Games (%count% entries)
 games_list_subtitle: Games registered in the application, for %count% version(s)
-game_versions_list: Version(s) registered for the game <strong>%title%</strong>
-games_versions_subtitle: There are %resultCount% results. I have a copy for %copyCount% of them.
+game_versions_list: <strong>%title%</strong>
+games_versions_subtitle: There are %resultCount% version(s). I have a copy for %copyCount% of them.
 games_has_versions: Cannot delete this game because it has versions.
 games_title: Title
 games_notes: Notes
@@ -72,7 +73,7 @@ played_it_a_lot: I played at it a lot.
 to_buy: To buy.
 top_game: Is a top game.
 best_game_forever: In the 'best games forever list'
-game.version_details: Details of the game <strong>%title%</strong> on <strong>%platform%</strong>
+game.version_details: <strong>%title%</strong> on <strong>%platform%</strong>
 see_copies: See the copies for this game
 have_copy_for_x_of_them: I have a copy for %count% of them
 best_game_forever_title: Best Games Forever (%count% entries)
