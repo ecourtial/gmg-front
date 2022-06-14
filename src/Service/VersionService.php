@@ -229,4 +229,13 @@ class VersionService extends AbstractService
 
         return  $data;
     }
+
+    public function add(array $data): array
+    {
+        return $this->clientFactory->getReadWriteClient()->post(
+            'version',
+            [],
+            $data
+        );
+    }
 }

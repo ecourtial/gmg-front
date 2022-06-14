@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Service\GameService;
+use App\Service\PlatformService;
 use App\Service\VersionService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,7 +18,9 @@ class VersionController extends AbstractController
 {
     public function __construct(
         private readonly VersionService $service,
-        private readonly TranslatorInterface $translator
+        private readonly TranslatorInterface $translator,
+        private readonly GameService $gameService,
+        private readonly PlatformService $platformService,
     ) {
     }
 
@@ -186,5 +190,35 @@ class VersionController extends AbstractController
             'version/standard-list.html.twig',
             $params
         );
+    }
+
+    #[Route('/version/add', methods: ['GET', 'POST'], name: 'add_version')]
+    public function add(Request $request): Response
+    {
+        if ($request->getMethod() === 'GET') {
+            return $this->render(
+                'version/form.html.twig',
+                [
+                    'screenTitle' => $this->translator->trans('menu.add_version'),
+                    'games' => $this->gameService->getList()['result'],
+                    'platforms' => $this->platformService->getList()['result'],
+                    'selectedPlatform' => $request->get('platform', 0),
+                    'selectedGame' => $request->get('game', 0),
+                ]
+            );
+        }
+
+        if (false === $this->isCsrfTokenValid('add_version', $request->get('_csrf_token'))) {
+            $request->getSession()->getFlashBag()->add('alert', 'see.invalid_csrf_token');
+
+            return $this->redirectToRoute('add_version');
+        }
+
+        $payload = $request->request->all();
+        unset($payload['_csrf_token']);
+        //dd($payload);
+        $id = $this->service->add($payload)['id'];
+
+        return $this->redirectToRoute('version_details', ['id' => $id]);
     }
 }

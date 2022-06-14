@@ -29,6 +29,7 @@ menu.edit_game: "Edit a game: <i>%title%</i>"
 menu.edit: Edit
 menu.add_platform: Add a platform
 menu.edit_platform: "Edit a platform: <i>%name%</i>"
+menu.add_version: Add a new version
 
 # Hall of game
 hof-criteria-reminder: Here are the criteria of the Hall of fame
@@ -124,7 +125,9 @@ see.password_changed_with_success: The password has been changed with success.
 entity.id: Id
 entity.badges: Badges
 entity.platformId: Platform id
+entity.platform: Platform
 entity.gameId: Game id
+entity.game: Game
 entity.versionId: Version id
 entity.releaseYear: Release year
 entity.todoSoloSometimes: To do sometimes in solo mode
