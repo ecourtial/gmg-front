@@ -84,10 +84,10 @@
             </button>
         </fieldset>
     </form>
-    {% if story is defined %}
+    {% if copy is defined %}
         <hr>
-        <form action="{{ url('delete_story', {id: story['id']}) }}" method="post" data-confirmation="true" id="delete-form">
-            <input type="hidden" name="_csrf_token" value="{{ csrf_token('delete_story') }}" />
+        <form action="{{ url('delete_copy', {id: copy['id']}) }}" method="post" data-confirmation="true" id="delete-form">
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('delete_copy') }}" />
             <button type="submit" id="deletePostSubmitButton" class="btn btn-lg btn-block btn-danger" onclick="return areYouSure('{{ 'delete_entry_confirmation'|trans }}');">
                 <i class="fa fa-trash" aria-hidden="true"></i>
                 {{ 'delete_action'|trans }}

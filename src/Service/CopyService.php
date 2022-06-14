@@ -59,8 +59,8 @@ class CopyService extends AbstractService
         );
     }
 
-    public function delete(int $versionId): void
+    public function delete(int $copyId): void
     {
-        parent::removeEntry('copy', $versionId);
+        parent::removeEntry('copy', $copyId);
     }
 }

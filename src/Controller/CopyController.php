@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Exception\GenericApiException;
 use App\Service\CopyService;
 use App\Service\VersionService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -106,5 +107,31 @@ class CopyController extends AbstractController
         return $this->redirectToRoute('copies_per_version', ['versionId' => $copy['versionId']]);
     }
 
+    #[Route('/copy/delete/{id<\d+>}', methods: ['POST'], name: 'delete_copy'), IsGranted('ROLE_USER')]
+    public function delete(Request $request, int $id): Response
+    {
+        $copy = $this->service->getById($id);
+
+        if (false === $this->isCsrfTokenValid('delete_copy', $request->get('_csrf_token'))) {
+            $request->getSession()->getFlashBag()->add('alert', 'see.invalid_csrf_token');
+
+            return $this->redirectToRoute('copies_per_version', ['versionId' => $copy['versionId']]);
+        }
+
+        try {
+            $this->service->delete($id);
+            $request->getSession()->getFlashBag()->add('alert', 'entry_deleted_with_success');
+        } catch (GenericApiException $exception) {
+            if ($exception->getCode() === 404) {
+                // Ignore, not a problem because someone might have done it
+            } elseif ($exception->getCode() === 400 && $exception->getApiReturnCode() === 9) {
+                $request->getSession()->getFlashBag()->add('alert', 'version_has_children');
+
+                return $this->redirectToRoute('copies_per_version', ['versionId' => $copy['versionId']]);
+            }
+        }
+
+        return $this->redirectToRoute('copies_per_version', ['versionId' => $copy['versionId']]);
+    }
 }
 
