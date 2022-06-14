@@ -73,5 +73,38 @@ class CopyController extends AbstractController
 
         return $this->redirectToRoute('version_details', ['id' => $copy['versionId']]);
     }
+
+    #[Route('/copy/edit/{id<\d+>}', methods: ['GET', 'POST'], name: 'edit_copy'), IsGranted('ROLE_USER')]
+    public function edit(Request $request, int $id): Response
+    {
+        $copy = $this->service->getById($id);
+
+        if ($request->getMethod() === 'GET') {
+            return $this->render(
+                'copy/form.html.twig',
+                [
+                    'screenTitle' => $this->translator->trans('menu.edit_copy'),
+                    'versions' => $this->versionService->getList()['result'],
+                    'selectedVersion' => $copy['versionId'],
+                    'copy' => $copy,
+                ]
+            );
+        }
+
+        if (false === $this->isCsrfTokenValid('add_copy', $request->get('_csrf_token'))) {
+            $request->getSession()->getFlashBag()->add('alert', 'see.invalid_csrf_token');
+
+            return $this->redirectToRoute('copies_per_version', ['versionId' => $copy['versionId']]);
+        }
+
+        $payload = $request->request->all();
+        $payload['status'] = 'In';
+        unset($payload['_csrf_token']);
+
+        $this->service->update($id, $payload)['id'];
+
+        return $this->redirectToRoute('copies_per_version', ['versionId' => $copy['versionId']]);
+    }
+
 }
 

@@ -27,6 +27,13 @@ class CopyService extends AbstractService
         'Virtual',
     ];
 
+    public function getById(int $copyId): array
+    {
+        return $this->clientFactory
+            ->getReadOnlyClient()
+            ->get("copy/{$copyId}");
+    }
+
     public function getByVersion(int $versionId): array
     {
         return $this->clientFactory

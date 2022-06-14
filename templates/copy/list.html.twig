@@ -15,6 +15,7 @@
                 <th scope="col">{% trans %} entity.transactionCount {% endtrans %}</th>
                 <th scope="col">{% trans %} entity.status {% endtrans %}</th>
                 <th scope="col">{% trans %} entity.comments {% endtrans %}</th>
+                <th scope="col">{% trans %} menu.actions {% endtrans %}</th>
             </tr>
         </thead>
         <tbody>
@@ -32,6 +33,11 @@
                 <td>{{ copy['transactionCount'] }}</td>
                 <td>{{ copy['status'] }}</td>
                 <td>{{ copy['comments'] }}</td>
+                <td>
+                    {% if is_granted('ROLE_USER') %}
+                        <a href="{{ url('edit_copy', {id: copy['id']}) }}">{{ 'menu.edit'|trans }}</a>
+                    {% endif %}
+                </td>
             </tr>
         {% endfor %}
         </tbody>
