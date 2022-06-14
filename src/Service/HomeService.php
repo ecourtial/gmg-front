@@ -40,6 +40,11 @@ class HomeService extends AbstractService
         return $responses;
     }
 
+    protected function getResourceType(): string
+    {
+        return 'home';
+    }
+
     private function orderGames(array $games): array
     {
         $data = [];

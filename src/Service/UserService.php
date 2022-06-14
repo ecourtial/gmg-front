@@ -8,6 +8,11 @@ use App\Security\User;
 
 class UserService extends AbstractService
 {
+    protected function getResourceType(): string
+    {
+        return 'user';
+    }
+
     public function getByUsername(string $username): User
     {
         $result = $this->clientFactory

@@ -31,4 +31,9 @@ class TransactionService extends AbstractService
 
         return $result;
     }
+
+    protected function getResourceType(): string
+    {
+        return 'transaction';
+    }
 }

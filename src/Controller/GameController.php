@@ -48,7 +48,7 @@ class GameController extends AbstractController
     {
         $data = $this->versionService->getByGame($id);
         $versions = $data['versions'];
-        $game = $this->service->get($id);
+        $game = $this->service->getById($id);
 
         return $this->render(
             'game/details.html.twig',
@@ -113,7 +113,9 @@ class GameController extends AbstractController
             return $this->redirectToRoute('add_game');
         }
 
-        $id = $this->service->add($request->get('_title'), $request->get('_notes'))['id'];
+        $payload = $request->request->all();
+        unset($payload['_csrf_token']);
+        $id = $this->service->add($payload)['id'];
 
         return $this->redirectToRoute('game_details', ['id' => $id]);
     }
@@ -121,7 +123,7 @@ class GameController extends AbstractController
     #[Route('/game/edit/{id<\d+>}', methods: ['GET', 'POST'], name: 'edit_game'), IsGranted('ROLE_USER')]
     public function edit(Request $request, int $id): Response
     {
-        $game = $this->service->get($id);
+        $game = $this->service->getById($id);
 
         if ($request->getMethod() === 'GET') {
             return $this->render(
@@ -139,7 +141,10 @@ class GameController extends AbstractController
             return $this->redirectToRoute('edit_game', ['id' => $id]);
         }
 
-        $id = $this->service->update($id, $request->get('_title'), $request->get('_notes'))['id'];
+        $payload = $request->request->all();
+        unset($payload['_csrf_token']);
+
+        $this->service->update($id, $payload)['id'];
 
         return $this->redirectToRoute('game_details', ['id' => $id]);
     }

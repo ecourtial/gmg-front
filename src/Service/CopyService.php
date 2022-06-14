@@ -27,13 +27,6 @@ class CopyService extends AbstractService
         'Virtual',
     ];
 
-    public function getById(int $copyId): array
-    {
-        return $this->clientFactory
-            ->getReadOnlyClient()
-            ->get("copy/{$copyId}");
-    }
-
     public function getByVersion(int $versionId): array
     {
         return $this->clientFactory
@@ -41,26 +34,8 @@ class CopyService extends AbstractService
             ->get("copies?versionId[]={$versionId}&limit=" . self::MAX_RESULT_COUNT);
     }
 
-    public function add(array $data): array
+    protected function getResourceType(): string
     {
-        return $this->clientFactory->getReadWriteClient()->post(
-            'copy',
-            [],
-            $data
-        );
-    }
-
-    public function update(int $id, array $data): array
-    {
-        return $this->clientFactory->getReadWriteClient()->patch(
-            'copy/' . $id,
-            [],
-            $data
-        );
-    }
-
-    public function delete(int $copyId): void
-    {
-        parent::removeEntry('copy', $copyId);
+        return 'copy';
     }
 }

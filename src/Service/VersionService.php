@@ -65,13 +65,6 @@ class VersionService extends AbstractService
         ],
     ];
 
-    public function getById(int $gameId): array
-    {
-        return $this->clientFactory
-            ->getReadOnlyClient()
-            ->get("version/{$gameId}");
-    }
-
     public function getList(): array
     {
         $versions = $this->clientFactory
@@ -248,26 +241,8 @@ class VersionService extends AbstractService
         return  $data;
     }
 
-    public function add(array $data): array
+    protected function getResourceType(): string
     {
-        return $this->clientFactory->getReadWriteClient()->post(
-            'version',
-            [],
-            $data
-        );
-    }
-
-    public function update(int $id, array $data): array
-    {
-        return $this->clientFactory->getReadWriteClient()->patch(
-            'version/' . $id,
-            [],
-            $data
-        );
-    }
-
-    public function delete(int $versionId): void
-    {
-        parent::removeEntry('version', $versionId);
+        return 'version';
     }
 }

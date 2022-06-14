@@ -4,11 +4,11 @@
     <fieldset>
         <div class="form-group">
             <label for="title">{{ 'games_title'|trans }}</label>
-            <input type="text" id="title" name="_title" value="{{ game['title']|default('') }}" class="form-control"/>
+            <input type="text" id="title" name="title" value="{{ game['title']|default('') }}" class="form-control"/>
         </div>
         <div class="form-group">
             <label for="notes">{{ 'games_notes'|trans }}</label>
-            <textarea id="notes" name="_notes" class="form-control">{{ game['notes']|default('') }}</textarea>
+            <textarea id="notes" name="notes" class="form-control">{{ game['notes']|default('') }}</textarea>
         </div>
         <input type="hidden" name="_csrf_token" value="{{ csrf_token('add_game') }}" />
         <button type="submit" id="loginSubmitButton" class="btn btn-primary">

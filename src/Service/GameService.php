@@ -6,11 +6,6 @@ namespace App\Service;
 
 class GameService extends AbstractService
 {
-    public function get(int $id): array
-    {
-        return $this->clientFactory->getReadOnlyClient()->get("game/{$id}");
-    }
-
     public function getList(): array
     {
         $data = $this->clientFactory
@@ -27,26 +22,8 @@ class GameService extends AbstractService
         return $data;
     }
 
-    public function add(string $title, string $notes): array
+    protected function getResourceType(): string
     {
-        return $this->clientFactory->getReadWriteClient()->post(
-            'game',
-            [],
-            ['title' => $title, 'notes' => $notes]
-        );
-    }
-
-    public function update(int $id, string $title, string $notes): array
-    {
-        return $this->clientFactory->getReadWriteClient()->patch(
-            'game/' . $id,
-            [],
-            ['title' => $title, 'notes' => $notes]
-        );
-    }
-
-    public function delete(int $gameId): void
-    {
-        parent::removeEntry('game', $gameId);
+        return 'game';
     }
 }

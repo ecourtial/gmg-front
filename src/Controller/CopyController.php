@@ -134,4 +134,3 @@ class CopyController extends AbstractController
         return $this->redirectToRoute('copies_per_version', ['versionId' => $copy['versionId']]);
     }
 }
-

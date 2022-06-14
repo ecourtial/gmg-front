@@ -42,7 +42,7 @@ class PlatformController extends AbstractController
     {
         $data = $this->versionService->getByPlatform($id);
         $versions = $data['versions'];
-        $platform = $this->service->get($id);
+        $platform = $this->service->getById($id);
 
         return $this->render(
             'platform/details.html.twig',
@@ -104,7 +104,10 @@ class PlatformController extends AbstractController
             return $this->redirectToRoute('add_platform');
         }
 
-        $id = $this->service->add($request->get('_name'))['id'];
+        $payload = $request->request->all();
+        unset($payload['_csrf_token']);
+
+        $id = $this->service->add($payload)['id'];
 
         return $this->redirectToRoute('platform_details', ['id' => $id]);
     }
@@ -112,7 +115,7 @@ class PlatformController extends AbstractController
     #[Route('/platform/edit/{id<\d+>}', methods: ['GET', 'POST'], name: 'edit_platform'), IsGranted('ROLE_USER')]
     public function edit(Request $request, int $id): Response
     {
-        $platform = $this->service->get($id);
+        $platform = $this->service->getById($id);
 
         if ($request->getMethod() === 'GET') {
             return $this->render(
@@ -130,7 +133,10 @@ class PlatformController extends AbstractController
             return $this->redirectToRoute('edit_platform', ['id' => $id]);
         }
 
-        $id = $this->service->update($id, $request->get('_name'))['id'];
+        $payload = $request->request->all();
+        unset($payload['_csrf_token']);
+
+        $this->service->update($id, $payload)['id'];
 
         return $this->redirectToRoute('platform_details', ['id' => $id]);
     }

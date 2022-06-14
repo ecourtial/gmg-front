@@ -14,8 +14,35 @@ abstract class AbstractService
     {
     }
 
-    protected function removeEntry(string $resourceType, int $resourceId): void
+    abstract protected function getResourceType(): string;
+
+    public function getById(int $entityId): array
     {
-        $this->clientFactory->getReadWriteClient()->delete($resourceType . '/' . $resourceId);
+        return $this->clientFactory
+            ->getReadOnlyClient()
+            ->get("{$this->getResourceType()}/{$entityId}");
+    }
+
+    public function add(array $data): array
+    {
+        return $this->clientFactory->getReadWriteClient()->post(
+            $this->getResourceType(),
+            [],
+            $data
+        );
+    }
+
+    public function update(int $entityId, array $data): array
+    {
+        return $this->clientFactory->getReadWriteClient()->patch(
+            "{$this->getResourceType()}/{$entityId}",
+            [],
+            $data
+        );
+    }
+
+    public function delete(int $entityId): void
+    {
+        $this->clientFactory->getReadWriteClient()->delete($this->getResourceType() . '/' . $entityId);
     }
 }
