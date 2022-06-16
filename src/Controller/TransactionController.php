@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Exception\GenericApiException;
 use App\Service\CopyService;
 use App\Service\TransactionService;
 use App\Service\VersionService;
@@ -94,6 +95,27 @@ class TransactionController extends AbstractController
         unset($payload['_csrf_token']);
 
         $this->service->add($payload);
+
+        return $this->redirectToRoute('transaction_list');
+    }
+
+    #[Route('/transaction/delete/{id<\d+>}', methods: ['POST'], name: 'delete_transaction'), IsGranted('ROLE_USER')]
+    public function delete(Request $request, int $id): Response
+    {
+        if (false === $this->isCsrfTokenValid('delete_transaction', $request->get('_csrf_token'))) {
+            $request->getSession()->getFlashBag()->add('alert', 'see.invalid_csrf_token');
+
+            return $this->redirectToRoute('transaction_list');
+        }
+
+        try {
+            $this->service->delete($id);
+            $request->getSession()->getFlashBag()->add('alert', 'entry_deleted_with_success');
+        } catch (GenericApiException $exception) {
+            if ($exception->getCode() === 404) {
+                // Ignore, not a problem because someone might have done it
+            }
+        }
 
         return $this->redirectToRoute('transaction_list');
     }
