@@ -148,7 +148,7 @@ class VersionService extends AbstractService
         $result = $this->clientFactory
             ->getReadOnlyClient()
             ->get(
-                "versions?{$filter1}[]=1&orderBy[]={$filter2}&orderBy[]=gameTitle-asc&limit=" . self::MAX_RESULT_COUNT
+                "versions?{$filter1}[]=1&orderBy[]={$filter2}-asc&orderBy[]=gameTitle-asc&limit=" . self::MAX_RESULT_COUNT
             );
 
         $orderedResult = [
