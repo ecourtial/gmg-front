@@ -37,6 +37,7 @@ menu.add_version_on_platform: Add a new game on this platform
 menu.add_copy: Add a new copy
 menu.edit_copy: Edit a copy
 menu.actions: Actions
+menu.add_transaction: Add a transaction
 
 # Hall of game
 hof-criteria-reminder: Here are the criteria of the Hall of fame
@@ -112,7 +113,7 @@ search_results_subtitle: For the query '%query%'
 entry_deleted_with_success: Entry deleted with success.
 delete_entry_confirmation: Are you sure you want to delete this entry?
 delete_action: Delete this entry
-version_has_children: Cannot delete this version because it has related entries (stories or copies).
+version_has_children: Cannot delete this version because it has related entries (stories, copies or transactions).
 
 # Various
 see.games: See games
@@ -129,6 +130,10 @@ see.update: Update
 see.invalid_csrf_token: Invalid CSRF token.
 see.password_changed_with_success: The password has been changed with success.
 see.year: Year
+see.month: Month
+see.day: Day
+see.none: None
+see.version: See the version
 
 # Generic fields for entities
 entity.id: Id
@@ -178,7 +183,13 @@ entity.transaction_in: In
 entity.transaction_out: Out
 
 # Copies
+copy: copy
 copies_for_version_title: Copies for the version <strong>%title%</strong> on <strong>%platform%</strong> (%count%)
+
+# Transactions
+transaction.no_version_id_and_no_copy_id: You need to provide the version id and/or the copy id!
+transaction.bought: Bought
+transaction.sold: Sold
 
 # Stories
 story_position: Position in the year

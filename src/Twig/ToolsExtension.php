@@ -10,19 +10,19 @@ use Twig\TwigFunction;
 
 class ToolsExtension extends AbstractExtension
 {
-    private const MONTHS = [
-        'month.january',
-        'month.february',
-        'month.march',
-        'month.april',
-        'month.may',
-        'month.june',
-        'month.july',
-        'month.august',
-        'month.september',
-        'month.october',
-        'month.november',
-        'month.december',
+    public const MONTHS = [
+        1 => 'month.january',
+        2 => 'month.february',
+        3 => 'month.march',
+        4 => 'month.april',
+        5 => 'month.may',
+        6 => 'month.june',
+        7 => 'month.july',
+        8 => 'month.august',
+        9 => 'month.september',
+        10 => 'month.october',
+        11 => 'month.november',
+        12 => 'month.december',
     ];
 
     public function __construct(private readonly TranslatorInterface $translator)
@@ -30,7 +30,7 @@ class ToolsExtension extends AbstractExtension
     }
 
 
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new TwigFunction('get_yes_no_key', [$this, 'getYesNoKey']),

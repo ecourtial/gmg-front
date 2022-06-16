@@ -9,6 +9,7 @@
                     <li>
                         <img src="{{ get_transaction_type_badge(transaction['type']) }}"/>
                         {{ transaction['id'] }} - {{ transaction['gameTitle'] }} ({{ transaction['platformName'] }})
+                        - <a href="{{ url('version_details', {id: transaction['versionId']}) }}">{{ 'see.version'|trans }}</a>
                     </li>
                 {% endfor %}
             </ul>

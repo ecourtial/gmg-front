@@ -36,6 +36,7 @@
                 <td>
                     {% if is_granted('ROLE_USER') %}
                         <a href="{{ url('edit_copy', {id: copy['id']}) }}">{{ 'menu.edit'|trans }}</a>
+                         - <a href="{{ url('add_transaction_form')}}?copy={{ copy['id'] }}">{{ 'menu.add_transaction'|trans }}</a>
                     {% endif %}
                 </td>
             </tr>
