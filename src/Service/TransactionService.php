@@ -9,7 +9,7 @@ class TransactionService extends AbstractService
     public function getList(): array
     {
         $data = $this->clientFactory
-            ->getReadOnlyClient()
+            ->getAnonymousClient()
             ->get("transactions?orderBy[]=year-asc&orderBy[]=month-asc&orderBy[]=day-asc&limit=" . self::MAX_RESULT_COUNT);
 
         $result = [

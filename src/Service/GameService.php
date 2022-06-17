@@ -9,7 +9,7 @@ class GameService extends AbstractService
     public function getList(): array
     {
         $data = $this->clientFactory
-            ->getReadOnlyClient()
+            ->getAnonymousClient()
             ->get("games?orderBy[]=title-asc&limit=" . self::MAX_RESULT_COUNT);
 
         $count = 0;

@@ -9,17 +9,17 @@ class HomeService extends AbstractService
     public function getHomeData(): array
     {
         $requests = [
-            'gameCount' => $this->clientFactory->getReadOnlyClient()->get('games?page=1&limit=1'),
-            'versionCount' => $this->clientFactory->getReadOnlyClient()->get('versions?page=1&limit=1'),
-            'versionFinishedCount' => $this->clientFactory->getReadOnlyClient()->get('versions?finished[]=1&page=1&limit=1'),
-            'ownedGameCount' => $this->clientFactory->getReadOnlyClient()->get('versions?copyCount[]=neq-0&limit=1'),
-            'platformCount' => $this->clientFactory->getReadOnlyClient()->get('platforms?page=1&limit=1'),
-            'toDoCount' => $this->clientFactory->getReadOnlyClient()->get('versions?toDo[]=1&page=1&limit=1'),
-            'toWatchBackgroundCount' => $this->clientFactory->getReadOnlyClient()->get('versions?toWatchBackground[]=1&page=1&limit=1'),
-            'toWatchSeriousCount' => $this->clientFactory->getReadOnlyClient()->get('versions?toWatchSerious[]=1&page=1&limit=1'),
+            'gameCount' => $this->clientFactory->getAnonymousClient()->get('games?page=1&limit=1'),
+            'versionCount' => $this->clientFactory->getAnonymousClient()->get('versions?page=1&limit=1'),
+            'versionFinishedCount' => $this->clientFactory->getAnonymousClient()->get('versions?finished[]=1&page=1&limit=1'),
+            'ownedGameCount' => $this->clientFactory->getAnonymousClient()->get('versions?copyCount[]=neq-0&limit=1'),
+            'platformCount' => $this->clientFactory->getAnonymousClient()->get('platforms?page=1&limit=1'),
+            'toDoCount' => $this->clientFactory->getAnonymousClient()->get('versions?toDo[]=1&page=1&limit=1'),
+            'toWatchBackgroundCount' => $this->clientFactory->getAnonymousClient()->get('versions?toWatchBackground[]=1&page=1&limit=1'),
+            'toWatchSeriousCount' => $this->clientFactory->getAnonymousClient()->get('versions?toWatchSerious[]=1&page=1&limit=1'),
             'hallOfFameGames' => $this
                 ->clientFactory
-                ->getReadOnlyClient()
+                ->getAnonymousClient()
                 ->get(
                     'versions?hallOfFame[]=1&hallOfFameYear[]=neq-0&hallOfFamePosition[]=neq-0'
                         . '&orderBy[]=hallOfFameYear-asc&orderBy[]=hallOfFamePosition-asc&limit=' . self::MAX_RESULT_COUNT

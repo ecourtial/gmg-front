@@ -9,7 +9,7 @@ class StoryService extends AbstractService
     public function getList(): array
     {
         $data = $this->clientFactory
-            ->getReadOnlyClient()
+            ->getAnonymousClient()
             ->get("stories?orderBy[]=year-asc&orderBy[]=position-asc&limit=" . self::MAX_RESULT_COUNT);
 
         $result = [

@@ -13,34 +13,33 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 class ClientFactory
 {
-    private ?ReadOnlyClient $readOnlyClient = null;
-    private ?ReadWriteClient $readWriteClient = null;
+    private ?AnonymousClient $anonymousClient = null;
+    private ?AuthenticatedClient $authenticatedClient = null;
 
     public function __construct(
         private readonly string $backendUrl,
-        private readonly string $readOnlyToken,
         private readonly RequestStack $request
     ) {
     }
 
-    public function getReadOnlyClient(): ReadOnlyClient
+    public function getAnonymousClient(): AnonymousClient
     {
-        if (false === $this->readOnlyClient instanceof ReadOnlyClient) {
-            $this->readOnlyClient = new ReadOnlyClient($this->backendUrl, $this->readOnlyToken);
+        if (false === $this->anonymousClient instanceof AnonymousClient) {
+            $this->anonymousClient = new AnonymousClient($this->backendUrl);
         }
 
-        return $this->readOnlyClient;
+        return $this->anonymousClient;
     }
 
-    public function getReadWriteClient(): ReadWriteClient
+    public function getAuthenticatedClient(): AuthenticatedClient
     {
-        if (false === $this->readWriteClient instanceof ReadWriteClient) {
-            $this->readWriteClient = new ReadWriteClient(
+        if (false === $this->authenticatedClient instanceof AuthenticatedClient) {
+            $this->authenticatedClient = new AuthenticatedClient(
                 $this->backendUrl,
                 $this->request->getSession()->get('apiToken')
             );
         }
 
-        return $this->readWriteClient;
+        return $this->authenticatedClient;
     }
 }

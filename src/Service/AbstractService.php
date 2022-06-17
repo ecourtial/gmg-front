@@ -19,13 +19,13 @@ abstract class AbstractService
     public function getById(int $entityId): array
     {
         return $this->clientFactory
-            ->getReadOnlyClient()
+            ->getAnonymousClient()
             ->get("{$this->getResourceType()}/{$entityId}");
     }
 
     public function add(array $data): array
     {
-        return $this->clientFactory->getReadWriteClient()->post(
+        return $this->clientFactory->getAuthenticatedClient()->post(
             $this->getResourceType(),
             [],
             $data
@@ -34,7 +34,7 @@ abstract class AbstractService
 
     public function update(int $entityId, array $data): array
     {
-        return $this->clientFactory->getReadWriteClient()->patch(
+        return $this->clientFactory->getAuthenticatedClient()->patch(
             "{$this->getResourceType()}/{$entityId}",
             [],
             $data
@@ -43,6 +43,6 @@ abstract class AbstractService
 
     public function delete(int $entityId): void
     {
-        $this->clientFactory->getReadWriteClient()->delete($this->getResourceType() . '/' . $entityId);
+        $this->clientFactory->getAuthenticatedClient()->delete($this->getResourceType() . '/' . $entityId);
     }
 }

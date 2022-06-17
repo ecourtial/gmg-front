@@ -16,7 +16,7 @@ class UserService extends AbstractService
     public function getByUsername(string $username): User
     {
         $result = $this->clientFactory
-            ->getReadOnlyClient()
+            ->getAuthenticatedClient()
             ->get("user?filter=username&value={$username}");
 
         return new User($result['id'], $result['username'], $result['email'], $result['active']);
@@ -24,7 +24,7 @@ class UserService extends AbstractService
 
     public function getAuthenticatedUser(string $username, string $password): User
     {
-        $result = $this->clientFactory->getReadOnlyClient()->authenticateUser($username, $password);
+        $result = $this->clientFactory->getAnonymousClient()->authenticateUser($username, $password);
 
         return new User(
             $result['id'],
@@ -40,7 +40,7 @@ class UserService extends AbstractService
     {
         $this->getAuthenticatedUser($username, $oldPassword);
 
-        $this->clientFactory->getReadWriteClient()->patch(
+        $this->clientFactory->getAuthenticatedClient()->patch(
             "user/{$userId}",
             [],
             ['password' => $newPassword]

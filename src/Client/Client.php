@@ -10,40 +10,21 @@ use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
-class ReadOnlyClient
+abstract class Client
 {
     protected HttpClientInterface $client;
 
-    public function __construct(private readonly string $backendUrl, private readonly string $readOnlyToken)
+    public function __construct(private readonly string $backendUrl)
     {
         $this->client = HttpClient::create();
     }
 
-    public function get(string $query, array $headers = []): array
-    {
-        return $this->execute('GET', $query, true, $headers);
-    }
-
-    public function authenticateUser(string $username, string $password): array
-    {
-        $customHeaders = ['Authorization' => 'Basic ' . \base64_encode("{$username}:{$password}")];
-
-        return $this->execute('POST', 'user/authenticate', false, $customHeaders);
-    }
-
-    protected function execute(string $method, string $query, bool $auth = true, $headers = [], $payload = []): array
+    protected function execute(string $method, string $query, $headers = [], $payload = []): array
     {
         $headers = \array_merge(
             $headers,
             ['Content-Type' => 'application/json']
         );
-
-        if ($auth) {
-            $headers = \array_merge(
-                $headers,
-                ['Authorization' => 'token ' . $this->readOnlyToken]
-            );
-        }
 
         try {
             return \json_decode(
@@ -55,7 +36,7 @@ class ReadOnlyClient
                 true
             );
         } catch (
-            ClientExceptionInterface|TransportExceptionInterface $e
+        ClientExceptionInterface|TransportExceptionInterface $e
         ) {
             throw new GenericApiException($e);
         }

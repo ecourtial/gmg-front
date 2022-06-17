@@ -9,7 +9,7 @@ class PlatformService extends AbstractService
     public function getList(): array
     {
         return $this->clientFactory
-            ->getReadOnlyClient()
+            ->getAnonymousClient()
             ->get('platforms?orderBy[]=name-asc&limit=' . self::MAX_RESULT_COUNT);
     }
 
