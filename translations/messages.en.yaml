@@ -39,7 +39,12 @@ menu.edit_copy: Edit a copy
 menu.actions: Actions
 menu.add_transaction: Add a transaction
 
+# Home
+home_title: Give me a game (GMG)
+some_figures: Some figures
+
 # Hall of game
+my_hall_of_fame: My all of fame
 hof-criteria-reminder: Here are the criteria of the Hall of fame
 hof-desc1: the year is not the one when the game was released. It can be the one when the player played at this game for the first time, or even later when it played a lot to it, enough to make it enter the Hall of Fame;
 hof-desc2: the game must have had an impact on the player (scenario, content, graphics, context...);
@@ -134,6 +139,7 @@ see.month: Month
 see.day: Day
 see.none: None
 see.version: See the version
+see.criteria: Criteria
 
 # Generic fields for entities
 entity.id: Id
