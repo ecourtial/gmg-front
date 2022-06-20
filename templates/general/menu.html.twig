@@ -23,29 +23,18 @@
                         <li><a class="dropdown-item" href="{{ path('version_random', {filter: 'multiplayer_random'}) }}">{{ 'menu.one_random_multi'|trans }}</a></li>
                     </ul>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ path('versions_filtered_list', {filter: 'bgf'}) }}">{{ 'menu.bgf'|trans }}</a>
-                </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        {{ 'menu.recurring'|trans }}
+                        {{ 'menu.filters'|trans }}
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="{{ path('versions_filtered_list', {filter: 'solo_recurring'}) }}">{{ 'see.solo'|trans }}</a></li>
-                        <li><a class="dropdown-item" href="{{ path('versions_filtered_list', {filter: 'multi_recurring'}) }}">{{ 'see.multiplayer'|trans }}</a></li>
+                        <li><a class="dropdown-item" href="{{ url('versions_originals') }}">{{ 'menu.originals'|trans }}</a></li>
+                        <li><a class="dropdown-item" href="{{ path('versions_filtered_list', {filter: 'bgf'}) }}">{{ 'menu.bgf'|trans }}</a></li>
+                        <li><a class="dropdown-item" href="{{ path('versions_filtered_list', {filter: 'solo_recurring'}) }}">{{ 'menu.solo_recurring'|trans }}</a></li>
+                        <li><a class="dropdown-item" href="{{ path('versions_filtered_list', {filter: 'multi_recurring'}) }}">{{ 'menu.multi_recurring'|trans }}</a></li>
+                        <li><a class="dropdown-item" href="{{ path('versions_filtered_list', {filter: 'sometimes_solo'}) }}">{{ 'menu.solo_sometimes'|trans }}</a></li>
+                        <li><a class="dropdown-item" href="{{ path('versions_filtered_list', {filter: 'multi_sometimes'}) }}">{{ 'menu.multi_sometimes'|trans }}</a></li>
                     </ul>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        {{ 'menu.sometimes'|trans }}
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="{{ path('versions_filtered_list', {filter: 'sometimes_solo'}) }}">{{ 'see.solo'|trans }}</a></li>
-                        <li><a class="dropdown-item" href="{{ path('versions_filtered_list', {filter: 'multi_sometimes'}) }}">{{ 'see.multiplayer'|trans }}</a></li>
-                    </ul>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url('versions_originals') }}">{{ 'menu.originals'|trans }}</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">

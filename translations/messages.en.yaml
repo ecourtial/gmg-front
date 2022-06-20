@@ -4,6 +4,10 @@ greetings_collection: Greetings. Below are a few figures about my collection.
 menu.platforms: Platforms
 menu.one_random_solo: One random in solo
 menu.one_random_multi: One random in multiplayer
+menu.solo_sometimes: To play in solo sometimes
+menu.solo_recurring: To play in solo often
+menu.multi_sometimes: To play in multiplayer sometimes
+menu.multi_recurring: To play in multiplayer often
 menu.bgf: Best Games Forever
 menu.recurring: Recurring
 menu.sometimes: Sometimes
@@ -38,6 +42,7 @@ menu.add_copy: Add a new copy
 menu.edit_copy: Edit a copy
 menu.actions: Actions
 menu.add_transaction: Add a transaction
+menu.filters: Filters
 
 # Home
 home_title: Give me a game (GMG)
