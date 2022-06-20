@@ -181,7 +181,7 @@ class VersionService extends AbstractService
     {
         $copies = $this->clientFactory
             ->getAnonymousClient()
-            ->get("copies?original[]=1&limit=" . self::MAX_RESULT_COUNT);
+            ->get("copies?original[]=1&orderBy[]=gameTitle-asc&limit=" . self::MAX_RESULT_COUNT);
 
         $versionIds = [];
         foreach ($copies['result'] as $copy) {
@@ -201,7 +201,7 @@ class VersionService extends AbstractService
 
         return $this->clientFactory
             ->getAnonymousClient()
-            ->get("versions?orderBy[]=gameTitle&{$query}");
+            ->get("versions?orderBy[]=gameTitle-asc&{$query}");
     }
 
     public function getRandom(string $filter): array
