@@ -34,6 +34,26 @@ class CopyService extends AbstractService
             ->get("copies?versionId[]={$versionId}&limit=" . self::MAX_RESULT_COUNT);
     }
 
+    public function getBigBoxesCopiesOnPC(): array
+    {
+        $result = $this->clientFactory
+            ->getAnonymousClient()
+            ->get("copies?orderBy[]=gameTitle-asc&platformName[]=PC&boxType[]=Big box&limit=" . self::MAX_RESULT_COUNT);
+
+        // Remove duplicate
+        $filteredResult = [];
+        foreach ($result['result'] as $entry) {
+            if (false === \array_key_exists($entry['versionId'], $filteredResult)) {
+                $filteredResult[$entry['versionId']] = $entry;
+            }
+        }
+
+        $result['result'] = $filteredResult;
+        $result['totalResultCount'] = \count($filteredResult);
+
+        return $result;
+    }
+
     protected function getResourceType(): string
     {
         return 'copy';

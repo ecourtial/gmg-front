@@ -43,6 +43,7 @@ menu.edit_copy: Edit a copy
 menu.actions: Actions
 menu.add_transaction: Add a transaction
 menu.filters: Filters
+menu.PC_big_boxes: Big boxes on PC
 
 # Home
 home_title: Give me a game (GMG)
@@ -126,6 +127,8 @@ delete_action: Delete this entry
 version_has_children: Cannot delete this version because it has related entries (stories, copies or transactions).
 
 # Various
+see.game: Game
+see.platform: Platform
 see.games: See games
 see.details: Details
 see.not_available: Not available
@@ -196,6 +199,7 @@ entity.transaction_out: Out
 # Copies
 copy: copy
 copies_for_version_title: Copies for the version <strong>%title%</strong> on <strong>%platform%</strong> (%count%)
+copies_big_boxes_on_PC: PC games with a big box copy (%count%)
 
 # Transactions
 transaction.no_version_id_and_no_copy_id: You need to provide the version id and/or the copy id!

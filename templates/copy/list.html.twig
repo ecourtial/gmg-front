@@ -4,6 +4,15 @@
         <thead>
             <tr>
                 <th scope="col">{% trans %} entity.id {% endtrans %}</th>
+
+                {% if displayGameTitle is defined and displayGameTitle == true %}
+                    <th scope="col">{% trans %} see.game {% endtrans %}</th>
+                {% endif %}
+
+                {% if displayPlatformName is defined and displayPlatformName == true %}
+                    <th scope="col">{% trans %} see.platform {% endtrans %}</th>
+                {% endif %}
+
                 <th scope="col">{% trans %} entity.versionId {% endtrans %}</th>
                 <th scope="col">{% trans %} entity.type {% endtrans %}</th>
                 <th scope="col">{% trans %} entity.original {% endtrans %}</th>
@@ -22,6 +31,15 @@
         {% for copy in copies %}
             <tr>
                 <th scope="row">{{ copy['id'] }}</th>
+
+                {% if displayGameTitle is defined and displayGameTitle == true %}
+                    <td>{{ copy['gameTitle'] }}</td>
+                {% endif %}
+
+                {% if displayPlatformName is defined and displayPlatformName == true %}
+                    <td>{{ copy['platformName'] }}</td>
+                {% endif %}
+
                 <td>{{ copy['versionId'] }}</td>
                 <td>{{ copy['type'] }}</td>
                 <td><img src="{{ get_status_badge(copy['original']) }}"/></td>
