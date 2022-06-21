@@ -201,7 +201,7 @@ class VersionService extends AbstractService
 
         return $this->clientFactory
             ->getAnonymousClient()
-            ->get("versions?orderBy[]=gameTitle-asc&{$query}");
+            ->get("versions?orderBy[]=gameTitle-asc&{$query}&limit=" . self::MAX_RESULT_COUNT);
     }
 
     public function getRandom(string $filter): array
