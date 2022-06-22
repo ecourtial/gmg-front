@@ -7,18 +7,19 @@ namespace App\Service;
 class CopyService extends AbstractService
 {
     public const BOX_TYPES = [
-        'Big box',
-        'DVD',
-        'CD',
         'None',
+        'Big box',
+        'Cartridge box',
+        'Other',
     ];
 
     public const CASING_TYPES = [
-        'DVD',
-        'CD',
+        'DVD-like',
+        'CD-like',
         'Cardboard sleeve',
         'Paper Sleeve',
         'Plastic Sleeve',
+        'Other',
         'None',
     ];
 
