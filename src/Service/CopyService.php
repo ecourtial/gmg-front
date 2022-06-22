@@ -34,6 +34,7 @@ class CopyService extends AbstractService
         '5.25-inch floppy',
         'Other disc',
         'Other floppy',
+        'None',
     ];
 
     public const TYPES = [
