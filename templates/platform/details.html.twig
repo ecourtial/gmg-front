@@ -9,6 +9,12 @@
             </button>
         </form>
         <br/>
+        <a href="{{ url('edit_platform', {'id': platform['id']}) }}">
+            <button type="submit" class="btn btn-lg btn-block btn-outline-info">
+                <i class="fa fa-trash" aria-hidden="true"></i>
+                {{ 'menu.edit'|trans }}
+            </button>
+        </a>
         <a href="{{ url('add_version') }}?platform={{ platform['id'] }}">
             <button type="submit" class="btn btn-lg btn-block btn-success">
                 <i class="fa fa-trash" aria-hidden="true"></i>
