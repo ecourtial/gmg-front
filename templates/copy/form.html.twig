@@ -58,6 +58,15 @@
             </div>
 
             <div class="form-group">
+                <label for="supportType">{{ 'entity.supportType'|trans }}</label>
+                <select name="supportType">
+                    {% for type in constant('App\\Service\\CopyService::SUPPORT_TYPES') %}
+                        <option value="{{ type }}" {% if copy['supportType']|default('') == type %}selected{% endif %}>{{ type }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
                 <label for="onCompilation">{{ 'entity.onCompilation'|trans }}</label>
                 <select name="onCompilation">
                     <option value="0" {% if copy['onCompilation']|default(0) == 0 %}selected{% endif %}>{{ 'see.no'|trans }}</option>

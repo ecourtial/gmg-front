@@ -23,6 +23,19 @@ class CopyService extends AbstractService
         'None',
     ];
 
+    public const SUPPORT_TYPES = [
+        'DVD-ROM',
+        'CD-ROM',
+        'GD-ROM',
+        'MINI-DVD-ROM',
+        'MINI-CD-ROM',
+        'Cartridge',
+        '3.5-inch floppy',
+        '5.25-inch floppy',
+        'Other disc',
+        'Other floppy',
+    ];
+
     public const TYPES = [
         'Physical',
         'Virtual',

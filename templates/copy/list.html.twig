@@ -19,6 +19,7 @@
                 <th scope="col">{% trans %} entity.language {% endtrans %}</th>
                 <th scope="col">{% trans %} entity.boxType {% endtrans %}</th>
                 <th scope="col">{% trans %} entity.casingType {% endtrans %}</th>
+                <th scope="col">{% trans %} entity.supportType {% endtrans %}</th>
                 <th scope="col">{% trans %} entity.onCompilation {% endtrans %}</th>
                 <th scope="col">{% trans %} entity.reedition {% endtrans %}</th>
                 <th scope="col">{% trans %} entity.hasManual {% endtrans %}</th>
@@ -47,6 +48,7 @@
                 <td>{{ constant('App\\Service\\CopyService::LANGUAGES')[copy['language']]|trans }}</td>
                 <td>{{ copy['boxType'] }}</td>
                 <td>{{ copy['casingType'] }}</td>
+                <td>{{ copy['supportType'] }}</td>
                 <td><img src="{{ get_status_badge(copy['onCompilation']) }}"/></td>
                 <td><img src="{{ get_status_badge(copy['reedition']) }}"/></td>
                 <td><img src="{{ get_status_badge(copy['hasManual']) }}"/></td>
