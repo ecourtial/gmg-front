@@ -31,6 +31,15 @@
             </div>
 
             <div class="form-group">
+                <label for="language">{{ 'entity.language'|trans }}</label>
+                <select name="language">
+                    {% for key, tr in constant('App\\Service\\CopyService::LANGUAGES') %}
+                        <option value="{{ key }}" {% if copy['language']|default('') == key %}selected{% endif %}>{{ constant('App\\Service\\CopyService::LANGUAGES')[key]|trans }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
                 <label for="boxType">{{ 'entity.boxType'|trans }}</label>
                 <select name="boxType">
                     {% for type in constant('App\\Service\\CopyService::BOX_TYPES') %}

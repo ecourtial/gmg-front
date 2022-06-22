@@ -28,6 +28,15 @@ class CopyService extends AbstractService
         'Virtual',
     ];
 
+    public const LANGUAGES = [
+        'mul' => 'language_multi',
+        'en' => 'language_english',
+        'fr' => 'language_french',
+        'es' => 'language_spanish',
+        'ge' => 'language_german',
+        'it' => 'language_italian',
+    ];
+
     public function getByVersion(int $versionId): array
     {
         return $this->clientFactory

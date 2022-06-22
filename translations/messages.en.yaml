@@ -195,6 +195,7 @@ entity.played_at_it: I played at it
 entity.watched_it: I watched it
 entity.transaction_in: In
 entity.transaction_out: Out
+entity.language: Language
 
 # Copies
 copy: copy
@@ -240,3 +241,11 @@ authentication.bad_credentials_error: Bad credentials.
 authentication.bad_current_password: The current password is invalid.
 authentication.inactive_account_error: User account is not active.
 authentication.invalid_captcha_error: Invalid captcha answer.
+
+# Languages
+language_multi: Multilingual
+language_english: English
+language_french: French
+language_spanish: Spanish
+language_german: German
+language_italian: Italian
