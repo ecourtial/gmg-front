@@ -53,6 +53,12 @@ class VersionService extends AbstractService
             'title' => 'not_finished_title',
             'description' => 'not_finished_description'
         ],
+        'originals' => [
+            'attribute' => 'original',
+            'title' => 'originals.title',
+            'description' => 'originals.description',
+            'need_copies' => true,
+        ],
     ];
 
     public const FILTERS_WITH_PRIORITY = [
@@ -134,12 +140,15 @@ class VersionService extends AbstractService
 
     public function getFilteredList(string $filter): array
     {
-        $filterValue = self::FILTERS[$filter]['attribute_value'] ?? 1;
-        $filter = self::FILTERS[$filter]['attribute'];
+        $filterValue = (string)(self::FILTERS[$filter]['attribute_value'] ?? '1');
+        $needCopies = self::FILTERS[$filter]['need_copies'] ?? false;
+        $filterAttribute = self::FILTERS[$filter]['attribute'];
 
-        $data = $this->clientFactory
-            ->getAnonymousClient()
-            ->get("versions?{$filter}[]={$filterValue}&orderBy[]=gameTitle-asc&limit=" . self::MAX_RESULT_COUNT);
+        if ($needCopies) {
+            $data = $this->getListFromCopies($filterAttribute, $filterValue);
+        } else {
+            $data = $this->getListFromVersions($filterAttribute, $filterValue);
+        }
 
         $count = 0;
         foreach ($data['result'] as $game) {
@@ -189,33 +198,6 @@ class VersionService extends AbstractService
         return $orderedResult;
     }
 
-    public function getOriginals(): array
-    {
-        $copies = $this->clientFactory
-            ->getAnonymousClient()
-            ->get("copies?original[]=1&orderBy[]=gameTitle-asc&limit=" . self::MAX_RESULT_COUNT);
-
-        $versionIds = [];
-        foreach ($copies['result'] as $copy) {
-            if ((int)$copy['original'] === 1 && false === \in_array($copy['versionId'], $versionIds)) {
-                $versionIds[] = $copy['versionId'];
-            }
-        }
-
-        if ($versionIds === []) {
-            return ['totalResultCount' => 0];
-        }
-
-        $query = '';
-        foreach ($versionIds as $id) {
-            $query .= '&id[]=' . $id;
-        }
-
-        return $this->clientFactory
-            ->getAnonymousClient()
-            ->get("versions?orderBy[]=gameTitle-asc&{$query}&limit=" . self::MAX_RESULT_COUNT);
-    }
-
     public function getRandom(string $filter): array
     {
         $soloFilters = ['todoSoloSometimes', 'singleplayerRecurring', 'toDo'];
@@ -256,5 +238,39 @@ class VersionService extends AbstractService
     protected function getResourceType(): string
     {
         return 'version';
+    }
+
+    protected function getListFromVersions(string $filter, string $filterValue): array
+    {
+        return $this->clientFactory
+            ->getAnonymousClient()
+            ->get("versions?{$filter}[]={$filterValue}&orderBy[]=gameTitle-asc&limit=" . self::MAX_RESULT_COUNT);
+    }
+
+    protected function getListFromCopies(string $filter, string $filterValue): array
+    {
+        $copies = $this->clientFactory
+            ->getAnonymousClient()
+            ->get("copies?{$filter}[]={$filterValue}&orderBy[]=gameTitle-asc&limit=" . self::MAX_RESULT_COUNT);
+
+        $versionIds = [];
+        foreach ($copies['result'] as $copy) {
+            if ((int)$copy['original'] === 1 && false === \in_array($copy['versionId'], $versionIds)) {
+                $versionIds[] = $copy['versionId'];
+            }
+        }
+
+        if ($versionIds === []) {
+            return ['result' => [], 'totalResultCount' => 0];
+        }
+
+        $query = '';
+        foreach ($versionIds as $id) {
+            $query .= '&id[]=' . $id;
+        }
+
+        return $this->clientFactory
+            ->getAnonymousClient()
+            ->get("versions?orderBy[]=gameTitle-asc&{$query}&limit=" . self::MAX_RESULT_COUNT);
     }
 }

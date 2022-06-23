@@ -105,36 +105,6 @@ class VersionController extends AbstractController
         );
     }
 
-    #[Route('/games/originals', methods: ['GET'], name: 'versions_originals')]
-    public function getOriginals(): Response
-    {
-        $data = $this->service->getOriginals();
-
-        // Useless?
-        if ((int)$data['totalResultCount'] === 0) {
-            return $this->render(
-                'general/no-result.html.twig',
-                [
-                    'screenTitle' => $this->translator->trans('no_result')
-                ]
-            );
-        }
-
-        return $this->render(
-            'version/standard-list.html.twig',
-            [
-                'screenTitle' => $this->translator
-                    ->trans(
-                        'originals.title',
-                        ['%count%' => $data['totalResultCount']]
-                    ),
-                'screenDescription' => $this->translator
-                    ->trans('originals.description'),
-                'versions' => $data['result']
-            ]
-        );
-    }
-
     #[Route('/game/with-priority/{filter<\w+>}', methods: ['GET'], name: 'versions_with_priority')]
     public function getListWithPriority(string $filter): Response
     {
