@@ -44,6 +44,8 @@ menu.actions: Actions
 menu.add_transaction: Add a transaction
 menu.filters: Filters
 menu.PC_big_boxes: Big boxes on PC
+menu.finished: Finished
+menu.not_finished: Not finished
 
 # Home
 home_title: Give me a game (GMG)
@@ -125,6 +127,10 @@ entry_deleted_with_success: Entry deleted with success.
 delete_entry_confirmation: Are you sure you want to delete this entry?
 delete_action: Delete this entry
 version_has_children: Cannot delete this version because it has related entries (stories, copies or transactions).
+finished_title: Finished versions (%count% entries)
+finished_description: Game I did finish
+not_finished_title: No finished versions (%count% entries)
+not_finished_description: Game I did not finish yet
 
 # Various
 see.game: Game

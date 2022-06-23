@@ -110,6 +110,7 @@ class VersionController extends AbstractController
     {
         $data = $this->service->getOriginals();
 
+        // Useless?
         if ((int)$data['totalResultCount'] === 0) {
             return $this->render(
                 'general/no-result.html.twig',

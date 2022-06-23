@@ -42,6 +42,17 @@ class VersionService extends AbstractService
             'title' => 'to_buy_title',
             'description' => 'to_buy_description'
         ],
+        'finished' => [
+            'attribute' => 'finished',
+            'title' => 'finished_title',
+            'description' => 'finished_description'
+        ],
+        'not_finished' => [
+            'attribute' => 'finished',
+            'attribute_value' => 0,
+            'title' => 'not_finished_title',
+            'description' => 'not_finished_description'
+        ],
     ];
 
     public const FILTERS_WITH_PRIORITY = [
@@ -123,11 +134,12 @@ class VersionService extends AbstractService
 
     public function getFilteredList(string $filter): array
     {
+        $filterValue = self::FILTERS[$filter]['attribute_value'] ?? 1;
         $filter = self::FILTERS[$filter]['attribute'];
 
         $data = $this->clientFactory
             ->getAnonymousClient()
-            ->get("versions?{$filter}[]=1&orderBy[]=gameTitle-asc&limit=" . self::MAX_RESULT_COUNT);
+            ->get("versions?{$filter}[]={$filterValue}&orderBy[]=gameTitle-asc&limit=" . self::MAX_RESULT_COUNT);
 
         $count = 0;
         foreach ($data['result'] as $game) {

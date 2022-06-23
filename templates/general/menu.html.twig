@@ -30,6 +30,8 @@
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item" href="{{ url('versions_originals') }}">{{ 'menu.originals'|trans }}</a></li>
                         <li><a class="dropdown-item" href="{{ url('pc_big_boxes_copies') }}">{{ 'menu.PC_big_boxes'|trans }}</a></li>
+                        <li><a class="dropdown-item" href="{{ path('versions_filtered_list', {filter: 'finished'}) }}">{{ 'menu.finished'|trans }}</a></li>
+                        <li><a class="dropdown-item" href="{{ path('versions_filtered_list', {filter: 'not_finished'}) }}">{{ 'menu.not_finished'|trans }}</a></li>
                         <li><a class="dropdown-item" href="{{ path('versions_filtered_list', {filter: 'bgf'}) }}">{{ 'menu.bgf'|trans }}</a></li>
                         <li><a class="dropdown-item" href="{{ path('versions_filtered_list', {filter: 'solo_recurring'}) }}">{{ 'menu.solo_recurring'|trans }}</a></li>
                         <li><a class="dropdown-item" href="{{ path('versions_filtered_list', {filter: 'multi_recurring'}) }}">{{ 'menu.multi_recurring'|trans }}</a></li>
