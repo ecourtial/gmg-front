@@ -73,6 +73,13 @@ class VersionService extends AbstractService
             'filter_from_copies' => true,
             'attribute_value' => 'Virtual',
         ],
+        'bigBoxes' => [
+            'attribute' => 'boxType',
+            'title' => 'bigBoxes_title',
+            'description' => 'bigBoxes_description',
+            'filter_from_copies' => true,
+            'attribute_value' => 'Big box',
+        ],
     ];
 
     public const FILTERS_WITH_PRIORITY = [

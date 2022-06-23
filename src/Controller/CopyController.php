@@ -46,25 +46,6 @@ class CopyController extends AbstractController
         );
     }
 
-    #[Route('/copies/pc-big-boxes', methods: ['GET'], name: 'pc_big_boxes_copies')]
-    public function getBigBoxesCopiesOnPC(): Response
-    {
-        $copies = $this->service->getBigBoxesCopiesOnPC();
-
-        return $this->render(
-            'copy/list.html.twig',
-            [
-                'screenTitle' => $this->translator
-                    ->trans('copies_big_boxes_on_PC', ['%count%' => $copies['totalResultCount']]),
-                'copies' => $copies['result'],
-                'displayGameTitle' => true,
-                'displayCopyType' => false,
-                'displayCopyOriginal' => false,
-                'displayCopyBoxType' => false,
-            ]
-        );
-    }
-
     #[Route('/copy/add', methods: ['GET', 'POST'], name: 'add_copy'), IsGranted('ROLE_USER')]
     public function add(Request $request): Response
     {

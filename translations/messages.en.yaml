@@ -137,6 +137,8 @@ physical_title: Physical versions (%count% entries)
 physical_description: Versions for which I have a physical copy
 virtual_title: Virtual versions (%count% entries)
 virtual_description: Versions for which I have a virtual copy
+bigBoxes_title: Versions with a big box copy (%count%)
+bigBoxes_description: On all the platforms
 
 # Various
 see.game: Game
@@ -213,7 +215,6 @@ entity.supportType: Support type
 # Copies
 copy: copy
 copies_for_version_title: Copies for the version <strong>%title%</strong> on <strong>%platform%</strong> (%count%)
-copies_big_boxes_on_PC: PC games with a big box copy (%count%)
 
 # Transactions
 transaction.no_version_id_and_no_copy_id: You need to provide the version id and/or the copy id!
