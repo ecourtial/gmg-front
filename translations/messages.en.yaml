@@ -46,6 +46,8 @@ menu.filters: Filters
 menu.PC_big_boxes: Big boxes on PC
 menu.finished: Finished
 menu.not_finished: Not finished
+menu.physical: Physical
+menu.virtual: Virtual
 
 # Home
 home_title: Give me a game (GMG)
@@ -131,6 +133,10 @@ finished_title: Finished versions (%count% entries)
 finished_description: Game I did finish
 not_finished_title: No finished versions (%count% entries)
 not_finished_description: Game I did not finish yet
+physical_title: Physical versions (%count% entries)
+physical_description: Versions for which I have a physical copy
+virtual_title: Virtual versions (%count% entries)
+virtual_description: Versions for which I have a virtual copy
 
 # Various
 see.game: Game

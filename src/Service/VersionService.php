@@ -57,7 +57,21 @@ class VersionService extends AbstractService
             'attribute' => 'original',
             'title' => 'originals.title',
             'description' => 'originals.description',
-            'need_copies' => true,
+            'filter_from_copies' => true,
+        ],
+        'physical' => [
+            'attribute' => 'type',
+            'title' => 'physical_title',
+            'description' => 'physical_description',
+            'filter_from_copies' => true,
+            'attribute_value' => 'Physical',
+        ],
+        'virtual' => [
+            'attribute' => 'type',
+            'title' => 'virtual_title',
+            'description' => 'virtual_description',
+            'filter_from_copies' => true,
+            'attribute_value' => 'Virtual',
         ],
     ];
 
@@ -141,7 +155,7 @@ class VersionService extends AbstractService
     public function getFilteredList(string $filter): array
     {
         $filterValue = (string)(self::FILTERS[$filter]['attribute_value'] ?? '1');
-        $needCopies = self::FILTERS[$filter]['need_copies'] ?? false;
+        $needCopies = self::FILTERS[$filter]['filter_from_copies'] ?? false;
         $filterAttribute = self::FILTERS[$filter]['attribute'];
 
         if ($needCopies) {
