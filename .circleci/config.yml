@@ -64,19 +64,6 @@ jobs:
             composer install --no-progress --no-interaction; \
             cd .. \
             vendor/bin/php-cs-fixer fix src --dry-run;
-      - run:
-          name: phpstan
-          command: make phpstan_command
-
-  tests:
-    executor: php
-    steps:
-      - alpine_checkout
-      - attach_workspace:
-          at: .
-      - run:
-          name: phpunit
-          command: make phpunit_command
 
   security:
     executor: php
@@ -99,8 +86,5 @@ workflows:
       - composer
       - security
       - static-analysis:
-          requires:
-            - composer
-      - tests:
           requires:
             - composer
