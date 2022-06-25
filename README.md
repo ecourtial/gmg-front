@@ -1,7 +1,6 @@
-# GMG (Give Me a Game)
+# GMG-FRONT (Give Me a Game, Front App)
 [![CircleCI](https://circleci.com/gh/ecourtial/gmg-front/tree/master.svg?style=svg)](https://circleci.com/gh/ecourtial/gmg-front/tree/master) [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/ecourtial/gmg-front/graphs/commit-activity) [![Ask Me Anything !](https://img.shields.io/badge/Ask%20me-anything-1abc9c.svg)](https://GitHub.com/ecourtial/gmg-front) [![GitHub license](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](https://github.com/ecourtial/gmg/blob/master/LICENSE)
 
-# GMG-FRONT
 A front-end implementation for the project [GMG](https://github.com/ecourtial/gmg). It covers most of the features.
 
 ## Installation
