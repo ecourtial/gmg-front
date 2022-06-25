@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    {% if is_granted('ROLE_USER') %}
+        <a href="{{ url('add_platform') }}">
+            <button type="submit" class="btn btn-lg btn-block btn-success">
+                <i class="fa fa-trash" aria-hidden="true"></i>
+                {{ 'menu.add_platform'|trans }}
+            </button>
+        </a>
+    {% endif %}
+    <hr>
+    <ul>
+        {% for platform in data['result'] %}
+                <li>
+                    {{ platform['name'] }} ({{ platform['versionCount'] }})
+                    <a href="{{ path('platform_details', {id: platform['id']}) }}">{{ 'see.details'|trans }}</a>
+                    {% if is_granted('ROLE_USER') %}
+                        - <a href="{{ url('edit_platform', {id: platform['id']}) }}">{{ 'menu.edit'|trans }}</a>
+                    {% endif %}
+                </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

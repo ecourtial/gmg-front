@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <form method="POST" action="{{ url('add_transaction_submit') }}">
+        {% if version is not null %}
+            <p><strong>{{ 'entity.version'|trans|capitalize }}</strong> {{ version['gameTitle'] }} ({{ version['platformName']}})</p>
+        {% endif %}
+        {% if copy is not null %}
+            <p><strong>{{ 'copy'|trans|capitalize }}</strong> #{{ copy['id'] }} - {{ copy['gameTitle']}} ({{ copy['platformName']}}) <i>{{ copy['comments'] }}</i></p>
+        {% endif %}
+        <fieldset>
+            <div class="form-group">
+                <label for="year">{{ 'see.year'|trans }}</label>
+                <input type="text" name="year" value="" class="form-control"/>
+            </div>
+
+            <div class="form-group">
+                <label for="month">{{ 'see.month'|trans }}</label>
+                <select name="month">
+                    {% for index, label in constant('App\\Twig\\ToolsExtension::MONTHS') %}
+                        <option value="{{ index }}">{{ label|trans }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="day">{{ 'see.day'|trans }}</label>
+                <input type="text" name="day" value="" class="form-control"/>
+            </div>
+
+            <div class="form-group">
+                <label for="type">{{ 'entity.type'|trans|capitalize }}</label>
+                <select name="type">
+                    <option value="Bought">{{ 'transaction.bought'|trans }}</option>
+                    <option value="Sold">{{ 'transaction.sold'|trans }}</option>
+                </select>
+            </div>
+
+
+            {% if version is not null %}
+                <input type="hidden" name="versionId" value="{{ versionId }}" />
+            {% elseif copy is not null %}
+                <input type="hidden" name="versionId" value="{{ copy['versionId'] }}" />
+            {% endif %}
+
+            {% if copy is not null %}
+                <input type="hidden" name="copyId" value="{{ copy['id'] }}" />
+            {% endif %}
+
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('add_transaction') }}" />
+            <button type="submit" id="loginSubmitButton" class="btn btn-primary">
+                <i class="fa fa-sign-in" aria-hidden="true"></i> {{ 'menu.save'|trans }}
+            </button>
+        </fieldset>
+    </form>
+{% endblock %}

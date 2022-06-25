@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <p><i>{{ game['notes']|default('') }}</i></p>
+    {% if is_granted('ROLE_USER') %}
+        <form action="{{ url('delete_game', {id: game['id']}) }}" method="post" data-confirmation="true" id="delete-form">
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('delete_game') }}" />
+            <button type="submit" id="deletePostSubmitButton" class="btn btn-lg btn-block btn-danger" onclick="return areYouSure('{{ 'delete_entry_confirmation'|trans }}');">
+                <i class="fa fa-trash" aria-hidden="true"></i>
+                {{ 'delete_action'|trans }}
+            </button>
+        </form>
+        <br/>
+        <a href="{{ url('edit_game', {'id': game['id']}) }}">
+            <button type="submit" class="btn btn-lg btn-block btn-outline-info">
+                <i class="fa fa-trash" aria-hidden="true"></i>
+                {{ 'menu.edit'|trans }}
+            </button>
+        </a>
+        <a href="{{ url('add_version') }}?game={{ game['id'] }}">
+            <button type="submit" class="btn btn-lg btn-block btn-success">
+                <i class="fa fa-trash" aria-hidden="true"></i>
+                {{ 'menu.add_version'|trans }}
+            </button>
+        </a>
+    {% endif %}
+    <hr>
+    {% include 'version/list-content.html.twig' %}
+{% endblock %}
+
+
+
+

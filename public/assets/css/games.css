@@ -1,0 +1,146 @@
+/* START OVERRIDE FOR DARK THEME */
+
+body {
+    background-color: black;
+    color: rgb(191, 191, 191);
+}
+
+.bg-light {
+    --bs-bg-opacity: 0.5;
+    background-color: rgb(33, 33, 33);
+}
+
+.navbar {
+    background-color: rgb(33, 33, 33);
+    border-color: rgb(48, 48, 48);
+}
+
+.icon-bar {
+    background-color: white;
+}
+
+body::-webkit-scrollbar {
+    background-color: grey;
+}
+
+body::-webkit-scrollbar-thumb {
+    height: 50px;
+    background-color: #242424 !important;
+    border: 2px solid #3e4346 !important;
+}
+
+body::-webkit-scrollbar-button {
+    background-color: black;
+}
+
+button {
+    color: #bfbfbf;
+    background-color: #1f1f1f;
+}
+
+input, select, textarea {
+    color: #1f1f1f;
+    background-color: grey;
+}
+
+.dropdown-menu>li>a {
+    color: inherit
+}
+
+/* END OVERRIDE FOR DARK THEME */
+
+h1 {
+    text-align: center;
+}
+
+#contentExample {
+    display: none;
+}
+
+#anotherGame {
+    display: none;
+}
+
+#hallOfFameCriteria {
+    margin-top: 50px;
+}
+
+#deleteGameForm {
+    display: none;
+    margin-top: 50px;
+}
+
+#tempMsg {
+    display: none;
+}
+
+#gameDetailContent {
+    display: none;
+}
+
+#extraP {
+    display: none;
+}
+
+#tokenCSRF {
+    display: none;
+}
+
+#subtitle {
+    width: 100%;
+    text-align: center;
+    font-weight: bold;
+}
+
+textarea {
+    width: 640px;
+    height: 280px;
+}
+
+.subtitle {
+    text-align: center;
+}
+
+.description {
+    text-align: center;
+    font-weight: bold;
+}
+
+th {
+    color: rgb(191, 191, 191)
+}
+
+td {
+    color: rgb(191, 191, 191)
+}
+
+.navbar-light .navbar-nav .nav-link {
+    color: black;
+}
+
+.year {
+    font-weight: bold;
+    color: yellow;
+}
+
+.btn {
+    background-color: #1f1f1f;
+}
+
+.btn-outline-success {
+    color: white;
+}
+
+.btn-in-list {
+    padding: 0.25rem 0.25rem;
+    font-size: 0.75rem;
+    line-height: 0.5;
+}
+
+.colored_h2 {
+    color: #0d6efd;
+}
+
+.colored_h3 {
+    color: #CC7832;
+}

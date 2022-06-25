@@ -1,0 +1,71 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    {% if is_granted('ROLE_USER') %}
+        <form action="{{ url('delete_version', {id: version['id']}) }}" method="post" data-confirmation="true" id="delete-form">
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('delete_version') }}" />
+            <button type="submit" id="deletePostSubmitButton" class="btn btn-lg btn-block btn-danger" onclick="return areYouSure('{{ 'delete_entry_confirmation'|trans }}');">
+                <i class="fa fa-trash" aria-hidden="true"></i>
+                {{ 'delete_action'|trans }}
+            </button>
+        </form>
+        <br/>
+        <a href="{{ url('edit_version', {'id': version['id']}) }}">
+            <button type="submit" class="btn btn-lg btn-block btn-outline-info">
+                <i class="fa fa-trash" aria-hidden="true"></i>
+                {{ 'menu.edit'|trans }}
+            </button>
+        </a>
+        <a href="{{ url('add_story') }}?version={{ version['id'] }}">
+            <button type="submit" class="btn btn-lg btn-block btn-success">
+                <i class="fa fa-trash" aria-hidden="true"></i>
+                {{ 'menu.add_story'|trans }}
+            </button>
+        </a>
+        <a href="{{ url('add_copy') }}?version={{ version['id'] }}">
+            <button type="submit" class="btn btn-lg btn-block btn-success">
+                <i class="fa fa-trash" aria-hidden="true"></i>
+                {{ 'menu.add_copy'|trans }}
+            </button>
+        </a>
+        <a href="{{ url('add_transaction_form') }}?version={{ version['id'] }}">
+            <button type="submit" class="btn btn-lg btn-block btn-success">
+                <i class="fa fa-trash" aria-hidden="true"></i>
+                {{ 'menu.add_transaction'|trans }}
+            </button>
+        </a>
+    {% endif %}
+    <hr>
+    <p>{% trans with {'%count%': version['storyCount']}%} entity.storyCount {% endtrans %}
+    <p>{% trans with {'%count%': version['copyCount']}%} entity.copyCount {% endtrans %} <a href="{{ path('copies_per_version', {versionId: version['id']}) }}">{% trans %} see_copies {% endtrans %}</a> </p>
+    <p><strong>{% trans %} entity.id {% endtrans %}:</strong> {{ version['id'] }}</p>
+    <p><strong>{% trans %} entity.badges {% endtrans %}:</strong>
+        {% for badge, alt in get_badges_for_version(version, true) %}
+            {% set path = 'assets/img/badges/' ~ badge ~ '.png' %}
+            <img src="{{ asset(path) }}" title="{{ alt|trans }}"/>
+        {% endfor %}
+    </p>
+    <p><strong>{% trans %} entity.platformId {% endtrans %}:</strong> {{ version['platformId'] }}</p>
+    <p><strong>{% trans %} entity.gameId {% endtrans %}:</strong> {{ version['gameId'] }}</p>
+    <p><strong>{% trans %} entity.releaseYear {% endtrans %}:</strong> {% if version['releaseYear'] == 0 %}{% trans %} see.not_available {% endtrans %}{% else %}{{ version['releaseYear'] }}{% endif %}</p>
+    <p><strong>{% trans %} entity.todoSoloSometimes {% endtrans %}:</strong> {{ get_yes_no_key(version['todoSoloSometimes'])}} </p>
+    <p><strong>{% trans %} entity.todoMultiplayerSometimes {% endtrans %}:</strong> {{ get_yes_no_key(version['todoMultiplayerSometimes'])}} </p>
+    <p><strong>{% trans %} entity.singleplayerRecurring {% endtrans %}:</strong> {{ get_yes_no_key(version['singleplayerRecurring'])}} </p>
+    <p><strong>{% trans %} entity.multiplayerRecurring {% endtrans %}:</strong> {{ get_yes_no_key(version['multiplayerRecurring'])}} </p>
+    <p><strong>{% trans %} entity.toDo {% endtrans %}:</strong> {{ get_yes_no_key(version['toDo'])}} </p>
+    <p><strong>{% trans %} entity.toDoPosition {% endtrans %}:</strong> {{ version['toDoPosition']}} </p>
+    <p><strong>{% trans %} entity.todoWithHelp {% endtrans %}:</strong> {{ get_yes_no_key(version['todoWithHelp'])}} </p>
+    <p><strong>{% trans %} entity.toBuy {% endtrans %}:</strong> {{ get_yes_no_key(version['toBuy'])}} </p>
+    <p><strong>{% trans %} entity.toWatchBackground {% endtrans %}:</strong> {{ get_yes_no_key(version['toWatchBackground'])}} </p>
+    <p><strong>{% trans %} entity.toWatchSerious {% endtrans %}:</strong> {{ get_yes_no_key(version['toWatchSerious'])}} </p>
+    <p><strong>{% trans %} entity.toWatchPosition {% endtrans %}:</strong> {{ version['toWatchPosition']}} </p>
+    <p><strong>{% trans %} entity.toRewatch {% endtrans %}:</strong> {{ get_yes_no_key(version['toRewatch'])}} </p>
+    <p><strong>{% trans %} entity.topGame {% endtrans %}:</strong> {{ get_yes_no_key(version['topGame'])}} </p>
+    <p><strong>{% trans %} entity.hallOfFame {% endtrans %}:</strong> {{ get_yes_no_key(version['hallOfFame'])}} </p>
+    <p><strong>{% trans %} entity.hallOfFameYear {% endtrans %}:</strong> {% if version['hallOfFameYear'] == 0 %}{% trans %} see.not_available {% endtrans %}{% else %}{{ version['hallOfFameYear'] }}{% endif %}</p>
+    <p><strong>{% trans %} entity.hallOfFamePosition {% endtrans %}:</strong> {% if version['hallOfFamePosition'] == 0 %}{% trans %} see.not_available {% endtrans %}{% else %}{{ version['hallOfFamePosition'] }}{% endif %}</p>
+    <p><strong>{% trans %} entity.playedItOften {% endtrans %}:</strong> {{ get_yes_no_key(version['playedItOften'])}} </p>
+    <p><strong>{% trans %} entity.ongoing {% endtrans %}:</strong> {{ get_yes_no_key(version['ongoing'])}} </p>
+    <p><strong>{% trans %} entity.bestGameForever {% endtrans %}:</strong> {{ get_yes_no_key(version['bestGameForever'])}} </p>
+    <p><strong>{% trans %} entity.finished {% endtrans %}:</strong> {{ get_yes_no_key(version['finished'])}} </p>
+    <p><strong>{% trans %} entity.comments {% endtrans %}:</strong> {{ version['comments']}} </p>
+{% endblock %}

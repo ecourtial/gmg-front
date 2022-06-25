@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    {% if is_granted('ROLE_USER') %}
+        <a href="{{ url('add_game') }}">
+            <button type="submit" class="btn btn-lg btn-block btn-success">
+                <i class="fa fa-trash" aria-hidden="true"></i>
+                {{ 'menu.add_game'|trans }}
+            </button>
+        </a>
+    {% endif %}
+    <hr>
+    <ul>
+    {% for game in games %}
+        <li>
+            {{ game['title'] }} ({{ 'see.versions'|trans({'%qty%': game['versionCount'],'%count%': game['versionCount']}) }}) - <a href="{{ path('game_details', {id: game['id']}) }}">{{ 'see.details'|trans }}</a>
+            {% if is_granted('ROLE_USER') %}
+                - <a href="{{ url('edit_game', {id: game['id']}) }}">{{ 'menu.edit'|trans }}</a>
+            {% endif %}
+        </li>
+    {% endfor %}
+    </ul>
+{% endblock %}

@@ -1,0 +1,192 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <form method="POST" action="">
+        <fieldset>
+            <div class="form-group">
+                <label>
+                    {{ 'entity.platform'|trans }}
+                    <select name="platformId">
+                    {% for platform in platforms %}
+                        <option value="{{ platform['id'] }}" {% if platform['id'] == selectedPlatform %}selected{% endif %}>{{ platform['name'] }}</option>
+                    {% endfor %}
+                    </select>
+                </label>
+            </div>
+
+            <div class="form-group">
+                <label>
+                    {{ 'entity.game'|trans }}
+                    <select name="gameId">
+                        {% for game in games %}
+                            <option value="{{ game['id'] }}" {% if game['id'] == selectedGame %}selected{% endif %}>{{ game['title'] }}</option>
+                        {% endfor %}
+                    </select>
+                </label>
+            </div>
+
+            <div class="form-group">
+                <label for="releaseYear">{{ 'entity.releaseYear'|trans }}</label>
+                <input type="text" name="releaseYear" value="{{ version['releaseYear']|default('') }}" class="form-control"/>
+            </div>
+
+            <div class="form-group">
+                <label for="todoSoloSometimes">{{ 'entity.todoSoloSometimes'|trans }}</label>
+                <select name="todoSoloSometimes">
+                    <option value="0" {% if version['todoSoloSometimes']|default(0) == 0 %}selected{% endif %}>{{ 'see.no'|trans }}</option>
+                    <option value="1" {% if version['todoSoloSometimes']|default(0) == 1 %}selected{% endif %}>{{ 'see.yes'|trans }}</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="todoMultiplayerSometimes">{{ 'entity.todoMultiplayerSometimes'|trans }}</label>
+                <select name="todoMultiplayerSometimes">
+                    <option value="0" {% if version['todoMultiplayerSometimes']|default(0) == 0 %}selected{% endif %}>{{ 'see.no'|trans }}</option>
+                    <option value="1" {% if version['todoMultiplayerSometimes']|default(0) == 1 %}selected{% endif %}>{{ 'see.yes'|trans }}</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="singleplayerRecurring">{{ 'entity.singleplayerRecurring'|trans }}</label>
+                <select name="singleplayerRecurring">
+                    <option value="0" {% if version['singleplayerRecurring']|default(0) == 0 %}selected{% endif %}>{{ 'see.no'|trans }}</option>
+                    <option value="1" {% if version['singleplayerRecurring']|default(0) == 1 %}selected{% endif %}>{{ 'see.yes'|trans }}</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="multiplayerRecurring">{{ 'entity.multiplayerRecurring'|trans }}</label>
+                <select name="multiplayerRecurring">
+                    <option value="0" {% if version['multiplayerRecurring']|default(0) == 0 %}selected{% endif %}>{{ 'see.no'|trans }}</option>
+                    <option value="1" {% if version['multiplayerRecurring']|default(0) == 1 %}selected{% endif %}>{{ 'see.yes'|trans }}</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="toDo">{{ 'entity.toDo'|trans }}</label>
+                <select name="toDo">
+                    <option value="0" {% if version['toDo']|default(0) == 0 %}selected{% endif %}>{{ 'see.no'|trans }}</option>
+                    <option value="1" {% if version['toDo']|default(0) == 1 %}selected{% endif %}>{{ 'see.yes'|trans }}</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="todoWithHelp">{{ 'entity.todoWithHelp'|trans }}</label>
+                <select name="todoWithHelp">
+                    <option value="0" {% if version['todoWithHelp']|default(0) == 0 %}selected{% endif %}>{{ 'see.no'|trans }}</option>
+                    <option value="1" {% if version['todoWithHelp']|default(0) == 1 %}selected{% endif %}>{{ 'see.yes'|trans }}</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="toDoPosition">{{ 'entity.toDoPosition'|trans }}</label>
+                <input type="text" name="toDoPosition" value="{{ version['toDoPosition']|default('') }}" class="form-control"/>
+            </div>
+
+            <div class="form-group">
+                <label for="toBuy">{{ 'entity.toBuy'|trans }}</label>
+                <select name="toBuy">
+                    <option value="0" {% if version['toBuy']|default(0) == 0 %}selected{% endif %}>{{ 'see.no'|trans }}</option>
+                    <option value="1" {% if version['toBuy']|default(0) == 1 %}selected{% endif %}>{{ 'see.yes'|trans }}</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="toWatchBackground">{{ 'entity.toWatchBackground'|trans }}</label>
+                <select name="toWatchBackground">
+                    <option value="0" {% if version['toWatchBackground']|default(0) == 0 %}selected{% endif %}>{{ 'see.no'|trans }}</option>
+                    <option value="1" {% if version['toWatchBackground']|default(0) == 1 %}selected{% endif %}>{{ 'see.yes'|trans }}</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="toWatchSerious">{{ 'entity.toWatchSerious'|trans }}</label>
+                <select name="toWatchSerious">
+                    <option value="0" {% if version['toWatchSerious']|default(0) == 0 %}selected{% endif %}>{{ 'see.no'|trans }}</option>
+                    <option value="1" {% if version['toWatchSerious']|default(0) == 1 %}selected{% endif %}>{{ 'see.yes'|trans }}</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="toWatchPosition">{{ 'entity.toWatchPosition'|trans }}</label>
+                <input type="text" name="toWatchPosition" value="{{ version['toWatchPosition']|default('') }}" class="form-control"/>
+            </div>
+
+            <div class="form-group">
+                <label for="toRewatch">{{ 'entity.toRewatch'|trans }}</label>
+                <select name="toRewatch">
+                    <option value="0" {% if version['toRewatch']|default(0) == 0 %}selected{% endif %}>{{ 'see.no'|trans }}</option>
+                    <option value="1" {% if version['toRewatch']|default(0) == 1 %}selected{% endif %}>{{ 'see.yes'|trans }}</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="topGame">{{ 'entity.topGame'|trans }}</label>
+                <select name="topGame">
+                    <option value="0" {% if version['topGame']|default(0) == 0 %}selected{% endif %}>{{ 'see.no'|trans }}</option>
+                    <option value="1" {% if version['topGame']|default(0) == 1 %}selected{% endif %}>{{ 'see.yes'|trans }}</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="hallOfFame">{{ 'entity.hallOfFame'|trans }}</label>
+                <select name="hallOfFame">
+                    <option value="0" {% if version['hallOfFame']|default(0) == 0 %}selected{% endif %}>{{ 'see.no'|trans }}</option>
+                    <option value="1" {% if version['hallOfFame']|default(0) == 1 %}selected{% endif %}>{{ 'see.yes'|trans }}</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="hallOfFameYear">{{ 'entity.hallOfFameYear'|trans }}</label>
+                <input type="text" name="hallOfFameYear" value="{{ version['hallOfFameYear']|default('') }}" class="form-control"/>
+            </div>
+
+            <div class="form-group">
+                <label for="hallOfFamePosition">{{ 'entity.hallOfFamePosition'|trans }}</label>
+                <input type="text" name="hallOfFamePosition" value="{{ version['hallOfFamePosition']|default('') }}" class="form-control"/>
+            </div>
+
+            <div class="form-group">
+                <label for="playedItOften">{{ 'entity.playedItOften'|trans }}</label>
+                <select name="playedItOften">
+                    <option value="0" {% if version['playedItOften']|default(0) == 0 %}selected{% endif %}>{{ 'see.no'|trans }}</option>
+                    <option value="1" {% if version['playedItOften']|default(0) == 1 %}selected{% endif %}>{{ 'see.yes'|trans }}</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="ongoing">{{ 'entity.ongoing'|trans }}</label>
+                <select name="ongoing">
+                    <option value="0" {% if version['ongoing']|default(0) == 0 %}selected{% endif %}>{{ 'see.no'|trans }}</option>
+                    <option value="1" {% if version['ongoing']|default(0) == 1 %}selected{% endif %}>{{ 'see.yes'|trans }}</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="bestGameForever">{{ 'entity.bestGameForever'|trans }}</label>
+                <select name="bestGameForever">
+                    <option value="0" {% if version['bestGameForever']|default(0) == 0 %}selected{% endif %}>{{ 'see.no'|trans }}</option>
+                    <option value="1" {% if version['bestGameForever']|default(0) == 1 %}selected{% endif %}>{{ 'see.yes'|trans }}</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="finished">{{ 'entity.finished'|trans }}</label>
+                <select name="finished">
+                    <option value="0" {% if version['finished']|default(0) == 0 %}selected{% endif %}>{{ 'see.no'|trans }}</option>
+                    <option value="1" {% if version['finished']|default(0) == 1 %}selected{% endif %}>{{ 'see.yes'|trans }}</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="comments">{{ 'entity.comments'|trans }}</label>
+                <br/>
+                <textarea name="comments">{{ version['comments']|default('') }}</textarea>
+            </div>
+
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('add_version') }}" />
+            <button type="submit" id="loginSubmitButton" class="btn btn-primary">
+                <i class="fa fa-sign-in" aria-hidden="true"></i> {{ 'menu.save'|trans }}
+            </button>
+        </fieldset>
+    </form>
+{% endblock %}

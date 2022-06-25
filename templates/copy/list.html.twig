@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">{% trans %} entity.id {% endtrans %}</th>
+
+                {% if displayGameTitle is defined and displayGameTitle == true %}
+                    <th scope="col">{% trans %} see.game {% endtrans %}</th>
+                {% endif %}
+
+                {% if displayPlatformName is defined and displayPlatformName == true %}
+                    <th scope="col">{% trans %} see.platform {% endtrans %}</th>
+                {% endif %}
+
+                <th scope="col">{% trans %} entity.versionId {% endtrans %}</th>
+                <th scope="col">{% trans %} entity.type {% endtrans %}</th>
+                <th scope="col">{% trans %} entity.original {% endtrans %}</th>
+                <th scope="col">{% trans %} entity.language {% endtrans %}</th>
+                <th scope="col">{% trans %} entity.boxType {% endtrans %}</th>
+                <th scope="col">{% trans %} entity.casingType {% endtrans %}</th>
+                <th scope="col">{% trans %} entity.supportType {% endtrans %}</th>
+                <th scope="col">{% trans %} entity.onCompilation {% endtrans %}</th>
+                <th scope="col">{% trans %} entity.reedition {% endtrans %}</th>
+                <th scope="col">{% trans %} entity.hasManual {% endtrans %}</th>
+                <th scope="col">{% trans %} entity.transactionCount {% endtrans %}</th>
+                <th scope="col">{% trans %} entity.status {% endtrans %}</th>
+                <th scope="col">{% trans %} entity.comments {% endtrans %}</th>
+                <th scope="col">{% trans %} menu.actions {% endtrans %}</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for copy in copies %}
+            <tr>
+                <th scope="row">{{ copy['id'] }}</th>
+
+                {% if displayGameTitle is defined and displayGameTitle == true %}
+                    <td>{{ copy['gameTitle'] }}</td>
+                {% endif %}
+
+                {% if displayPlatformName is defined and displayPlatformName == true %}
+                    <td>{{ copy['platformName'] }}</td>
+                {% endif %}
+
+                <td>{{ copy['versionId'] }}</td>
+                <td>{{ copy['type'] }}</td>
+                <td><img src="{{ get_status_badge(copy['original']) }}"/></td>
+                <td>{{ constant('App\\Service\\CopyService::LANGUAGES')[copy['language']]|trans }}</td>
+                <td>{{ copy['boxType'] }}</td>
+                <td>{{ copy['casingType'] }}</td>
+                <td>{{ copy['supportType'] }}</td>
+                <td><img src="{{ get_status_badge(copy['onCompilation']) }}"/></td>
+                <td><img src="{{ get_status_badge(copy['reedition']) }}"/></td>
+                <td><img src="{{ get_status_badge(copy['hasManual']) }}"/></td>
+                <td>{{ copy['transactionCount'] }}</td>
+                <td>{{ copy['status'] }}</td>
+                <td>{{ copy['comments'] }}</td>
+                <td>
+                    {% if is_granted('ROLE_USER') %}
+                        <a href="{{ url('edit_copy', {id: copy['id']}) }}">{{ 'menu.edit'|trans }}</a>
+                         - <a href="{{ url('add_transaction_form')}}?copy={{ copy['id'] }}">{{ 'menu.add_transaction'|trans }}</a>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

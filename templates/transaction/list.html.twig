@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">{{ 'entity.version'|trans }}</th>
+            <th scope="col" style="text-align: center">{{ 'menu.actions'|trans }}</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for year, transactionOfTheYear in transactions %}
+        <tr>
+            <td class="year">{{ year }}</td>
+            <td></td>
+            <td></td>
+        </tr>
+        {% for month, transactions in transactionOfTheYear %}
+            <tr>
+                <td>{{ get_month_label(month) }}</td>
+                <td></td>
+                <td></td>
+            </tr>
+            {% for transaction in transactions %}
+                <tr>
+                    <td>
+                        <img src="{{ get_transaction_type_badge(transaction['type']) }}"/>
+                        {{ transaction['id'] }} - {{ transaction['gameTitle'] }} ({{ transaction['platformName'] }})
+                    </td>
+                    <td><a href="{{ url('version_details', {id: transaction['versionId']}) }}">{{ 'see.version'|trans }}</a></td>
+                    <td>
+                        {% if is_granted('ROLE_USER') %}
+                            <form action="{{ url('delete_transaction', {id: transaction['id']}) }}" method="post" data-confirmation="true" id="delete-form">
+                                <input type="hidden" name="_csrf_token" value="{{ csrf_token('delete_transaction') }}" />
+                                <button type="submit" id="deletePostSubmitButton" class="btn btn-lg btn-block btn-danger btn-in-list" onclick="return areYouSure('{{ 'delete_entry_confirmation'|trans }}');">
+                                    <i class="fa fa-trash" aria-hidden="true"></i>
+                                    {{ 'delete_action'|trans }}
+                                </button>
+                            </form>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        {% endfor %}
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

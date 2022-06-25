@@ -1,66 +1,106 @@
 version: '2.1'
 executors:
-  python:
+  php:
     docker:
-      - image: python:latest
+      - image: php:8.1-alpine
+        name: php
     working_directory: ~/repo
+    resource_class: medium
+
+commands:
+  alpine_checkout:
+    description: Optimize Alpine checkout.
+    steps:
+      - run:
+          name: "Install requirements for checkout"
+          command: |
+            apk add --update git openssh-client curl make nano libzip-dev
+      - run:
+          name: "Install required PHP extensions"
+          command: |
+            docker-php-ext-install -j$(nproc) \
+                    opcache \
+                    zip \
+                ;
+      - checkout
 
 jobs:
-  unittest:
-    executor: python
+  composer:
+    executor: php
     steps:
-      - checkout
+      - alpine_checkout
+      - restore_cache:
+          key: composer-{{ checksum "composer.json" }}-{{ checksum "composer.lock" }}
       - run:
-          name: Run Unittest
-          command: python3 -m unittest discover .
+          name: composer
+          command: |
+            if [[ ! -f vendor/autoload.php ]]; then
+                curl https://getcomposer.org/composer-stable.phar --location --silent  --output /usr/bin/composer; \
+                chmod +x /usr/bin/composer; \
+                composer install --no-progress --no-interaction;
+            fi \
 
-  linter:
-    executor: python
+      - save_cache:
+          key: composer-{{ checksum "composer.json" }}-{{ checksum "composer.lock" }}
+          paths:
+            - ./vendor
+      - persist_to_workspace:
+          root: .
+          paths:
+            - vendor
+
+  static-analysis:
+    executor: php
     steps:
-      - checkout  
+      - alpine_checkout
+      - attach_workspace:
+          at: .
       - run:
-          name: Install pylint
-          command: pip3 install pylint
+          name: phpcs
+          command: |
+            cd tools/php-cs-fixer; \
+            curl https://getcomposer.org/composer-stable.phar --location --silent  --output /usr/bin/composer; \
+            chmod +x /usr/bin/composer; \
+            composer install --no-progress --no-interaction; \
+            cd .. \
+            vendor/bin/php-cs-fixer fix src --dry-run;
       - run:
-          name: Run pylint
-          command: pip3 install --no-cache-dir  -r docker/python/requirements.txt && pylint --rcfile=standard.rc src/ ./app.py
+          name: phpstan
+          command: make phpstan_command
 
-  sonarcloud:
-    docker:
-        - image: python:latest
+  tests:
+    executor: php
+    steps:
+      - alpine_checkout
+      - attach_workspace:
+          at: .
+      - run:
+          name: phpunit
+          command: make phpunit_command
+
+  security:
+    executor: php
     working_directory: ~/repo
     steps:
-      - checkout
+      - alpine_checkout
       - run:
-          name: Install Sonarqube
-          environment:
-            VERSION: 4.1.0.1829
+          name: Install SensioLabs Security Checker
           command: |
-            apt update
-            apt install unzip -y
-            mkdir -p /tmp/scanner
-            curl -Ol https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-${VERSION}-linux.zip
-            unzip -qq -o sonar-scanner-cli-${VERSION}-linux.zip -d /tmp/scanner
-            mv /tmp/scanner/sonar-scanner-${VERSION}-linux /usr/local/sonar-scanner
-            chmod +x /usr/local/sonar-scanner/bin/sonar-scanner
-            chmod +x /usr/local/sonar-scanner/jre/bin/java
+            curl -Ls https://github.com/fabpot/local-php-security-checker/releases/download/v1.2.0/local-php-security-checker_1.2.0_linux_amd64 -o /usr/local/bin/local-php-security-checker; \
+            chmod +x /usr/local/bin/local-php-security-checker;
       - run:
-          name: Run Sonarqube scanner
-          environment:
-            SONARQUBE_SCANNER_PARAMS: '{"sonar.host.url":"https://sonarcloud.io"}'
-            SONAR_SCANNER_OPTS: "-Xmx2048m"
-          command: |
-            if [[ -z ${CIRCLE_PULL_REQUEST} ]]; then \
-                /usr/local/sonar-scanner/bin/sonar-scanner; \
-            else \
-                /usr/local/sonar-scanner/bin/sonar-scanner -Dsonar.pullrequest.key=${CIRCLE_PULL_REQUEST##*/} -Dsonar.pullrequest.branch=${CIRCLE_BRANCH}; \
-            fi
+          name: Checks dependencies security vulnerabilities
+          command: local-php-security-checker
 
 workflows:
-  version: '2.1'
+  version: '2'
   Code quality:
     jobs:
-      - linter
-      - unittest
-      - sonarcloud:
-          context: SonarCloud
+      - composer
+      - security
+      - static-analysis:
+          requires:
+            - composer
+      - tests:
+          requires:
+            - composer

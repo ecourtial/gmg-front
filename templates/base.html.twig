@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>{% block title %}Give me a game{% endblock %}</title>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('assets/img/favicon.ico') }}">
+        {% block stylesheets %}
+            <link href="{{ asset('assets/css/bootstrap/bootstrap.min.css') }}" rel="stylesheet" />
+            <link href="{{ asset('assets/css/games.css') }}" rel="stylesheet" />
+        {% endblock %}
+        {% block javascripts %}
+            <script src="{{ asset('assets/js/bootstrap/bootstrap.bundle.min.js') }}"></script>
+            <script src="{{ asset('assets/js/functions.js') }}"></script>
+        {% endblock %}
+    </head>
+    <body>
+        {{ include('general/menu.html.twig') }}
+        <div id="content" class="container">
+            {% block screenTitle %}<h1>{{ screenTitle|raw }}</h1>{% endblock %}
+
+            {% block screenSubTitle %}
+                {% if screenSubTitle is defined %}
+                    <p class="subtitle">{{ screenSubTitle|raw }}</p>
+                {% endif %}
+            {% endblock %}
+
+            {% block screenDescription %}
+                {% if screenDescription is defined %}
+                    <p class="description">{{ screenDescription|raw }}</p>
+                {% endif %}
+            {% endblock %}
+
+            {% for message in app.flashes('alert') %}
+                <div class="alert alert-danger">
+                    {{ message|trans }}
+                </div>
+            {% endfor %}
+
+            {% for message in app.flashes('success') %}
+                <div class="alert alert-success">
+                    {{ message|trans }}
+                </div>
+            {% endfor %}
+
+            {% block body %}{% endblock %}
+        </div>
+    </body>
+</html>

@@ -1,0 +1,23 @@
+<ul>
+    {% for version in versions %}
+        <li>
+            <i>
+                {% for badge, alt in get_ownership_badge(version) %}
+                    {% set path = 'assets/img/badges/' ~ badge ~ '.png' %}
+                    <img src="{{ asset(path) }}" title="{{ alt|trans }}"/>
+                {% endfor %}
+                {{ version['gameTitle'] }}
+            </i>
+            ({{ version['platformName'] }})
+            - {{ version['id'] }}
+            {% for badge, alt in get_badges_for_version(version) %}
+                {% set path = 'assets/img/badges/' ~ badge ~ '.png' %}
+                <img src="{{ asset(path) }}" title="{{ alt|trans }}"/>
+            {% endfor %}
+            <a href="{{ path('version_details', {id: version['id']}) }}">{% trans %}see.details{% endtrans %}</a>
+            {% if is_granted('ROLE_USER') %}
+                - <a href="{{ url('edit_version', {id: version['id']}) }}">{{ 'menu.edit'|trans }}</a>
+            {% endif %}
+        </li>
+    {% endfor %}
+</ul>

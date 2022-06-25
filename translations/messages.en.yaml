@@ -1,0 +1,265 @@
+# Menu
+menu.home: Home
+greetings_collection: Greetings. Below are a few figures about my collection.
+menu.platforms: Platforms
+menu.one_random_solo: One random in solo
+menu.one_random_multi: One random in multiplayer
+menu.solo_sometimes: To play in solo sometimes
+menu.solo_recurring: To play in solo often
+menu.multi_sometimes: To play in multiplayer sometimes
+menu.multi_recurring: To play in multiplayer often
+menu.bgf: Best Games Forever
+menu.recurring: Recurring
+menu.sometimes: Sometimes
+menu.originals: Originals
+menu.schedule: Schedule
+menu.on_going: On going
+menu.to_do: To do
+menu.to_buy: To buy
+menu.to_watch_background: To watch in background
+menu.to_watch_serious: To watch with attention
+menu.stories: Stories
+menu.transactions: Transactions
+menu.search.button: Search
+menu.search.request: Enter game title keywords
+menu.games: Games
+menu.login: Login
+menu.user: User
+menu.change_password: Change my password
+menu.logout: Logout
+menu.add_game: Add a new game
+menu.save: Save
+menu.edit_game: "Edit a game: <i>%title%</i>"
+menu.edit: Edit
+menu.add_platform: Add a platform
+menu.edit_platform: "Edit a platform: <i>%name%</i>"
+menu.add_version: Add a new version
+menu.edit_version: Edit a version
+menu.add_story: Add a new story
+menu.edit_story: Edit a story
+menu.add_version_on_platform: Add a new game on this platform
+menu.add_copy: Add a new copy
+menu.edit_copy: Edit a copy
+menu.actions: Actions
+menu.add_transaction: Add a transaction
+menu.filters: Filters
+menu.PC_big_boxes: Big boxes on PC
+menu.finished: Finished
+menu.not_finished: Not finished
+menu.physical: Physical
+menu.virtual: Virtual
+
+# Home
+home_title: Give me a game (GMG)
+some_figures: Some figures
+
+# Hall of game
+my_hall_of_fame: My all of fame
+hof-criteria-reminder: Here are the criteria of the Hall of fame
+hof-desc1: the year is not the one when the game was released. It can be the one when the player played at this game for the first time, or even later when it played a lot to it, enough to make it enter the Hall of Fame;
+hof-desc2: the game must have had an impact on the player (scenario, content, graphics, context...);
+hof-desc3: the ranking in the Hall of fame does not represent the CURRENT value of the game. It is all related to the context.
+app_figure_records: There are currently <strong>%count%</strong> games registered in the application.
+app_figure_versions: For a total of <strong>%count%</strong> different versions of these games, across <strong>%platform_count%</strong> platforms.
+app_figure_for_these_versions: For these versions
+app_figure_records_own: I own <strong>%count%</strong> of them;
+app_figure_records_finished: I have finished <strong>%count%</strong> of them.
+app_figure_records_to_do_or_to_watch: There are <strong>%count%</strong> versions to watch or to do.
+hall_of_fame_title: There are currently <strong>%count%</strong> versions in the Hall of fame
+entries: entries
+
+# Platforms
+platforms.title: Platforms (%count% entries)
+games_for_platform_title: Games for the platform <strong>%name%</strong> (%count%)
+platform_has_versions: Cannot delete this platform because it has versions.
+platform_name: Name
+
+# Games
+games_list_title: Games (%count% entries)
+games_list_subtitle: Games registered in the application, for %count% version(s)
+game_versions_list: <strong>%title%</strong>
+games_versions_subtitle: There are %resultCount% version(s). I have a copy for %copyCount% of them.
+games_has_versions: Cannot delete this game because it has versions.
+games_title: Title
+games_notes: Notes
+
+# Versions
+have_at_least_one_copy: I have at least one copy of this version.
+have_no_copy: I don't have any copy of this version.
+in_the_hall_of_fame: Is in the hall of fame.
+to_do_with_help: To do with help.
+played_it_a_lot: I played at it a lot.
+to_buy: To buy.
+top_game: Is a top game.
+best_game_forever: In the 'best games forever list'
+game.version_details: <strong>%title%</strong> on <strong>%platform%</strong>
+see_copies: See the copies for this game
+have_copy_for_x_of_them: I have a copy for %count% of them
+best_game_forever_title: Best Games Forever (%count% entries)
+best_game_forever_description: Games that, despite their age, are timeless and still gems today (different of the hall of fame entries, since the hall of fame is on the context of the era)
+single_player_recurring_title: Single player recurring (%count% entries)
+single_player_recurring_description: To play in solo regularly
+multi_player_recurring_title: Multiplayer recurring (%count% entries)
+multi_player_recurring_description: To play in multiplayer regularly
+single_player_solo_title: To do in single player sometimes (%count% entries)
+single_player_sometimes_description: To play at it in solo mode, from times to times
+multi_player_sometimes_title: To do in multiplayer sometimes (%count% entries)
+multi_player_sometimes_description: To play at it in multiplayer mode, from times to times
+originals.title: Originals (%count% entries)
+originals.description: Game for which I have an original (legit) copy.
+on_going_title: Ongoing (%count% entries)
+on_going_description: Games I am currently playing at
+to_do_title: To do (%count% entries)
+to_do_description: Versions I would like to play at
+to_buy_title: To buy (%count% entries)
+to_buy_description: Versions I would like to buy
+with_priority: With priority
+without_priority: Without priority
+to_watch_background_title: To watch in background (%count% entries)
+to_watch_background_description: ''
+to_watch_serious_title: To watch with attention (%count% entries)
+to_watch_serious_description: ''
+stories_title: Stories (%count% entries)
+stories_description: Games I watched or played at
+transactions_title: Transactions (%count% entries)
+transactions_description: Buying and selling games
+search_results: Search results (%count% entries)
+search_results_subtitle: For the query '%query%'
+entry_deleted_with_success: Entry deleted with success.
+delete_entry_confirmation: Are you sure you want to delete this entry?
+delete_action: Delete this entry
+version_has_children: Cannot delete this version because it has related entries (stories, copies or transactions).
+finished_title: Finished versions (%count% entries)
+finished_description: Game I did finish
+not_finished_title: No finished versions (%count% entries)
+not_finished_description: Game I did not finish yet
+physical_title: Physical versions (%count% entries)
+physical_description: Versions for which I have a physical copy
+virtual_title: Virtual versions (%count% entries)
+virtual_description: Versions for which I have a virtual copy
+bigBoxes_title: Versions with a big box copy (%count%)
+bigBoxes_description: On all the platforms
+
+# Various
+see.game: Game
+see.platform: Platform
+see.games: See games
+see.details: Details
+see.not_available: Not available
+see.yes: Yes
+see.no: No
+see.random: Random
+no_result: No result
+see.solo: Solo
+see.multiplayer: Multiplayer
+see.versions: "{0}%qty% version|{1}%qty% version|]1,Inf[ %qty% versions"
+see.update: Update
+see.invalid_csrf_token: Invalid CSRF token.
+see.password_changed_with_success: The password has been changed with success.
+see.year: Year
+see.month: Month
+see.day: Day
+see.none: None
+see.version: See the version
+see.criteria: Criteria
+
+# Generic fields for entities
+entity.id: Id
+entity.badges: Badges
+entity.platformId: Platform id
+entity.platform: Platform
+entity.gameId: Game id
+entity.game: Game
+entity.versionId: Version id
+entity.version: Which game version?
+entity.releaseYear: Release year
+entity.todoSoloSometimes: To do sometimes in solo mode
+entity.todoMultiplayerSometimes: To do sometimes in multiplayer mode
+entity.singleplayerRecurring: To do, regularly, in solo mode
+entity.multiplayerRecurring: To do, regularly, in multiplayer mode
+entity.toDo: To do
+entity.toDoPosition: Position in the to do list
+entity.todoWithHelp: To do with Help
+entity.toBuy: To buy
+entity.toWatchBackground: To watch, in background
+entity.toWatchSerious: To watch, with focus
+entity.toWatchPosition: Position in the to watch list
+entity.toRewatch: To watch again later
+entity.topGame: Top game
+entity.hallOfFame: In the hall of fame
+entity.hallOfFameYear: Year of the presence in the hall of fame
+entity.hallOfFamePosition: Position, int the given year, in the hall of fame
+entity.playedItOften: I played at it a lot, often
+entity.ongoing: I am currently playing at it
+entity.bestGameForever: In the "Best games forever list"
+entity.finished: Did I finish this game at least once?
+entity.comments: Comments
+entity.storyCount: This version has %count% story/stories related to it.
+entity.copyCount: This version has %count% copy/copies.
+entity.type: Type
+entity.original: Original
+entity.boxType: Box type
+entity.casingType: Casing type
+entity.onCompilation: On compilation
+entity.reedition: Reedition
+entity.hasManual: Has manual
+entity.transactionCount: Transaction count
+entity.status: Status
+entity.played_at_it: I played at it
+entity.watched_it: I watched it
+entity.transaction_in: In
+entity.transaction_out: Out
+entity.language: Language
+entity.supportType: Support type
+
+# Copies
+copy: copy
+copies_for_version_title: Copies for the version <strong>%title%</strong> on <strong>%platform%</strong> (%count%)
+
+# Transactions
+transaction.no_version_id_and_no_copy_id: You need to provide the version id and/or the copy id!
+transaction.bought: Bought
+transaction.sold: Sold
+
+# Stories
+story_position: Position in the year
+
+month.january: January
+month.february: February
+month.march: March
+month.april: April
+month.may: May
+month.june: June
+month.july: July
+month.august: August
+month.september: September
+month.october: October
+month.november: November
+month.december: December
+
+# Security
+user.connexion.title: Connexion
+user.label.form.label: Login form
+user.label.form.username: Username
+user.label.form.password: Password
+user.label.form.authenticate: Connexion
+user.label.form.current_password: Current password
+user.label.form.new_password: New password
+user.label.form.new_password_confirm: Confirm new password
+user.label.form.new_password_no_match: The new password confirmation must be identical to the new password.
+
+# Authentication
+authentication.unknown_error: Unknown authentication error.
+authentication.user_not_found_error: User not found.
+authentication.bad_credentials_error: Bad credentials.
+authentication.bad_current_password: The current password is invalid.
+authentication.inactive_account_error: User account is not active.
+authentication.invalid_captcha_error: Invalid captcha answer.
+
+# Languages
+language_multi: Multilingual
+language_english: English
+language_french: French
+language_spanish: Spanish
+language_german: German
+language_italian: Italian

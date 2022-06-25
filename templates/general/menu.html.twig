@@ -1,0 +1,84 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="{{ url('homepage') }}">{{ 'menu.home'|trans }}</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url('games_list') }}">{{ 'menu.games'|trans }}</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url('platforms_list') }}">{{ 'menu.platforms'|trans }}</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        {{ 'see.random'|trans }}
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="{{ path('version_random', {filter: 'singleplayer_random'}) }}">{{ 'menu.one_random_solo'|trans }}</a></li>
+                        <li><a class="dropdown-item" href="{{ path('version_random', {filter: 'multiplayer_random'}) }}">{{ 'menu.one_random_multi'|trans }}</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        {{ 'menu.filters'|trans }}
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="{{ path('versions_filtered_list', {filter: 'originals'}) }}">{{ 'menu.originals'|trans }}</a></li>
+                        <li><a class="dropdown-item" href="{{ path('versions_filtered_list', {filter: 'bigBoxes'}) }}">{{ 'menu.PC_big_boxes'|trans }}</a></li>
+                        <li><a class="dropdown-item" href="{{ path('versions_filtered_list', {filter: 'finished'}) }}">{{ 'menu.finished'|trans }}</a></li>
+                        <li><a class="dropdown-item" href="{{ path('versions_filtered_list', {filter: 'not_finished'}) }}">{{ 'menu.not_finished'|trans }}</a></li>
+                        <li><a class="dropdown-item" href="{{ path('versions_filtered_list', {filter: 'bgf'}) }}">{{ 'menu.bgf'|trans }}</a></li>
+                        <li><a class="dropdown-item" href="{{ path('versions_filtered_list', {filter: 'solo_recurring'}) }}">{{ 'menu.solo_recurring'|trans }}</a></li>
+                        <li><a class="dropdown-item" href="{{ path('versions_filtered_list', {filter: 'multi_recurring'}) }}">{{ 'menu.multi_recurring'|trans }}</a></li>
+                        <li><a class="dropdown-item" href="{{ path('versions_filtered_list', {filter: 'sometimes_solo'}) }}">{{ 'menu.solo_sometimes'|trans }}</a></li>
+                        <li><a class="dropdown-item" href="{{ path('versions_filtered_list', {filter: 'multi_sometimes'}) }}">{{ 'menu.multi_sometimes'|trans }}</a></li>
+                        <li><a class="dropdown-item" href="{{ path('versions_filtered_list', {filter: 'physical'}) }}">{{ 'menu.physical'|trans }}</a></li>
+                        <li><a class="dropdown-item" href="{{ path('versions_filtered_list', {filter: 'virtual'}) }}">{{ 'menu.virtual'|trans }}</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        {{ 'menu.schedule'|trans }}
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="{{ path('versions_filtered_list', {filter: 'on_going'}) }}">{{ 'menu.on_going'|trans }}</a></li>
+                        <li><a class="dropdown-item" href="{{ path('versions_with_priority', {filter: 'to_do'}) }}">{{ 'menu.to_do'|trans }}</a></li>
+                        <li><a class="dropdown-item" href="{{ path('versions_with_priority', {filter: 'to_watch_in_background'}) }}">{{ 'menu.to_watch_background'|trans }}</a></li>
+                        <li><a class="dropdown-item" href="{{ path('versions_with_priority', {filter: 'to_watch_serious'}) }}">{{ 'menu.to_watch_serious'|trans }}</a></li>
+                        <li><a class="dropdown-item" href="{{ path('versions_filtered_list', {filter: 'to_buy'}) }}">{{ 'menu.to_buy'|trans }}</a></li>
+                        <li><a class="dropdown-item" href="{{ url('story_list') }}">{{ 'menu.stories'|trans }}</a></li>
+                        <li><a class="dropdown-item" href="{{ url('transaction_list') }}">{{ 'menu.transactions'|trans }}</a></li>
+                    </ul>
+                </li>
+                <form class="d-flex" method="post" action="{{ url('version_search') }}">
+                    <input class="form-control me-2" name="query" type="search" placeholder="{{ 'menu.search.request'|trans }}" aria-label="{{ 'menu.search.button'|trans }}" required>
+                    <button class="btn btn-outline-success" id="searchPostsButton" type="submit">{{ 'menu.search.button'|trans }}</button>
+                </form>
+                {% if is_granted('ROLE_USER') %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            {{ 'menu.user'|trans }}
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ url('change_password') }}">{{ 'menu.change_password'|trans }}</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ logout_path() }}">{{ 'menu.logout'|trans }}</a>
+                            </li>
+                        </ul>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url('security_login') }}">{{ 'menu.login'|trans }}</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>

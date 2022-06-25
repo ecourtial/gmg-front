@@ -1,7 +1,0 @@
-{
-    "db_host": "mysql",
-    "db_user": "game",
-    "db_password": "azerty",
-    "database": "games",
-    "secret": "replaceThisSecret"
-}
