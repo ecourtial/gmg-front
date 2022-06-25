@@ -68,16 +68,6 @@ jobs:
           name: phpstan
           command: make phpstan_command
 
-  tests:
-    executor: php
-    steps:
-      - alpine_checkout
-      - attach_workspace:
-          at: .
-      - run:
-          name: phpunit
-          command: make phpunit_command
-
   security:
     executor: php
     working_directory: ~/repo
@@ -99,8 +89,5 @@ workflows:
       - composer
       - security
       - static-analysis:
-          requires:
-            - composer
-      - tests:
           requires:
             - composer
