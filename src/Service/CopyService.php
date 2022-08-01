@@ -19,6 +19,7 @@ class CopyService extends AbstractService
         'Cardboard sleeve',
         'Paper Sleeve',
         'Plastic Sleeve',
+        'Plastic tube',
         'Other',
         'None',
     ];

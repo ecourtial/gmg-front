@@ -16,6 +16,7 @@
                 <th scope="col">{% trans %} entity.versionId {% endtrans %}</th>
                 <th scope="col">{% trans %} entity.type {% endtrans %}</th>
                 <th scope="col">{% trans %} entity.original {% endtrans %}</th>
+                <th scope="col">{% trans %} entity.isROM {% endtrans %}</th>
                 <th scope="col">{% trans %} entity.language {% endtrans %}</th>
                 <th scope="col">{% trans %} entity.boxType {% endtrans %}</th>
                 <th scope="col">{% trans %} entity.casingType {% endtrans %}</th>
@@ -45,6 +46,7 @@
                 <td>{{ copy['versionId'] }}</td>
                 <td>{{ copy['type'] }}</td>
                 <td><img src="{{ get_status_badge(copy['original']) }}"/></td>
+                <td><img src="{{ get_status_badge(copy['isROM']) }}"/></td>
                 <td>{{ constant('App\\Service\\CopyService::LANGUAGES')[copy['language']]|trans }}</td>
                 <td>{{ copy['boxType'] }}</td>
                 <td>{{ copy['casingType'] }}</td>
