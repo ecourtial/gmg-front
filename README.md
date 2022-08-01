@@ -23,3 +23,8 @@ Provided under the MIT licence.
 ![Platform list](docs/platforms.jpg "Platform list")
 
 ![Version list](docs/versions.jpg "Version list")
+
+## Changelog
+
+* v1.1 : follow the 4.1 version of the back (support of ROM copy type and Plastic tube casing type).
+

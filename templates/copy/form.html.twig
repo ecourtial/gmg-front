@@ -23,6 +23,14 @@
             </div>
 
             <div class="form-group">
+                <label for="original">{{ 'entity.isROM'|trans }}</label>
+                <select name="isROM">
+                    <option value="0" {% if copy['isROM']|default(0) == 0 %}selected{% endif %}>{{ 'see.no'|trans }}</option>
+                    <option value="1" {% if copy['isROM']|default(0) == 1 %}selected{% endif %}>{{ 'see.yes'|trans }}</option>
+                </select>
+            </div>
+
+            <div class="form-group">
                 <label for="original">{{ 'entity.original'|trans }}</label>
                 <select name="original">
                     <option value="0" {% if copy['original']|default(0) == 0 %}selected{% endif %}>{{ 'see.no'|trans }}</option>
