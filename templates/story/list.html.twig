@@ -5,7 +5,7 @@
         <ul>
         {% for story in entries %}
             <li>
-                {{ story['id'] }} - {{ story['gameTitle'] }} ({{ story['platformName'] }})
+                {{ story['position'] }} - {{ story['gameTitle'] }} ({{ story['platformName'] }})
                 {% for badge, alt in get_story_badges(story) %}
                     {% set path = 'assets/img/badges/' ~ badge ~ '.png' %}
                     <img src="{{ asset(path) }}" title="{{ alt|trans }}"/>
