@@ -23,3 +23,9 @@ Provided under the MIT licence.
 ![Platform list](docs/platforms.jpg "Platform list")
 
 ![Version list](docs/versions.jpg "Version list")
+
+## Changelog
+
+### v1.1 : 
+* Follow the 4.1 version of the back (support of ROM copy type and Plastic tube casing type).
+* In the stories screen, instead of showing the story id, we show the story position.

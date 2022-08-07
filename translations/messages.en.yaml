@@ -211,6 +211,7 @@ entity.transaction_in: In
 entity.transaction_out: Out
 entity.language: Language
 entity.supportType: Support type
+entity.isROM: Is a ROM
 
 # Copies
 copy: copy
