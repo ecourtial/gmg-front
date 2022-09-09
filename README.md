@@ -26,6 +26,10 @@ Provided under the MIT licence.
 
 ## Changelog
 
-### v1.1 : 
+### v1.2.0
+* Added a separation for ranking sequences (1-10, 11-20...) in the todo list.
+* The API error message shows the URL that was requested.
+
+### v1.1.0 : 
 * Follow the 4.1 version of the back (support of ROM copy type and Plastic tube casing type).
 * In the stories screen, instead of showing the story id, we show the story position.
