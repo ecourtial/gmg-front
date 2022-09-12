@@ -216,6 +216,23 @@ class VersionService extends AbstractService
         }
         $orderedResult['ownedCount'] = $count;
 
+        // Now order by range
+        $min = -9;
+        $max = 0;
+        $range = "$min-$max";
+        $versions = [];
+        foreach ($orderedResult['withPriority'] as $value) {
+            if ($value['toDoPosition'] > $max) {
+                $min = $max + 1;
+                $max = $min + 9;
+                $range = "$min-$max";
+                $versions[$range] = [];
+            }
+            $versions[$range][] = $value;
+        }
+        $orderedResult['withPriority'] = $versions ;
+        // End order by range
+
         return $orderedResult;
     }
 

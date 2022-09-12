@@ -26,11 +26,13 @@ abstract class Client
             ['Content-Type' => 'application/json']
         );
 
+        $targetUrl = $this->backendUrl . $query;
+
         try {
             return \json_decode(
                 $this->client->request(
                     $method,
-                    $this->backendUrl . $query,
+                    $targetUrl,
                     ['headers' => $headers, 'body' => \json_encode($payload)]
                 )->getContent(),
                 true
@@ -38,7 +40,7 @@ abstract class Client
         } catch (
         ClientExceptionInterface|TransportExceptionInterface $e
         ) {
-            throw new GenericApiException($e);
+            throw new GenericApiException($e, $targetUrl);
         }
     }
 }

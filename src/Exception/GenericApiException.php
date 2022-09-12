@@ -11,12 +11,12 @@ class GenericApiException extends \Exception
     private ?int $apiReturnCode = null;
     private ?string $apiOriginalMessage = null;
 
-    public function __construct(\Throwable $previous)
+    public function __construct(\Throwable $previous, string $targetUrl)
     {
         if ($previous->getCode() === 0) {
             $message = 'Impossible to contact the backend!';
         } else {
-            $message = "The API return an unexpected HTTP status code: {$previous->getCode()}.";
+            $message = "The API return an unexpected HTTP status code: {$previous->getCode()} when trying to access the following URL: '$targetUrl'.";
 
             if ($previous instanceof HttpExceptionInterface) {
                 $content = \json_decode($previous->getResponse()->getContent(false), true);
