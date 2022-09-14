@@ -120,7 +120,7 @@ class VersionController extends AbstractController
                 'screenTitle' => $this->translator
                     ->trans(
                         VersionService::FILTERS_WITH_PRIORITY[$filter]['title'],
-                        ['%count%' => \count($data['withPriority']) + \count($data['withoutPriority'])]
+                        ['%count%' => $data['totalResultCount']]
                     ),
                 'screenSubTitle' => $this->translator
                     ->trans('have_copy_for_x_of_them', ['%count%' => $data['ownedCount']]),

@@ -215,6 +215,7 @@ class VersionService extends AbstractService
             }
         }
         $orderedResult['ownedCount'] = $count;
+        $orderedResult['totalResultCount'] = $result['totalResultCount'];
 
         // Now order by range
         $min = -9;
