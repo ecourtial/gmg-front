@@ -26,6 +26,9 @@ Provided under the MIT licence.
 
 ## Changelog
 
+### v1.2.1
+* Fixed a bug when counting the versions in the todo list.
+
 ### v1.2.0
 * Added a separation for ranking sequences (1-10, 11-20...) in the todo list.
 * The API error message shows the URL that was requested.
