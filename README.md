@@ -5,7 +5,7 @@ A front-end implementation for the project [GMG](https://github.com/ecourtial/gm
 
 ## Installation
 * Upload the code on your server.
-* Edit the _.env_ file to fill it with your values.
+* Copy the _.env_ file to a _.env.local_ one and fill it with your values.
 * Run the _composer install_ command.
 
 ## Adding extra features
@@ -25,6 +25,9 @@ Provided under the MIT licence.
 ![Version list](docs/versions.jpg "Version list")
 
 ## Changelog
+
+### v1.3.0
+* Updated installation doc.
 
 ### v1.2.1
 * Fixed a bug when counting the versions in the todo list.
