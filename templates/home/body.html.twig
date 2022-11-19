@@ -7,7 +7,7 @@
         <li>{% trans with {'%count%': data['versionCount'], '%platform_count%': data['platformCount']}%}app_figure_versions{% endtrans %}</li>
         <li>{% trans %}app_figure_for_these_versions{% endtrans %}:
             <ul>
-                <li>{% trans with {'%count%': data['ownedGameCount']}%}app_figure_records_own{% endtrans %}</li>
+                <li>{% trans with {'%count%': data['ownedGameCount'], '%original_count%': data['originalCount']}%}app_figure_records_own{% endtrans %}</li>
                 <li>{% trans with {'%count%': data['versionFinishedCount']}%}app_figure_records_finished{% endtrans %}</li>
             </ul>
         <li>{% trans with {'%count%': data['toDoSoloOrToWatch']}%}app_figure_records_to_do_or_to_watch{% endtrans %}</li>

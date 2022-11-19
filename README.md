@@ -28,6 +28,7 @@ Provided under the MIT licence.
 
 ### v1.3.0
 * Updated installation doc.
+* We display on the homepage the count of versions for which we have at least one original copy.
 
 ### v1.2.1
 * Fixed a bug when counting the versions in the todo list.

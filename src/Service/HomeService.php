@@ -4,10 +4,21 @@ declare(strict_types=1);
 
 namespace App\Service;
 
+use App\Client\ClientFactory;
+
 class HomeService extends AbstractService
 {
+    public function __construct(
+        ClientFactory $clientFactory,
+        private VersionService $versionService
+    ) {
+        parent::__construct($clientFactory);
+
+    }
+
     public function getHomeData(): array
     {
+        // @TODO redacto: use other dedicated services with result limit set to 1?
         $requests = [
             'gameCount' => $this->clientFactory->getAnonymousClient()->get('games?page=1&limit=1'),
             'versionCount' => $this->clientFactory->getAnonymousClient()->get('versions?page=1&limit=1'),
@@ -36,6 +47,7 @@ class HomeService extends AbstractService
         $responses['toDoSoloOrToWatch'] = $responses['toDoCount'] + $responses['toWatchBackgroundCount']+ $responses['toWatchSeriousCount'];
         $responses['hallOfFameGamesCount'] = \count($requests['hallOfFameGames']['result']);
         $responses['hallOfFameGames'] = $this->orderGames($requests['hallOfFameGames']['result']);
+        $responses['originalCount'] = $this->versionService->getFilteredList('originals', 1)['totalResultCount'];
 
         return $responses;
     }

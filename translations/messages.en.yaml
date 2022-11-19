@@ -62,7 +62,7 @@ hof-desc3: the ranking in the Hall of fame does not represent the CURRENT value 
 app_figure_records: There are currently <strong>%count%</strong> games registered in the application.
 app_figure_versions: For a total of <strong>%count%</strong> different versions of these games, across <strong>%platform_count%</strong> platforms.
 app_figure_for_these_versions: For these versions
-app_figure_records_own: I own <strong>%count%</strong> of them;
+app_figure_records_own: I own at least one copy for <strong>%count%</strong> of them (I have at least one original copy for <strong>%original_count%</strong> different versions);
 app_figure_records_finished: I have finished <strong>%count%</strong> of them.
 app_figure_records_to_do_or_to_watch: There are <strong>%count%</strong> versions to watch or to do.
 hall_of_fame_title: There are currently <strong>%count%</strong> versions in the Hall of fame
