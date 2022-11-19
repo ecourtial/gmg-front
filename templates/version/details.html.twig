@@ -1,5 +1,6 @@
 {% extends 'base.html.twig' %}
 {% block body %}
+    <a href="{{ path('game_details', {id: version['gameId']}) }}">{{ 'see_game_versions'|trans }}</a>
     {% if is_granted('ROLE_USER') %}
         <form action="{{ url('delete_version', {id: version['id']}) }}" method="post" data-confirmation="true" id="delete-form">
             <input type="hidden" name="_csrf_token" value="{{ csrf_token('delete_version') }}" />

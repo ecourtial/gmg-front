@@ -41,7 +41,8 @@ class CopyController extends AbstractController
                             '%count%' => $copies['totalResultCount']
                         ]
                     ),
-                'copies' => $copies['result']
+                'copies' => $copies['result'],
+                'versionId' => $versionId,
             ]
         );
     }
