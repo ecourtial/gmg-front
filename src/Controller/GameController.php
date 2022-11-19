@@ -24,9 +24,9 @@ class GameController extends AbstractController
     }
 
     #[Route('/games', methods: ['GET'], name: 'games_list')]
-    public function list(): Response
+    public function list(?array $data = null): Response
     {
-        $data = $this->service->getList();
+        $data = $data ?? $this->service->getList();
 
         return $this->render(
             'game/list.html.twig',
@@ -147,5 +147,18 @@ class GameController extends AbstractController
         $this->service->update($id, $payload)['id'];
 
         return $this->redirectToRoute('game_details', ['id' => $id]);
+    }
+
+    #[Route('/games/search', methods: ['POST'], name: 'game_search')]
+    public function search(Request $request): Response
+    {
+        $query = \trim($request->get('query', ''));
+        if ($query !== '') {
+            $data = $this->service->search($query);
+        } else {
+            $data = ['result' => [], 'totalResultCount' => 0, 'versionCount' => 0];
+        };
+
+        return $this->list($data);
     }
 }

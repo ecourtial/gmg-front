@@ -55,8 +55,12 @@
                         <li><a class="dropdown-item" href="{{ url('transaction_list') }}">{{ 'menu.transactions'|trans }}</a></li>
                     </ul>
                 </li>
-                <form class="d-flex" method="post" action="{{ url('version_search') }}">
+                <form class="d-flex" method="post" action="{{ url('search') }}">
                     <input class="form-control me-2" name="query" type="search" placeholder="{{ 'menu.search.request'|trans }}" aria-label="{{ 'menu.search.button'|trans }}" required>
+                    <select class="form-select" name="query_type" aria-label="{{ 'menu.search.button'|trans }}">
+                        <option selected value="version">{{ 'see.versions_label'|trans }}</option>
+                        <option value="game">{{ 'menu.games'|trans }}</option>
+                    </select>
                     <button class="btn btn-outline-success" id="searchPostsButton" type="submit">{{ 'menu.search.button'|trans }}</button>
                 </form>
                 {% if is_granted('ROLE_USER') %}

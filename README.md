@@ -31,6 +31,7 @@ Provided under the MIT licence.
 * We display on the homepage the count of versions for which we have at least one original copy.
 * In the version list, there is a link to go to the related game.
 * In the copy list, there is a link to go to the related version.
+* You can now select the research type: version or games.
 
 ### v1.2.1
 * Fixed a bug when counting the versions in the todo list.

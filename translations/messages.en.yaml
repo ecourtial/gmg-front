@@ -154,6 +154,7 @@ no_result: No result
 see.solo: Solo
 see.multiplayer: Multiplayer
 see.versions: "{0}%qty% version|{1}%qty% version|]1,Inf[ %qty% versions"
+see.versions_label: Versions
 see.update: Update
 see.invalid_csrf_token: Invalid CSRF token.
 see.password_changed_with_success: The password has been changed with success.
