@@ -33,6 +33,7 @@ Provided under the MIT licence.
 * In the copy list, there is a link to go to the related version.
 * You can now select the research type: version or games.
 * Added a "Remember me" feature when logging-in.
+* Jump from Symfony 6.0 to 6.2.
 
 ### v1.2.1
 * Fixed a bug when counting the versions in the todo list.
