@@ -249,6 +249,7 @@ user.label.form.authenticate: Connexion
 user.label.form.current_password: Current password
 user.label.form.new_password: New password
 user.label.form.new_password_confirm: Confirm new password
+user.label.form.remember_me: Keep me logged in
 user.label.form.new_password_no_match: The new password confirmation must be identical to the new password.
 
 # Authentication
