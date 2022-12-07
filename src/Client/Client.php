@@ -38,7 +38,7 @@ abstract class Client
                 true
             );
         } catch (
-        ClientExceptionInterface|TransportExceptionInterface $e
+            ClientExceptionInterface|TransportExceptionInterface $e
         ) {
             throw new GenericApiException($e, $targetUrl);
         }

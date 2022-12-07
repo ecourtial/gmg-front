@@ -18,7 +18,7 @@ class SearchController extends AbstractController
         $query = \trim($request->get('query_type', ''));
         if ('game' === $query) {
             return $this->forward(GameController::class . '::search');
-        } elseif('version' === $query) {
+        } elseif ('version' === $query) {
             return $this->forward(VersionController::class . '::search');
         } else {
             throw new NotFoundHttpException("Unknown research query type: '$query'");

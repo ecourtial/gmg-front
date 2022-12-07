@@ -13,7 +13,6 @@ class HomeService extends AbstractService
         private VersionService $versionService
     ) {
         parent::__construct($clientFactory);
-
     }
 
     public function getHomeData(): array
