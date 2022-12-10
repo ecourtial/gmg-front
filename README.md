@@ -13,7 +13,7 @@ A front-end implementation for the project [GMG](https://github.com/ecourtial/gm
 
 ## Stack
 * PHP 8.1
-* Symfony 6.0
+* Symfony 6.2
 
 ## Licence
 Provided under the MIT licence.
@@ -33,7 +33,8 @@ Provided under the MIT licence.
 * In the copy list, there is a link to go to the related version.
 * You can now select the research type: version or games.
 * Added a "Remember me" feature when logging-in.
-* Jump from Symfony 6.0 to 6.2.
+* Jumped from Symfony 6.0 to 6.2.
+* Updated Twig to remove a CVE.
 
 ### v1.2.1
 * Fixed a bug when counting the versions in the todo list.
