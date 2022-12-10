@@ -5,7 +5,7 @@ A front-end implementation for the project [GMG](https://github.com/ecourtial/gm
 
 ## Installation
 * Upload the code on your server.
-* Edit the _.env_ file to fill it with your values.
+* Copy the _.env_ file to a _.env.local_ one and fill it with your values.
 * Run the _composer install_ command.
 
 ## Adding extra features
@@ -13,7 +13,7 @@ A front-end implementation for the project [GMG](https://github.com/ecourtial/gm
 
 ## Stack
 * PHP 8.1
-* Symfony 6.0
+* Symfony 6.2
 
 ## Licence
 Provided under the MIT licence.
@@ -25,6 +25,16 @@ Provided under the MIT licence.
 ![Version list](docs/versions.jpg "Version list")
 
 ## Changelog
+
+### v1.3.0
+* Updated installation doc.
+* We display on the homepage the count of versions for which we have at least one original copy.
+* In the version list, there is a link to go to the related game.
+* In the copy list, there is a link to go to the related version.
+* You can now select the research type: version or games.
+* Added a "Remember me" feature when logging-in.
+* Jumped from Symfony 6.0 to 6.2.
+* Updated Twig to remove a CVE.
 
 ### v1.2.1
 * Fixed a bug when counting the versions in the todo list.

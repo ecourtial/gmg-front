@@ -131,7 +131,7 @@ class VersionController extends AbstractController
         );
     }
 
-    #[Route('/games/search', methods: ['POST'], name: 'version_search')]
+    #[Route('/versions/search', methods: ['POST'], name: 'version_search')]
     public function search(Request $request): Response
     {
         $query = \trim($request->get('query', ''));

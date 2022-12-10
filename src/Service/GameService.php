@@ -22,6 +22,22 @@ class GameService extends AbstractService
         return $data;
     }
 
+    public function search(string $keywords): array
+    {
+        $data = $this->clientFactory
+            ->getAnonymousClient()
+            ->get("games?title[]={$keywords}&orderBy[]=title-asc&page=1&limit=" . self::MAX_RESULT_COUNT);
+
+        $versionCount = 0;
+        foreach ($data['result'] as $result) {
+            $versionCount += $result['versionCount'];
+        }
+
+        $data['versionCount'] = $versionCount;
+
+        return $data;
+    }
+
     protected function getResourceType(): string
     {
         return 'game';

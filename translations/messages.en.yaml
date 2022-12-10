@@ -62,7 +62,7 @@ hof-desc3: the ranking in the Hall of fame does not represent the CURRENT value 
 app_figure_records: There are currently <strong>%count%</strong> games registered in the application.
 app_figure_versions: For a total of <strong>%count%</strong> different versions of these games, across <strong>%platform_count%</strong> platforms.
 app_figure_for_these_versions: For these versions
-app_figure_records_own: I own <strong>%count%</strong> of them;
+app_figure_records_own: I own at least one copy for <strong>%count%</strong> of them (I have at least one original copy for <strong>%original_count%</strong> different versions);
 app_figure_records_finished: I have finished <strong>%count%</strong> of them.
 app_figure_records_to_do_or_to_watch: There are <strong>%count%</strong> versions to watch or to do.
 hall_of_fame_title: There are currently <strong>%count%</strong> versions in the Hall of fame
@@ -82,6 +82,7 @@ games_versions_subtitle: There are %resultCount% version(s). I have a copy for %
 games_has_versions: Cannot delete this game because it has versions.
 games_title: Title
 games_notes: Notes
+see_game_versions: See all the versions of this game
 
 # Versions
 have_at_least_one_copy: I have at least one copy of this version.
@@ -153,6 +154,7 @@ no_result: No result
 see.solo: Solo
 see.multiplayer: Multiplayer
 see.versions: "{0}%qty% version|{1}%qty% version|]1,Inf[ %qty% versions"
+see.versions_label: Versions
 see.update: Update
 see.invalid_csrf_token: Invalid CSRF token.
 see.password_changed_with_success: The password has been changed with success.
@@ -247,6 +249,7 @@ user.label.form.authenticate: Connexion
 user.label.form.current_password: Current password
 user.label.form.new_password: New password
 user.label.form.new_password_confirm: Confirm new password
+user.label.form.remember_me: Keep me logged in
 user.label.form.new_password_no_match: The new password confirmation must be identical to the new password.
 
 # Authentication

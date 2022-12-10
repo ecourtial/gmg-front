@@ -40,7 +40,7 @@ class BadgeExtension extends AbstractExtension
 
     private const TRANSACTIONS_IN_BADGE = ['Bought', 'Loan-out-return', 'Loan-in'];
 
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new TwigFunction('get_ownership_badge', [$this, 'getOwnershipBadge']),

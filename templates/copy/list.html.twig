@@ -1,5 +1,6 @@
 {% extends 'base.html.twig' %}
 {% block body %}
+    <a href="{{ path('version_details', {id: versionId}) }}">{{ 'see.version'|trans }}</a>
     <table class="table">
         <thead>
             <tr>
