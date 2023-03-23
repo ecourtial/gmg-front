@@ -26,6 +26,9 @@ Provided under the MIT licence.
 
 ## Changelog
 
+### v1.4.0
+* Update to follow the 4.2 release of the back (add new support types and add a region field to copies).
+
 ### v1.3.0
 * Updated installation doc.
 * We display on the homepage the count of versions for which we have at least one original copy.
