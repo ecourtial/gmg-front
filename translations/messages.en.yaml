@@ -215,6 +215,8 @@ entity.transaction_out: Out
 entity.language: Language
 entity.supportType: Support type
 entity.isROM: Is a ROM
+entity.copiesDistributionStatsTitle: Distribution of versions among platforms
+entity.copiesDistributionStatsSubTitle: Versions for which I have at least one original copy
 
 # Copies
 copy: copy

@@ -46,7 +46,25 @@ class HomeService extends AbstractService
         $responses['toDoSoloOrToWatch'] = $responses['toDoCount'] + $responses['toWatchBackgroundCount']+ $responses['toWatchSeriousCount'];
         $responses['hallOfFameGamesCount'] = \count($requests['hallOfFameGames']['result']);
         $responses['hallOfFameGames'] = $this->orderGames($requests['hallOfFameGames']['result']);
-        $responses['originalCount'] = $this->versionService->getFilteredList('originals', 1)['totalResultCount'];
+
+        $ownedVersions =  $this->versionService->getFilteredList('originals');
+        $responses['originalCount'] = $ownedVersions['totalResultCount'];
+
+        $tmpVersionData = []; // Because the chat library crashes if there is a key
+        foreach ($ownedVersions['result'] as $entry) {
+            $platformId = $entry['platformId'];
+
+            if (false === array_key_exists($platformId, $tmpVersionData)) {
+                $tmpVersionData[$platformId] = ['label' => $entry['platformName'], 'y' => 0];
+            }
+
+            $tmpVersionData[$platformId]['y']++;
+        }
+
+        $responses['versionsData'] = [];
+        foreach ($tmpVersionData as $entry) {
+            $responses['versionsData'][] = $entry;
+        }
 
         return $responses;
     }

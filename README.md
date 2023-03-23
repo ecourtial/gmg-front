@@ -28,7 +28,8 @@ Provided under the MIT licence.
 
 ### v1.4.0
 * Update to follow the 4.2 release of the back (add new support types and add a region field to copies).
-* Added two charts on the homepage.
+* Update Symfony from 6.2.1 to 6.2.7.
+* Added a chart on the homepage.
 
 ### v1.3.0
 * Updated installation doc.

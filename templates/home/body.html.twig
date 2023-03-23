@@ -1,5 +1,32 @@
 {% extends 'base.html.twig' %}
 {% block body %}
+    <script src="{{ asset('assets/js/canvasjs/canvasjs.min.js') }}"></script>
+    <script>
+        window.onload = function () {
+            let copiesDistributionStats = new CanvasJS.Chart("copiesDistributionStatsContainer", {
+                animationEnabled: true,
+                exportEnabled: true,
+                title:{
+                    text: "{% trans %}entity.copiesDistributionStatsTitle{% endtrans %}"
+                },
+                subtitles: [{
+                    text: "{% trans %}entity.copiesDistributionStatsSubTitle{% endtrans %}"
+                }],
+                backgroundColor: "#F5DEB3",
+                data: [{
+                    type: "pie",
+                    showInLegend: "true",
+                    legendText: "{label}",
+                    indexLabelFontSize: 16,
+                    indexLabel: "{label} - #percent%",
+                    yValueFormatString: "#,##0",
+                    dataPoints: {{ copiesDistributionStats|raw }}
+                }]
+            });
+            copiesDistributionStats.render();
+        }
+    </script>
+
     <h2 class="colored_h2">{{ 'some_figures'|trans }}</h2>
     {% trans %}greetings_collection{% endtrans %}
     <ul>
@@ -13,6 +40,8 @@
         <li>{% trans with {'%count%': data['toDoSoloOrToWatch']}%}app_figure_records_to_do_or_to_watch{% endtrans %}</li>
     </ul>
 
+    <div id="copiesDistributionStatsContainer" style="height: 370px; width: 100%;"></div>
+    <br>
     <h2 class="colored_h2">{{ 'my_hall_of_fame'|trans }}</h2>
 
     <h3 class="colored_h3">{{ 'see.criteria'|trans }}</h3>

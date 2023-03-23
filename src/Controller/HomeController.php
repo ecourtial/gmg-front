@@ -20,11 +20,14 @@ class HomeController extends AbstractController
     #[Route('/', methods: ['GET'], name: 'homepage')]
     public function __invoke(HomeService $service, TranslatorInterface $translator): Response
     {
+        $homeData = $service->getHomeData();
+
         return $this->render(
             'home/body.html.twig',
             [
                 'screenTitle' => $translator->trans('home_title'),
-                'data' => $service->getHomeData()
+                'data' => $homeData,
+                'copiesDistributionStats' => \json_encode($homeData['versionsData'])
             ]
         );
     }
