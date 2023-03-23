@@ -46,6 +46,13 @@ class CopyService extends AbstractService
         'Virtual',
     ];
 
+    public const REGIONS = [
+        'PAL',
+        'JAP',
+        'NTSC',
+        'CHINA',
+    ];
+
     public const LANGUAGES = [
         'mul' => 'language_multi',
         'en' => 'language_english',

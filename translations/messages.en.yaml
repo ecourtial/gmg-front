@@ -199,6 +199,7 @@ entity.comments: Comments
 entity.storyCount: This version has %count% story/stories related to it.
 entity.copyCount: This version has %count% copy/copies.
 entity.type: Type
+entity.region: Region
 entity.original: Original
 entity.boxType: Box type
 entity.casingType: Casing type
