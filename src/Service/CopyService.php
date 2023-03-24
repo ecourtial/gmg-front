@@ -25,9 +25,11 @@ class CopyService extends AbstractService
     ];
 
     public const SUPPORT_TYPES = [
+        'Blu-ray',
         'DVD-ROM',
         'CD-ROM',
         'GD-ROM',
+        'MINI-Blu-ray',
         'MINI-DVD-ROM',
         'MINI-CD-ROM',
         'Cartridge',
@@ -35,12 +37,20 @@ class CopyService extends AbstractService
         '5.25-inch floppy',
         'Other disc',
         'Other floppy',
+        'External drive',
         'None',
     ];
 
     public const TYPES = [
         'Physical',
         'Virtual',
+    ];
+
+    public const REGIONS = [
+        'PAL',
+        'JAP',
+        'NTSC',
+        'CHINA',
     ];
 
     public const LANGUAGES = [
