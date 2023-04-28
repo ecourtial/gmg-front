@@ -216,7 +216,8 @@ entity.language: Language
 entity.supportType: Support type
 entity.isROM: Is a ROM
 entity.copiesDistributionStatsTitle: Distribution of versions among platforms
-entity.copiesDistributionStatsSubTitle: Versions for which I have at least one original copy
+entity.copiesDistributionStatsSubTitle: Versions for which I have at least one original copy - compilations included
+entity.copiesDistributionNotOnCompilationStatsSubTitle: Versions for which I have at least one original copy - compilations excluded
 
 # Copies
 copy: copy

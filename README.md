@@ -26,6 +26,9 @@ Provided under the MIT licence.
 
 ## Changelog
 
+### v1.5.0
+* Added another chart on the homepage: the same than the first one but not including games on compilations.
+
 ### v1.4.0
 * Update to follow the 4.2 release of the back (add new support types and add a region field to copies).
 * Update Symfony from 6.2.1 to 6.2.7.
