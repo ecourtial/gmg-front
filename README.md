@@ -28,6 +28,7 @@ Provided under the MIT licence.
 
 ### v1.5.0
 * Added another chart on the homepage: the same than the first one but not including games on compilations.
+* Update Symfony components.
 
 ### v1.4.0
 * Update to follow the 4.2 release of the back (add new support types and add a region field to copies).
