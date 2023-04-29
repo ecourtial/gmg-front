@@ -39,7 +39,8 @@ class TransactionController extends AbstractController
                         ['%count%' => $data['totalResultCount']]
                     ),
                 'screenDescription' => $this->translator->trans('transactions_description'),
-                'transactions' => $data['transactions']
+                'transactions' => $data['transactions'],
+                'gamesBoughtChartData' => \json_encode($data['gamesBoughtChartData']),
             ]
         );
     }

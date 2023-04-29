@@ -218,6 +218,8 @@ entity.isROM: Is a ROM
 entity.copiesDistributionStatsTitle: Distribution of versions among platforms
 entity.copiesDistributionStatsSubTitle: Versions for which I have at least one original copy - compilations included
 entity.copiesDistributionNotOnCompilationStatsSubTitle: Versions for which I have at least one original copy - compilations excluded
+entity.bought_by_year: Copies bought by year
+
 
 # Copies
 copy: copy

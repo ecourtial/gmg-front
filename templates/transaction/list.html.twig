@@ -1,5 +1,44 @@
 {% extends 'base.html.twig' %}
 {% block body %}
+<script src="{{ asset('assets/js/canvasjs/canvasjs.min.js') }}"></script>
+<script>
+    window.onload = function() {
+        var dataPoints = [];
+
+        var gamesBoughtChart = new CanvasJS.Chart("gamesBoughtChartContainer", {
+            animationEnabled: true,
+            theme: "light2",
+            title: {
+                text: "{% trans %}entity.bought_by_year{% endtrans %}"
+            },
+            axisY: {
+                title: "Units",
+                titleFontSize: 24,
+                includeZero: true
+            },
+            backgroundColor: "#F5DEB3",
+            data: [{
+                type: "column",
+                yValueFormatString: "#,### Units",
+                dataPoints: dataPoints
+            }]
+        });
+
+        function addData(data) {
+            for (var i = 0; i < data.length; i++) {
+                console.log(data[i].x)
+                dataPoints.push({
+                    x: new Date(data[i].x),
+                    y: data[i].y
+                });
+            }
+            gamesBoughtChart.render();
+        }
+
+        addData({{ gamesBoughtChartData|raw }})
+    }
+</script>
+<div id="gamesBoughtChartContainer" style="height: 370px; width: 100%;"></div>
 <table class="table">
     <thead>
         <tr>
