@@ -48,10 +48,28 @@ class HomeService extends AbstractService
         $responses['hallOfFameGames'] = $this->orderGames($requests['hallOfFameGames']['result']);
 
         $ownedVersions =  $this->versionService->getFilteredList('originals');
+        $ownedVersionsNotOnCompilation =  $this->versionService->getOriginalsWhereCopyIsNotOnCompilation();
         $responses['originalCount'] = $ownedVersions['totalResultCount'];
 
+        // First chart: owned versions
+        $responses['versionsData'] = [];
+        foreach ($this->orderForChart($ownedVersions) as $entry) {
+            $responses['versionsData'][] = $entry;
+        }
+
+        // Second chart: owned versions not on compilation
+        $responses['copiesDistributionNotOnCompilationStats'] = [];
+        foreach ($this->orderForChart($ownedVersionsNotOnCompilation) as $entry) {
+            $responses['copiesDistributionNotOnCompilationStats'][] = $entry;
+        }
+
+        return $responses;
+    }
+
+    protected function orderForChart(array $data): \Generator
+    {
         $tmpVersionData = []; // Because the chat library crashes if there is a key
-        foreach ($ownedVersions['result'] as $entry) {
+        foreach ($data['result'] as $entry) {
             $platformId = $entry['platformId'];
 
             if (false === array_key_exists($platformId, $tmpVersionData)) {
@@ -61,12 +79,9 @@ class HomeService extends AbstractService
             $tmpVersionData[$platformId]['y']++;
         }
 
-        $responses['versionsData'] = [];
         foreach ($tmpVersionData as $entry) {
-            $responses['versionsData'][] = $entry;
+            yield $entry;
         }
-
-        return $responses;
     }
 
     protected function getResourceType(): string

@@ -274,6 +274,14 @@ class VersionService extends AbstractService
         return  $data;
     }
 
+    public function getOriginalsWhereCopyIsNotOnCompilation(): array
+    {
+        return $this->getListFromCopies(
+            'onCompilation[]=0&original',
+            '1'
+        );
+    }
+
     protected function getResourceType(): string
     {
         return 'version';
@@ -311,6 +319,6 @@ class VersionService extends AbstractService
 
         return $this->clientFactory
             ->getAnonymousClient()
-            ->get("versions?orderBy[]=gameTitle-asc&{$query}&page=1&limit=" . $maxResultCount);
+            ->get("versions?orderBy[]=gameTitle-asc{$query}&page=1&limit=" . $maxResultCount);
     }
 }

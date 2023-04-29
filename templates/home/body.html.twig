@@ -23,7 +23,28 @@
                     dataPoints: {{ copiesDistributionStats|raw }}
                 }]
             });
+            let copiesDistributionStatsNotOnCompilation = new CanvasJS.Chart("copiesDistributionNotOnCompilationStatsContainer", {
+                animationEnabled: true,
+                exportEnabled: true,
+                title:{
+                    text: ""
+                },
+                subtitles: [{
+                    text: "{% trans %}entity.copiesDistributionNotOnCompilationStatsSubTitle{% endtrans %}"
+                }],
+                backgroundColor: "#F5DEB3",
+                data: [{
+                    type: "pie",
+                    showInLegend: "true",
+                    legendText: "{label}",
+                    indexLabelFontSize: 16,
+                    indexLabel: "{label} - #percent%",
+                    yValueFormatString: "#,##0",
+                    dataPoints: {{ copiesDistributionNotOnCompilationStats|raw }}
+                }]
+            });
             copiesDistributionStats.render();
+            copiesDistributionStatsNotOnCompilation.render();
         }
     </script>
 
@@ -41,6 +62,7 @@
     </ul>
 
     <div id="copiesDistributionStatsContainer" style="height: 370px; width: 100%;"></div>
+    <div id="copiesDistributionNotOnCompilationStatsContainer" style="height: 370px; width: 100%;"></div>
     <br>
     <h2 class="colored_h2">{{ 'my_hall_of_fame'|trans }}</h2>
 

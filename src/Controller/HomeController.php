@@ -27,7 +27,8 @@ class HomeController extends AbstractController
             [
                 'screenTitle' => $translator->trans('home_title'),
                 'data' => $homeData,
-                'copiesDistributionStats' => \json_encode($homeData['versionsData'])
+                'copiesDistributionStats' => \json_encode($homeData['versionsData']),
+                'copiesDistributionNotOnCompilationStats' => \json_encode($homeData['copiesDistributionNotOnCompilationStats'])
             ]
         );
     }
