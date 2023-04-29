@@ -16,6 +16,7 @@ class TransactionService extends AbstractService
             'totalResultCount' => $data['totalResultCount'],
             'transactions' => [],
             'gamesBoughtChartData' => [],
+            'copiesDistributionAmongPlatformsStats' => [],
         ];
 
         // Prepare the list
@@ -44,6 +45,22 @@ class TransactionService extends AbstractService
             $date = (string)(new \DateTimeImmutable((string)$currentYear . '-01'))->getTimestamp();
             $date = str_pad($date, 13, '0');
             $result['gamesBoughtChartData'][] = ['x' => (int)$date, 'y' => $currentYearCount];
+        }
+
+        // Prepare the chart to show purchases distribution among platforms
+        $tmpVersionData = [];
+        foreach ($data['result'] as $entry) {
+            $platformName = $entry['platformName'];
+
+            if (false === array_key_exists($platformName, $tmpVersionData)) {
+                $tmpVersionData[$platformName] = ['label' => $entry['platformName'], 'y' => 0];
+            }
+
+            $tmpVersionData[$platformName]['y']++;
+        }
+
+        foreach ($tmpVersionData as $entry) {
+            $result['copiesDistributionAmongPlatformsStats'][] = $entry;
         }
 
         return $result;

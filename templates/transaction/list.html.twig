@@ -3,6 +3,7 @@
 <script src="{{ asset('assets/js/canvasjs/canvasjs.min.js') }}"></script>
 <script>
     window.onload = function() {
+        /** Purchases over the years */
         var dataPoints = [];
 
         var gamesBoughtChart = new CanvasJS.Chart("gamesBoughtChartContainer", {
@@ -35,10 +36,34 @@
             gamesBoughtChart.render();
         }
 
-        addData({{ gamesBoughtChartData|raw }})
+        addData({{ gamesBoughtChartData|raw }});
+
+        /** Purchases among supports */
+        let copiesDistributionStats = new CanvasJS.Chart("copiesDistributionStatsContainer", {
+            animationEnabled: true,
+            exportEnabled: true,
+            title:{
+                text: "{% trans %}entity.bought_by_platform{% endtrans %}"
+            },
+            subtitles: [{
+                text: ""
+            }],
+            backgroundColor: "#F5DEB3",
+            data: [{
+                type: "pie",
+                showInLegend: "true",
+                legendText: "{label}",
+                indexLabelFontSize: 16,
+                indexLabel: "{label} - #percent%",
+                yValueFormatString: "#,##0",
+                dataPoints: {{ copiesDistributionAmongPlatformsStats|raw }}
+            }]
+        });
+        copiesDistributionStats.render();
     }
 </script>
 <div id="gamesBoughtChartContainer" style="height: 370px; width: 100%;"></div>
+<div id="copiesDistributionStatsContainer" style="height: 370px; width: 100%;"></div>
 <table class="table">
     <thead>
         <tr>
