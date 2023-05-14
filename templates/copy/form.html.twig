@@ -66,6 +66,14 @@
             </div>
 
             <div class="form-group">
+                <label for="isBoxRepro">{{ 'entity.isBoxRepro'|trans }}</label>
+                <select name="isBoxRepro">
+                    <option value="0" {% if copy['isBoxRepro']|default(0) == 0 %}selected{% endif %}>{{ 'see.no'|trans }}</option>
+                    <option value="1" {% if copy['isBoxRepro']|default(0) == 1 %}selected{% endif %}>{{ 'see.yes'|trans }}</option>
+                </select>
+            </div>
+
+            <div class="form-group">
                 <label for="casingType">{{ 'entity.casingType'|trans }}</label>
                 <select name="casingType">
                     {% for type in constant('App\\Service\\CopyService::CASING_TYPES') %}

@@ -21,6 +21,7 @@
                 <th scope="col">{% trans %} entity.language {% endtrans %}</th>
                 <th scope="col">{% trans %} entity.region {% endtrans %}</th>
                 <th scope="col">{% trans %} entity.boxType {% endtrans %}</th>
+                <th scope="col">{% trans %} entity.isBoxRepro {% endtrans %}</th>
                 <th scope="col">{% trans %} entity.casingType {% endtrans %}</th>
                 <th scope="col">{% trans %} entity.supportType {% endtrans %}</th>
                 <th scope="col">{% trans %} entity.onCompilation {% endtrans %}</th>
@@ -52,6 +53,7 @@
                 <td>{{ constant('App\\Service\\CopyService::LANGUAGES')[copy['language']]|trans }}</td>
                 <td>{{ copy['region'] }}</td>
                 <td>{{ copy['boxType'] }}</td>
+                <td>{{ copy['isBoxRepro'] }}</td>
                 <td>{{ copy['casingType'] }}</td>
                 <td>{{ copy['supportType'] }}</td>
                 <td><img src="{{ get_status_badge(copy['onCompilation']) }}"/></td>
@@ -59,7 +61,7 @@
                 <td><img src="{{ get_status_badge(copy['hasManual']) }}"/></td>
                 <td>{{ copy['transactionCount'] }}</td>
                 <td>{{ copy['status'] }}</td>
-                <td>{{ copy['comments'] }}</td>
+                <td>{{ copy['comments']|nl2br }}</td>
                 <td>
                     {% if is_granted('ROLE_USER') %}
                         <a href="{{ url('edit_copy', {id: copy['id']}) }}">{{ 'menu.edit'|trans }}</a>

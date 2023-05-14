@@ -26,6 +26,12 @@ Provided under the MIT licence.
 
 ## Changelog
 
+### v1.6.0
+* Follow the 4.3.0 release of the back-end.
+* Add support for return to new line in comments sections.
+* Removed dead code.
+* Updated the big box filter.
+
 ### v1.5.0
 * Added another chart on the homepage: the same than the first one but not including games on compilations.
 * Update Symfony components.
