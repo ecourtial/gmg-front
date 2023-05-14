@@ -43,7 +43,7 @@ menu.edit_copy: Edit a copy
 menu.actions: Actions
 menu.add_transaction: Add a transaction
 menu.filters: Filters
-menu.PC_big_boxes: Big boxes on PC
+menu.PC_big_boxes: Big, medium and special boxes on PC
 menu.finished: Finished
 menu.not_finished: Not finished
 menu.physical: Physical
@@ -138,7 +138,7 @@ physical_title: Physical versions (%count% entries)
 physical_description: Versions for which I have a physical copy
 virtual_title: Virtual versions (%count% entries)
 virtual_description: Versions for which I have a virtual copy
-bigBoxes_title: Versions with a big box copy (%count%)
+bigBoxes_title: Versions on PC with a big, medium or special box copy, not a compilation or a reedition (%count%)
 bigBoxes_description: On all the platforms
 
 # Various
@@ -202,6 +202,7 @@ entity.type: Type
 entity.region: Region
 entity.original: Original
 entity.boxType: Box type
+entity.isBoxRepro: Is the box a reproduction?
 entity.casingType: Casing type
 entity.onCompilation: On compilation
 entity.reedition: Reedition

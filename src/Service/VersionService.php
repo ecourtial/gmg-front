@@ -78,7 +78,7 @@ class VersionService extends AbstractService
             'title' => 'bigBoxes_title',
             'description' => 'bigBoxes_description',
             'filter_from_copies' => true,
-            'attribute_value' => 'Big box',
+            'attribute_value' => 'Big box&boxType[]=Medium box&boxType[]=Special box&reedition[]=0&onCompilation[]=0',
         ],
     ];
 
