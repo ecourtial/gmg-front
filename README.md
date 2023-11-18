@@ -24,7 +24,13 @@ Provided under the MIT licence.
 
 ![Version list](docs/versions.jpg "Version list")
 
+## Roadmap
+* Add a filter to see all the games/copies/versions that have comments.
+
 ## Changelog
+
+### v1.6.1
+* Fix the display of the multiline comments on games, versions and copies.
 
 ### v1.6.0
 * Follow the 4.3.0 release of the back-end.

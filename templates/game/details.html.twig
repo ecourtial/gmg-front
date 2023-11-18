@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 {% block body %}
-    <p><i>{{ game['notes']|nl2br|default('') }}</i></p>
+    <p><i>{{ game['notes']|default('')|raw|nl2br }}</i></p>
     {% if is_granted('ROLE_USER') %}
         <form action="{{ url('delete_game', {id: game['id']}) }}" method="post" data-confirmation="true" id="delete-form">
             <input type="hidden" name="_csrf_token" value="{{ csrf_token('delete_game') }}" />

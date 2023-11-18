@@ -61,7 +61,7 @@
                 <td><img src="{{ get_status_badge(copy['hasManual']) }}"/></td>
                 <td>{{ copy['transactionCount'] }}</td>
                 <td>{{ copy['status'] }}</td>
-                <td>{{ copy['comments']|nl2br }}</td>
+                <td>{{ copy['comments']|default('')|raw|nl2br }}</td>
                 <td>
                     {% if is_granted('ROLE_USER') %}
                         <a href="{{ url('edit_copy', {id: copy['id']}) }}">{{ 'menu.edit'|trans }}</a>
