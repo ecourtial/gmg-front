@@ -13,7 +13,7 @@ A front-end implementation for the project [GMG](https://github.com/ecourtial/gm
 
 ## Stack
 * PHP 8.1
-* Symfony 6.2
+* Symfony 6.3
 
 ## Licence
 Provided under the MIT licence.
@@ -24,7 +24,14 @@ Provided under the MIT licence.
 
 ![Version list](docs/versions.jpg "Version list")
 
+## Roadmap
+* Add a filter to see all the games/copies/versions that have comments.
+
 ## Changelog
+
+### v1.6.1
+* Fix the display of the multiline comments on games, versions and copies.
+* Updates Symfony to 6.3.
 
 ### v1.6.0
 * Follow the 4.3.0 release of the back-end.

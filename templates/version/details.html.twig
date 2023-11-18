@@ -68,5 +68,5 @@
     <p><strong>{% trans %} entity.ongoing {% endtrans %}:</strong> {{ get_yes_no_key(version['ongoing'])}} </p>
     <p><strong>{% trans %} entity.bestGameForever {% endtrans %}:</strong> {{ get_yes_no_key(version['bestGameForever'])}} </p>
     <p><strong>{% trans %} entity.finished {% endtrans %}:</strong> {{ get_yes_no_key(version['finished'])}} </p>
-    <p><strong>{% trans %} entity.comments {% endtrans %}:</strong> {{ version['comments']|nl2br}} </p>
+    <p><strong>{% trans %} entity.comments {% endtrans %}:</strong> {{ version['comments']|default('')|raw|nl2br }} </p>
 {% endblock %}
