@@ -5,10 +5,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Exception\GenericApiException;
-use App\Service\GameService;
 use App\Service\NoteService;
-use App\Service\VersionService;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

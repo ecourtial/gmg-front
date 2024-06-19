@@ -13,7 +13,8 @@ A front-end implementation for the project [GMG](https://github.com/ecourtial/gm
 
 ## Stack
 * PHP 8.3
-* Symfony 6.4
+* Symfony 7.1
+* Bootstrap 3
 
 ## Licence
 Provided under the MIT licence.
@@ -30,7 +31,7 @@ Provided under the MIT licence.
 ## Changelog
 
 ### v1.7.0
-* Add the note featur to follow the 4.4.0 release of the back-end.
+* Add the note feature to follow the 4.4.0 release of the back-end.
 * Bump to Symfony 6.4 and PHP 8.3.
 
 ### v1.6.1

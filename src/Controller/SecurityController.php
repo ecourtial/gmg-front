@@ -11,7 +11,6 @@ namespace App\Controller;
 
 use App\Exception\GenericApiException;
 use App\Service\UserService;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
