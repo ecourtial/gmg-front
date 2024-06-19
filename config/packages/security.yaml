@@ -46,7 +46,7 @@ security:
 
                 # Secure the logout against CSRF
                 csrf_parameter: logout
-                csrf_token_generator: security.csrf.token_manager
+                csrf_token_manager: security.csrf.token_manager
 
             # needed because in tests we redefine the 'main' firewall to use
             # HTTP Basic instead of the login form, so this firewall has

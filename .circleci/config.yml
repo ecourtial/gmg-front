@@ -2,7 +2,7 @@ version: '2.1'
 executors:
   php:
     docker:
-      - image: php:8.1-alpine
+      - image: php:8.3-alpine
         name: php
     working_directory: ~/repo
     resource_class: medium

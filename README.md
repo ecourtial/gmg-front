@@ -12,8 +12,9 @@ A front-end implementation for the project [GMG](https://github.com/ecourtial/gm
 * If you want to add extra features, just open an issue here in this repo.
 
 ## Stack
-* PHP 8.1
-* Symfony 6.3
+* PHP 8.3
+* Symfony 7.1
+* Bootstrap 3
 
 ## Licence
 Provided under the MIT licence.
@@ -28,6 +29,10 @@ Provided under the MIT licence.
 * Add a filter to see all the games/copies/versions that have comments.
 
 ## Changelog
+
+### v1.7.0
+* Add the note feature to follow the 4.4.0 release of the back-end.
+* Bump to Symfony 6.4 and PHP 8.3.
 
 ### v1.6.1
 * Fix the display of the multiline comments on games, versions and copies.
