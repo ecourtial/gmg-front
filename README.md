@@ -32,7 +32,7 @@ Provided under the MIT licence.
 
 ### v1.7.0
 * Add the note feature to follow the 4.4.0 release of the back-end.
-* Bump to Symfony 6.4 and PHP 8.3.
+* Bump to Symfony 7.1 and PHP 8.3.
 
 ### v1.6.1
 * Fix the display of the multiline comments on games, versions and copies.
