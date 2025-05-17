@@ -13,7 +13,7 @@ A front-end implementation for the project [GMG](https://github.com/ecourtial/gm
 
 ## Stack
 * PHP 8.3
-* Symfony 7.1
+* Symfony 7.2
 * Bootstrap 3
 
 ## Licence
@@ -29,6 +29,9 @@ Provided under the MIT licence.
 * Add a filter to see all the games/copies/versions that have comments.
 
 ## Changelog
+
+### v1.8.0
+* Bump to Symfony 7.2
 
 ### v1.7.0
 * Add the note feature to follow the 4.4.0 release of the back-end.
