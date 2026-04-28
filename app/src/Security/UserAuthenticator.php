@@ -1,0 +1,108 @@
+<?php
+
+namespace App\Security;
+
+use App\Exception\GenericApiException;
+use App\Exception\Security\InvalidCaptchaException;
+use App\Service\UserService;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Router;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Exception\AuthenticationException;
+use Symfony\Component\Security\Core\Exception\BadCredentialsException;
+use Symfony\Component\Security\Core\Exception\DisabledException;
+use Symfony\Component\Security\Core\Exception\UserNotFoundException;
+use Symfony\Component\Security\Http\Authenticator\AbstractAuthenticator;
+use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
+use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
+use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPassport;
+
+class UserAuthenticator extends AbstractAuthenticator
+{
+    public function __construct(private readonly UserService $userService, private readonly Router $router)
+    {
+    }
+
+    /**
+     * Called on every request to decide if this authenticator should be
+     * used for the request. Returning `false` will cause this authenticator
+     * to be skipped.
+     */
+    public function supports(Request $request): ?bool
+    {
+        return '' !== $this->getUsernameFromRequest($request) && '' !== $this->getRawPasswordFromRequest($request);
+    }
+
+    public function authenticate(Request $request): Passport
+    {
+        try {
+            $user = $this->userService->getAuthenticatedUser(
+                $this->getUsernameFromRequest($request),
+                $this->getRawPasswordFromRequest($request)
+            );
+
+            $request->getSession()->set('apiToken', $user->getToken());
+        } catch (GenericApiException $exception) {
+            if (403 === $exception->getCode()) {
+                if (1 === $exception->getApiReturnCode()) {
+                    throw new UserNotFoundException($exception->getMessage(), $exception->getCode(), $exception);
+                }
+
+                if (2 === $exception->getApiReturnCode()) {
+                    throw new BadCredentialsException($exception->getMessage(), $exception->getCode(), $exception);
+                }
+
+                if (3 === $exception->getApiReturnCode()) {
+                    throw new DisabledException($exception->getMessage(), $exception->getCode(), $exception);
+                }
+            }
+
+            throw $exception;
+        }
+
+        return new SelfValidatingPassport(new UserBadge($user->getUsername()));
+    }
+
+    public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
+    {
+        // on success, let the request continue
+        return null;
+    }
+
+    public function onAuthenticationFailure(Request $request, AuthenticationException $exception): ?Response
+    {
+        $message = 'authentication.unknown_error';
+
+        if ($exception instanceof UserNotFoundException) {
+            $message = 'authentication.user_not_found_error';
+        }
+
+        if ($exception instanceof BadCredentialsException) {
+            $message = 'authentication.bad_credentials_error';
+        }
+
+        if ($exception instanceof DisabledException) {
+            $message = 'authentication.inactive_account_error';
+        }
+
+        if ($exception instanceof InvalidCaptchaException) {
+            $message = 'authentication.invalid_captcha_error';
+        }
+
+        $request->getSession()->getFlashBag()->add('alert', $message);
+
+        return new RedirectResponse($this->router->generate('security_login'));
+    }
+
+    private function getUsernameFromRequest(Request $request): string
+    {
+        return $request->request->get('_username', '');
+    }
+
+    private function getRawPasswordFromRequest(Request $request): string
+    {
+        return $request->request->get('_password', '');
+    }
+}
