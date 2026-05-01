@@ -38,7 +38,7 @@ class UserLoginSubscriber implements EventSubscriberInterface
         // The Captcha is only applied when you log in to the admin, not the API
         if (str_starts_with($this->request->getRequestUri(), '/login')) {
             $this->captchaChecker->handleCaptcha(
-                $this->request->get('g-recaptcha-response', ''),
+                $this->request->request->getString('g-recaptcha-response'),
                 $this->request->getClientIp()
             );
         }

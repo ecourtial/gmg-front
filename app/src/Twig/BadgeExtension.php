@@ -51,24 +51,36 @@ class BadgeExtension extends AbstractExtension
         ];
     }
 
+    /**
+     * @param array<string, mixed> $version
+     *
+     * @return array<string, string>
+     */
     public function getOwnershipBadge(array $version): array
     {
+        /** @var array<string, scalar> $version */
         $key = 'no';
 
-        if ((int) $version['copyCount'] > 0) {
+        if (intval(strval($version['copyCount'])) > 0) {
             $key = 'yes';
         }
 
         return [self::OWNERSHIP_BADGES[$key]['img'] => self::OWNERSHIP_BADGES[$key]['title']];
     }
 
+    /**
+     * @param array<string, mixed> $version
+     *
+     * @return array<string, string>
+     */
     public function getBadgesForVersion(array $version, bool $setOwnershipBadge = false): array
     {
+        /** @var array<string, scalar> $version */
         $badges = [];
         $ownerShipBadge = [];
 
         foreach (self::VERSIONS_BADGES as $key => $attributes) {
-            if (1 === (int) $version[$key]) {
+            if (1 === intval(strval($version[$key]))) {
                 $badges[$attributes['img']] = $attributes['title'];
             }
         }
@@ -76,7 +88,7 @@ class BadgeExtension extends AbstractExtension
         if ($setOwnershipBadge) {
             $key = 'no';
 
-            if ((int) $version['copyCount'] > 0) {
+            if (intval(strval($version['copyCount'])) > 0) {
                 $key = 'yes';
             }
 
@@ -99,12 +111,18 @@ class BadgeExtension extends AbstractExtension
         return $this->packages->getUrl("assets/img/badges/{$img}.png");
     }
 
+    /**
+     * @param array<string, mixed> $story
+     *
+     * @return array<string, string>
+     */
     public function getStoryBadges(array $story): array
     {
+        /** @var array<string, scalar> $story */
         $badges = [];
 
         foreach (self::STORIES_BADGES as $key => $attributes) {
-            if (1 === (int) $story[$key]) {
+            if (1 === intval(strval($story[$key]))) {
                 $badges[$attributes['img']] = $attributes['title'];
             }
         }

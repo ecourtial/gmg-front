@@ -12,6 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class TransactionController extends AbstractController
@@ -48,11 +49,11 @@ class TransactionController extends AbstractController
     #[Route('/transaction/add', name: 'add_transaction_form', methods: ['GET']), IsGranted('ROLE_USER')]
     public function addForm(Request $request): Response
     {
-        $versionId = (int) $request->get('version');
-        $copyId = (int) $request->get('copy');
+        $versionId = (int) $request->query->get('version');
+        $copyId = (int) $request->query->get('copy');
 
         if (0 === $versionId && 0 === $copyId) {
-            $request->getSession()->getFlashBag()->add(
+            $this->addFlash(
                 'alert',
                 'transaction.no_version_id_and_no_copy_id'
             );
@@ -87,8 +88,8 @@ class TransactionController extends AbstractController
         $payload = $request->request->all();
         $versionId = $payload['versionId'] ?? 0; // Safety
 
-        if (false === $this->isCsrfTokenValid('add_transaction', $request->get('_csrf_token'))) {
-            $request->getSession()->getFlashBag()->add('alert', 'see.invalid_csrf_token');
+        if (false === $this->isCsrfTokenValid('add_transaction', $request->request->getString('_csrf_token'))) {
+            $this->addFlash('alert', 'see.invalid_csrf_token');
 
             return $this->redirectToRoute('copies_per_version', ['versionId' => $versionId]);
         }
@@ -103,15 +104,15 @@ class TransactionController extends AbstractController
     #[Route('/transaction/delete/{id<\d+>}', name: 'delete_transaction', methods: ['POST']), IsGranted('ROLE_USER')]
     public function delete(Request $request, int $id): Response
     {
-        if (false === $this->isCsrfTokenValid('delete_transaction', $request->get('_csrf_token'))) {
-            $request->getSession()->getFlashBag()->add('alert', 'see.invalid_csrf_token');
+        if (false === $this->isCsrfTokenValid('delete_transaction', $request->request->getString('_csrf_token'))) {
+            $this->addFlash('alert', 'see.invalid_csrf_token');
 
             return $this->redirectToRoute('transaction_list');
         }
 
         try {
             $this->service->delete($id);
-            $request->getSession()->getFlashBag()->add('alert', 'entry_deleted_with_success');
+            $this->addFlash('alert', 'entry_deleted_with_success');
         } catch (GenericApiException $exception) {
             if (404 === $exception->getCode()) {
                 // Ignore, not a problem because someone might have done it

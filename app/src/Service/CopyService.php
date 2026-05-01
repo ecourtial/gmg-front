@@ -64,6 +64,7 @@ class CopyService extends AbstractService
         'it' => 'language_italian',
     ];
 
+    /** @return array<string, mixed> */
     public function getByVersion(int $versionId): array
     {
         return $this->clientFactory

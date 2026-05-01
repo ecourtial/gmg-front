@@ -16,6 +16,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Security\Http\Logout\LogoutUrlGenerator;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -71,33 +72,36 @@ class SecurityController extends AbstractController
         }
 
         // Form is submitted
-        if (false === $this->isCsrfTokenValid('change_password', $request->get('_csrf_token'))) {
-            $request->getSession()->getFlashBag()->add('alert', 'see.invalid_csrf_token');
+        if (false === $this->isCsrfTokenValid('change_password', $request->request->getString('_csrf_token'))) {
+            $this->addFlash('alert', 'see.invalid_csrf_token');
 
             return $this->redirectToRoute('change_password');
         }
 
-        $newPassword = $request->get('_new_password');
-        $confirmedNewPassword = $request->get('_new_password_confirm');
+        $newPassword = $request->request->getString('_new_password');
+        $confirmedNewPassword = $request->request->getString('_new_password_confirm');
 
         if ($newPassword !== $confirmedNewPassword) {
-            $request->getSession()->getFlashBag()->add('alert', 'user.label.form.new_password_no_match');
+            $this->addFlash('alert', 'user.label.form.new_password_no_match');
 
             return $this->redirectToRoute('change_password');
         }
+
+        $user = $this->getUser();
+        assert($user instanceof \App\Security\User);
 
         try {
             $this->userService->changePassword(
-                $this->getUser()->getId(),
-                $this->getUser()->getUserIdentifier(),
-                $request->get('_current_password'),
+                $user->getId(),
+                $user->getUserIdentifier(),
+                $request->request->getString('_current_password'),
                 $newPassword
             );
 
             return $this->redirect($this->logoutUrlGenerator->getLogoutUrl());
         } catch (GenericApiException $exception) {
             if (2 === $exception->getApiReturnCode()) {
-                $request->getSession()->getFlashBag()->add('alert', 'authentication.bad_current_password');
+                $this->addFlash('alert', 'authentication.bad_current_password');
 
                 return $this->redirectToRoute('change_password');
             }

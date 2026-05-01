@@ -19,7 +19,13 @@ abstract class Client
         $this->client = HttpClient::create();
     }
 
-    protected function execute(string $method, string $query, $headers = [], $payload = []): array
+    /**
+     * @param array<string, string> $headers
+     * @param array<string, mixed>  $payload
+     *
+     * @return array<string, mixed>
+     */
+    protected function execute(string $method, string $query, array $headers = [], array $payload = []): array
     {
         $headers = \array_merge(
             $headers,
@@ -29,7 +35,8 @@ abstract class Client
         $targetUrl = $this->backendUrl.$query;
 
         try {
-            return \json_decode(
+            /** @var array<string, mixed> $result */
+            $result = (array) \json_decode(
                 $this->client->request(
                     $method,
                     $targetUrl,
@@ -47,5 +54,7 @@ abstract class Client
         ) {
             throw new GenericApiException($e, $targetUrl);
         }
+
+        return $result;
     }
 }

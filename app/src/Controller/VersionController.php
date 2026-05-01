@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class VersionController extends AbstractController
@@ -75,9 +76,10 @@ class VersionController extends AbstractController
     #[Route('/game/random/{filter<\w+>}', name: 'version_random', methods: ['GET'])]
     public function getRandom(string $filter): Response
     {
+        /** @var array{result: list<array<string, scalar>>, totalResultCount: int} $result */
         $result = $this->service->getRandom($filter);
 
-        if (0 === (int) $result['totalResultCount']) {
+        if (0 === $result['totalResultCount']) {
             return $this->render(
                 'general/no-result.html.twig',
                 [
@@ -86,6 +88,7 @@ class VersionController extends AbstractController
             );
         }
 
+        /** @var array<string, scalar> $version */
         $version = $result['result'][0];
 
         return $this->render(
@@ -133,7 +136,7 @@ class VersionController extends AbstractController
     #[Route('/versions/search', name: 'version_search', methods: ['POST'])]
     public function search(Request $request): Response
     {
-        $query = \trim($request->get('query', ''));
+        $query = \trim($request->request->getString('query'));
         $data = '' !== $query ? $this->service->search($query) : ['result' => [], 'totalResultCount' => 0];
 
         $params = [
@@ -170,14 +173,14 @@ class VersionController extends AbstractController
                     'screenTitle' => $this->translator->trans('menu.add_version'),
                     'games' => $this->gameService->getList()['result'],
                     'platforms' => $this->platformService->getList()['result'],
-                    'selectedPlatform' => $request->get('platform', 0),
-                    'selectedGame' => $request->get('game', 0),
+                    'selectedPlatform' => $request->query->get('platform', 0),
+                    'selectedGame' => $request->query->get('game', 0),
                 ]
             );
         }
 
-        if (false === $this->isCsrfTokenValid('add_version', $request->get('_csrf_token'))) {
-            $request->getSession()->getFlashBag()->add('alert', 'see.invalid_csrf_token');
+        if (false === $this->isCsrfTokenValid('add_version', $request->request->getString('_csrf_token'))) {
+            $this->addFlash('alert', 'see.invalid_csrf_token');
 
             return $this->redirectToRoute('add_version');
         }
@@ -209,8 +212,8 @@ class VersionController extends AbstractController
             );
         }
 
-        if (false === $this->isCsrfTokenValid('add_version', $request->get('_csrf_token'))) {
-            $request->getSession()->getFlashBag()->add('alert', 'see.invalid_csrf_token');
+        if (false === $this->isCsrfTokenValid('add_version', $request->request->getString('_csrf_token'))) {
+            $this->addFlash('alert', 'see.invalid_csrf_token');
 
             return $this->redirectToRoute('edit_version', ['id' => $id]);
         }
@@ -226,20 +229,20 @@ class VersionController extends AbstractController
     #[Route('/version/delete/{id<\d+>}', name: 'delete_version', methods: ['POST']), IsGranted('ROLE_USER')]
     public function delete(Request $request, int $id): Response
     {
-        if (false === $this->isCsrfTokenValid('delete_version', $request->get('_csrf_token'))) {
-            $request->getSession()->getFlashBag()->add('alert', 'see.invalid_csrf_token');
+        if (false === $this->isCsrfTokenValid('delete_version', $request->request->getString('_csrf_token'))) {
+            $this->addFlash('alert', 'see.invalid_csrf_token');
 
             return $this->redirectToRoute('version_details', ['id' => $id]);
         }
 
         try {
             $this->service->delete($id);
-            $request->getSession()->getFlashBag()->add('alert', 'entry_deleted_with_success');
+            $this->addFlash('alert', 'entry_deleted_with_success');
         } catch (GenericApiException $exception) {
             if (404 === $exception->getCode()) {
                 // Ignore, not a problem because someone might have done it
             } elseif (400 === $exception->getCode() && 9 === $exception->getApiReturnCode()) {
-                $request->getSession()->getFlashBag()->add('alert', 'version_has_children');
+                $this->addFlash('alert', 'version_has_children');
 
                 return $this->redirectToRoute('version_details', ['id' => $id]);
             }

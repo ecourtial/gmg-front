@@ -50,6 +50,10 @@ class CaptchaChecker
 
         $response = \json_decode($googleResponse->getContent(), true);
 
+        if (!is_array($response)) {
+            throw new \LogicException('Invalid Google response: expected a JSON object.');
+        }
+
         if (false === array_key_exists('success', $response)) {
             throw new \LogicException("Invalid Google response. The 'success' key is missing!");
         }

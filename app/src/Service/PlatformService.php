@@ -6,6 +6,7 @@ namespace App\Service;
 
 class PlatformService extends AbstractService
 {
+    /** @return array<string, mixed> */
     public function getList(): array
     {
         return $this->clientFactory

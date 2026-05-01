@@ -6,8 +6,10 @@ namespace App\Service;
 
 class StoryService extends AbstractService
 {
+    /** @return array<string, mixed> */
     public function getList(): array
     {
+        /** @var array{result: list<array<string, scalar>>, totalResultCount: int} $data */
         $data = $this->clientFactory
             ->getAnonymousClient()
             ->get('stories?orderBy[]=year-asc&orderBy[]=position-asc&limit='.self::MAX_RESULT_COUNT);
@@ -18,11 +20,12 @@ class StoryService extends AbstractService
         ];
 
         foreach ($data['result'] as $entry) {
-            if (false === \array_key_exists($entry['year'], $result['stories'])) {
-                $result['stories'][$entry['year']] = [];
+            $year = strval($entry['year']);
+            if (false === \array_key_exists($year, $result['stories'])) {
+                $result['stories'][$year] = [];
             }
 
-            $result['stories'][$entry['year']][] = $entry;
+            $result['stories'][$year][] = $entry;
         }
 
         return $result;

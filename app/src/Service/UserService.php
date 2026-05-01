@@ -15,24 +15,26 @@ class UserService extends AbstractService
 
     public function getByUsername(string $username): User
     {
+        /** @var array<string, scalar> $result */
         $result = $this->clientFactory
             ->getAuthenticatedClient()
             ->get("user?filter=username&value={$username}");
 
-        return new User($result['id'], $result['username'], $result['email'], $result['active']);
+        return new User(intval(strval($result['id'])), strval($result['username']), strval($result['email']), (bool) $result['active']);
     }
 
     public function getAuthenticatedUser(string $username, string $password): User
     {
+        /** @var array<string, scalar> $result */
         $result = $this->clientFactory->getAnonymousClient()->authenticateUser($username, $password);
 
         return new User(
-            $result['id'],
+            intval(strval($result['id'])),
             $username,
-            $result['email'],
-            $result['active'],
+            strval($result['email']),
+            (bool) $result['active'],
             $password,
-            $result['token']
+            isset($result['token']) ? strval($result['token']) : null
         );
     }
 

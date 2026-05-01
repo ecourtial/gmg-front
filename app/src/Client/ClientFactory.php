@@ -34,10 +34,9 @@ class ClientFactory
     public function getAuthenticatedClient(): AuthenticatedClient
     {
         if (false === $this->authenticatedClient instanceof AuthenticatedClient) {
-            $this->authenticatedClient = new AuthenticatedClient(
-                $this->backendUrl,
-                $this->request->getSession()->get('apiToken')
-            );
+            /** @var string $apiToken */
+            $apiToken = $this->request->getSession()->get('apiToken') ?? '';
+            $this->authenticatedClient = new AuthenticatedClient($this->backendUrl, $apiToken);
         }
 
         return $this->authenticatedClient;

@@ -6,8 +6,10 @@ namespace App\Service;
 
 class TransactionService extends AbstractService
 {
+    /** @return array<string, mixed> */
     public function getList(): array
     {
+        /** @var array{result: list<array<string, scalar>>, totalResultCount: int} $data */
         $data = $this->clientFactory
             ->getAnonymousClient()
             ->get('transactions?orderBy[]=year-asc&orderBy[]=month-asc&orderBy[]=day-asc&limit='.self::MAX_RESULT_COUNT);
@@ -21,23 +23,27 @@ class TransactionService extends AbstractService
 
         // Prepare the list
         foreach ($data['result'] as $entry) {
-            if (false === \array_key_exists($entry['year'], $result['transactions'])) {
-                $result['transactions'][$entry['year']] = [];
+            $year = strval($entry['year']);
+            $month = strval($entry['month']);
+
+            if (false === \array_key_exists($year, $result['transactions'])) {
+                $result['transactions'][$year] = [];
             }
 
-            if (false === \array_key_exists($entry['month'], $result['transactions'][$entry['year']])) {
-                $result['transactions'][$entry['year']][$entry['month']] = [];
+            if (false === \array_key_exists($month, $result['transactions'][$year])) {
+                $result['transactions'][$year][$month] = [];
             }
 
-            $result['transactions'][$entry['year']][$entry['month']][] = $entry;
+            $result['transactions'][$year][$month][] = $entry;
         }
 
         // Prepare the by year repartition chart
-        $currentYear = null;
+        $currentYear = '';
         $currentYearCount = 0;
         foreach ($data['result'] as $entry) {
-            if ($currentYear !== $entry['year']) {
-                $currentYear = $entry['year'];
+            $entryYear = strval($entry['year']);
+            if ($currentYear !== $entryYear) {
+                $currentYear = $entryYear;
                 $currentYearCount = 0;
             }
             ++$currentYearCount;
@@ -50,10 +56,10 @@ class TransactionService extends AbstractService
         // Prepare the chart to show purchases distribution among platforms
         $tmpVersionData = [];
         foreach ($data['result'] as $entry) {
-            $platformName = $entry['platformName'];
+            $platformName = strval($entry['platformName']);
 
             if (false === array_key_exists($platformName, $tmpVersionData)) {
-                $tmpVersionData[$platformName] = ['label' => $entry['platformName'], 'y' => 0];
+                $tmpVersionData[$platformName] = ['label' => $platformName, 'y' => 0];
             }
 
             ++$tmpVersionData[$platformName]['y'];

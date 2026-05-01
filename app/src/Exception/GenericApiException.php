@@ -22,11 +22,12 @@ class GenericApiException extends \Exception
                 $content = \json_decode($previous->getResponse()->getContent(false), true);
 
                 if (is_array($content) && array_key_exists('message', $content)) {
-                    $message .= " The message returned was the following: '{$content['message']}'.";
-                    $this->apiOriginalMessage = $content['message'];
+                    /** @var array<string, scalar> $content */
+                    $this->apiOriginalMessage = strval($content['message']);
+                    $message .= " The message returned was the following: '{$this->apiOriginalMessage}'.";
 
                     if (array_key_exists('code', $content)) {
-                        $this->apiReturnCode = $content['code'];
+                        $this->apiReturnCode = intval(strval($content['code']));
                     }
                 }
 
@@ -34,7 +35,7 @@ class GenericApiException extends \Exception
             }
         }
 
-        parent::__construct($message, $previous->getCode(), $previous);
+        parent::__construct($message, (int) $previous->getCode(), $previous);
     }
 
     public function getApiReturnCode(): ?int

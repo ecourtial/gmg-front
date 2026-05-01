@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class NotesController extends AbstractController
@@ -20,6 +21,7 @@ class NotesController extends AbstractController
     ) {
     }
 
+    /** @param array<string, mixed>|null $data */
     #[Route('/notes', name: 'notes_list', methods: ['GET'])]
     public function list(?array $data = null): Response
     {
@@ -55,15 +57,15 @@ class NotesController extends AbstractController
     #[Route('/note/delete/{id<\d+>}', name: 'delete_note', methods: ['POST']), IsGranted('ROLE_USER')]
     public function delete(Request $request, int $id): Response
     {
-        if (false === $this->isCsrfTokenValid('delete_note', $request->get('_csrf_token'))) {
-            $request->getSession()->getFlashBag()->add('alert', 'see.invalid_csrf_token');
+        if (false === $this->isCsrfTokenValid('delete_note', $request->request->getString('_csrf_token'))) {
+            $this->addFlash('alert', 'see.invalid_csrf_token');
 
             return $this->redirectToRoute('note_details', ['id' => $id]);
         }
 
         try {
             $this->service->delete($id);
-            $request->getSession()->getFlashBag()->add('alert', 'entry_deleted_with_success');
+            $this->addFlash('alert', 'entry_deleted_with_success');
         } catch (GenericApiException $exception) {
             if (404 === $exception->getCode()) {
                 // Ignore, not a problem because someone might have done it
@@ -83,8 +85,8 @@ class NotesController extends AbstractController
             );
         }
 
-        if (false === $this->isCsrfTokenValid('add_note', $request->get('_csrf_token'))) {
-            $request->getSession()->getFlashBag()->add('alert', 'see.invalid_csrf_token');
+        if (false === $this->isCsrfTokenValid('add_note', $request->request->getString('_csrf_token'))) {
+            $this->addFlash('alert', 'see.invalid_csrf_token');
 
             return $this->redirectToRoute('add_note');
         }
@@ -111,8 +113,8 @@ class NotesController extends AbstractController
             );
         }
 
-        if (false === $this->isCsrfTokenValid('add_note', $request->get('_csrf_token'))) {
-            $request->getSession()->getFlashBag()->add('alert', 'see.invalid_csrf_token');
+        if (false === $this->isCsrfTokenValid('add_note', $request->request->getString('_csrf_token'))) {
+            $this->addFlash('alert', 'see.invalid_csrf_token');
 
             return $this->redirectToRoute('edit_note', ['id' => $id]);
         }

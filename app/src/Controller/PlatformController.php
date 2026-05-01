@@ -11,6 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class PlatformController extends AbstractController
@@ -40,6 +41,7 @@ class PlatformController extends AbstractController
     public function getPlatform(int $id): Response
     {
         $data = $this->versionService->getByPlatform($id);
+        /** @var array{result: mixed, totalResultCount: mixed} $versions */
         $versions = $data['versions'];
         $platform = $this->service->getById($id);
 
@@ -65,20 +67,20 @@ class PlatformController extends AbstractController
     #[Route('/platform/delete/{id<\d+>}', name: 'delete_platform', methods: ['POST']), IsGranted('ROLE_USER')]
     public function delete(Request $request, int $id): Response
     {
-        if (false === $this->isCsrfTokenValid('delete_platform', $request->get('_csrf_token'))) {
-            $request->getSession()->getFlashBag()->add('alert', 'see.invalid_csrf_token');
+        if (false === $this->isCsrfTokenValid('delete_platform', $request->request->getString('_csrf_token'))) {
+            $this->addFlash('alert', 'see.invalid_csrf_token');
 
             return $this->redirectToRoute('platform_details', ['id' => $id]);
         }
 
         try {
             $this->service->delete($id);
-            $request->getSession()->getFlashBag()->add('alert', 'entry_deleted_with_success');
+            $this->addFlash('alert', 'entry_deleted_with_success');
         } catch (GenericApiException $exception) {
             if (404 === $exception->getCode()) {
                 // Ignore, not a problem because someone might have done it
             } elseif (400 === $exception->getCode() && 9 === $exception->getApiReturnCode()) {
-                $request->getSession()->getFlashBag()->add('alert', 'platform_has_versions');
+                $this->addFlash('alert', 'platform_has_versions');
 
                 return $this->redirectToRoute('platform_details', ['id' => $id]);
             }
@@ -97,8 +99,8 @@ class PlatformController extends AbstractController
             );
         }
 
-        if (false === $this->isCsrfTokenValid('add_platform', $request->get('_csrf_token'))) {
-            $request->getSession()->getFlashBag()->add('alert', 'see.invalid_csrf_token');
+        if (false === $this->isCsrfTokenValid('add_platform', $request->request->getString('_csrf_token'))) {
+            $this->addFlash('alert', 'see.invalid_csrf_token');
 
             return $this->redirectToRoute('add_platform');
         }
@@ -126,8 +128,8 @@ class PlatformController extends AbstractController
             );
         }
 
-        if (false === $this->isCsrfTokenValid('add_platform', $request->get('_csrf_token'))) {
-            $request->getSession()->getFlashBag()->add('alert', 'see.invalid_csrf_token');
+        if (false === $this->isCsrfTokenValid('add_platform', $request->request->getString('_csrf_token'))) {
+            $this->addFlash('alert', 'see.invalid_csrf_token');
 
             return $this->redirectToRoute('edit_platform', ['id' => $id]);
         }

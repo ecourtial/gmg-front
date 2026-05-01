@@ -41,7 +41,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getToken(): string
     {
-        return $this->token;
+        return $this->token ?? throw new \RuntimeException('Token is not set.');
     }
 
     public function getRoles(): array
@@ -56,7 +56,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getUserIdentifier(): string
     {
-        return $this->getUsername();
+        $identifier = $this->getUsername();
+        if ('' === $identifier) {
+            throw new \RuntimeException('User identifier cannot be empty.');
+        }
+
+        return $identifier;
     }
 
     public function getPassword(): ?string

@@ -15,7 +15,7 @@ class SearchController extends AbstractController
     #[Route('/search', name: 'search', methods: ['POST'])]
     public function search(Request $request): Response
     {
-        $query = \trim($request->get('query_type', ''));
+        $query = \trim($request->request->getString('query_type'));
         if ('game' === $query) {
             return $this->forward(GameController::class.'::search');
         } elseif ('version' === $query) {

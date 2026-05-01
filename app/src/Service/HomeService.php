@@ -15,6 +15,7 @@ class HomeService extends AbstractService
         parent::__construct($clientFactory);
     }
 
+    /** @return array<string, mixed> */
     public function getHomeData(): array
     {
         // @TODO redacto: use other dedicated services with result limit set to 1?
@@ -38,14 +39,17 @@ class HomeService extends AbstractService
 
         $responses = [];
         foreach ($requests as $requestName => $request) {
+            /** @var array{totalResultCount: int} $request */
             if ('hallOfFameGames' !== $requestName) {
                 $responses[$requestName] = $request['totalResultCount'];
             }
         }
 
-        $responses['toDoSoloOrToWatch'] = $responses['toDoCount'] + $responses['toWatchBackgroundCount'] + $responses['toWatchSeriousCount'];
-        $responses['hallOfFameGamesCount'] = \count($requests['hallOfFameGames']['result']);
-        $responses['hallOfFameGames'] = $this->orderGames($requests['hallOfFameGames']['result']);
+        $responses['toDoSoloOrToWatch'] = intval($responses['toDoCount']) + intval($responses['toWatchBackgroundCount']) + intval($responses['toWatchSeriousCount']);
+        /** @var array{result: list<array<string, scalar>>} $hallOfFameData */
+        $hallOfFameData = $requests['hallOfFameGames'];
+        $responses['hallOfFameGamesCount'] = \count($hallOfFameData['result']);
+        $responses['hallOfFameGames'] = $this->orderGames($hallOfFameData['result']);
 
         $ownedVersions = $this->versionService->getFilteredList('originals');
         $ownedVersionsNotOnCompilation = $this->versionService->getOriginalsWhereCopyIsNotOnCompilation();
@@ -66,14 +70,17 @@ class HomeService extends AbstractService
         return $responses;
     }
 
+    /** @param array<string, mixed> $data */
     protected function orderForChart(array $data): \Generator
     {
+        /** @var list<array<string, scalar>> $result */
+        $result = $data['result'];
         $tmpVersionData = []; // Because the chat library crashes if there is a key
-        foreach ($data['result'] as $entry) {
-            $platformId = $entry['platformId'];
+        foreach ($result as $entry) {
+            $platformId = strval($entry['platformId']);
 
             if (false === array_key_exists($platformId, $tmpVersionData)) {
-                $tmpVersionData[$platformId] = ['label' => $entry['platformName'], 'y' => 0];
+                $tmpVersionData[$platformId] = ['label' => strval($entry['platformName']), 'y' => 0];
             }
 
             ++$tmpVersionData[$platformId]['y'];
@@ -89,16 +96,23 @@ class HomeService extends AbstractService
         return 'home';
     }
 
+    /**
+     * @param list<array<string, scalar>> $games
+     *
+     * @return array<string, mixed>
+     */
     private function orderGames(array $games): array
     {
         $data = [];
 
         foreach ($games as $game) {
-            if (false === \array_key_exists($game['hallOfFameYear'], $data)) {
-                $data[$game['hallOfFameYear']] = [];
+            /** @var array<string, scalar> $game */
+            $year = strval($game['hallOfFameYear']);
+            if (false === \array_key_exists($year, $data)) {
+                $data[$year] = [];
             }
 
-            $data[$game['hallOfFameYear']][] = $game;
+            $data[$year][] = $game;
         }
 
         return $data;

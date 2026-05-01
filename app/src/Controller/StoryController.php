@@ -11,6 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class StoryController extends AbstractController
@@ -50,13 +51,13 @@ class StoryController extends AbstractController
                 [
                     'screenTitle' => $this->translator->trans('menu.add_story'),
                     'versions' => $this->versionService->getList()['result'],
-                    'selectedVersion' => $request->get('version', 0),
+                    'selectedVersion' => $request->query->get('version', 0),
                 ]
             );
         }
 
-        if (false === $this->isCsrfTokenValid('add_story', $request->get('_csrf_token'))) {
-            $request->getSession()->getFlashBag()->add('alert', 'see.invalid_csrf_token');
+        if (false === $this->isCsrfTokenValid('add_story', $request->request->getString('_csrf_token'))) {
+            $this->addFlash('alert', 'see.invalid_csrf_token');
 
             return $this->redirectToRoute('add_story');
         }
@@ -86,8 +87,8 @@ class StoryController extends AbstractController
             );
         }
 
-        if (false === $this->isCsrfTokenValid('add_story', $request->get('_csrf_token'))) {
-            $request->getSession()->getFlashBag()->add('alert', 'see.invalid_csrf_token');
+        if (false === $this->isCsrfTokenValid('add_story', $request->request->getString('_csrf_token'))) {
+            $this->addFlash('alert', 'see.invalid_csrf_token');
 
             return $this->redirectToRoute('edit_story', ['id' => $id]);
         }
@@ -103,15 +104,15 @@ class StoryController extends AbstractController
     #[Route('/story/delete/{id<\d+>}', name: 'delete_story', methods: ['POST']), IsGranted('ROLE_USER')]
     public function delete(Request $request, int $id): Response
     {
-        if (false === $this->isCsrfTokenValid('delete_story', $request->get('_csrf_token'))) {
-            $request->getSession()->getFlashBag()->add('alert', 'see.invalid_csrf_token');
+        if (false === $this->isCsrfTokenValid('delete_story', $request->request->getString('_csrf_token'))) {
+            $this->addFlash('alert', 'see.invalid_csrf_token');
 
             return $this->redirectToRoute('story_list');
         }
 
         try {
             $this->service->delete($id);
-            $request->getSession()->getFlashBag()->add('alert', 'entry_deleted_with_success');
+            $this->addFlash('alert', 'entry_deleted_with_success');
         } catch (GenericApiException $exception) {
             if (404 === $exception->getCode()) {
                 // Ignore, not a problem because someone might have done it

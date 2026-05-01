@@ -11,6 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class CopyController extends AbstractController
@@ -55,13 +56,13 @@ class CopyController extends AbstractController
                 [
                     'screenTitle' => $this->translator->trans('menu.add_copy'),
                     'versions' => $this->versionService->getList()['result'],
-                    'selectedVersion' => $request->get('version', 0),
+                    'selectedVersion' => $request->query->get('version', 0),
                 ]
             );
         }
 
-        if (false === $this->isCsrfTokenValid('add_copy', $request->get('_csrf_token'))) {
-            $request->getSession()->getFlashBag()->add('alert', 'see.invalid_csrf_token');
+        if (false === $this->isCsrfTokenValid('add_copy', $request->request->getString('_csrf_token'))) {
+            $this->addFlash('alert', 'see.invalid_csrf_token');
 
             return $this->redirectToRoute('add_copy');
         }
@@ -92,8 +93,8 @@ class CopyController extends AbstractController
             );
         }
 
-        if (false === $this->isCsrfTokenValid('add_copy', $request->get('_csrf_token'))) {
-            $request->getSession()->getFlashBag()->add('alert', 'see.invalid_csrf_token');
+        if (false === $this->isCsrfTokenValid('add_copy', $request->request->getString('_csrf_token'))) {
+            $this->addFlash('alert', 'see.invalid_csrf_token');
 
             return $this->redirectToRoute('copies_per_version', ['versionId' => $copy['versionId']]);
         }
@@ -112,20 +113,20 @@ class CopyController extends AbstractController
     {
         $copy = $this->service->getById($id);
 
-        if (false === $this->isCsrfTokenValid('delete_copy', $request->get('_csrf_token'))) {
-            $request->getSession()->getFlashBag()->add('alert', 'see.invalid_csrf_token');
+        if (false === $this->isCsrfTokenValid('delete_copy', $request->request->getString('_csrf_token'))) {
+            $this->addFlash('alert', 'see.invalid_csrf_token');
 
             return $this->redirectToRoute('copies_per_version', ['versionId' => $copy['versionId']]);
         }
 
         try {
             $this->service->delete($id);
-            $request->getSession()->getFlashBag()->add('alert', 'entry_deleted_with_success');
+            $this->addFlash('alert', 'entry_deleted_with_success');
         } catch (GenericApiException $exception) {
             if (404 === $exception->getCode()) {
                 // Ignore, not a problem because someone might have done it
             } elseif (400 === $exception->getCode() && 9 === $exception->getApiReturnCode()) {
-                $request->getSession()->getFlashBag()->add('alert', 'version_has_children');
+                $this->addFlash('alert', 'version_has_children');
 
                 return $this->redirectToRoute('copies_per_version', ['versionId' => $copy['versionId']]);
             }

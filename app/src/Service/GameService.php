@@ -6,15 +6,17 @@ namespace App\Service;
 
 class GameService extends AbstractService
 {
+    /** @return array<string, mixed> */
     public function getList(): array
     {
+        /** @var array{result: list<array<string, scalar>>, totalResultCount: int} $data */
         $data = $this->clientFactory
             ->getAnonymousClient()
             ->get('games?orderBy[]=title-asc&limit='.self::MAX_RESULT_COUNT);
 
         $count = 0;
         foreach ($data['result'] as $game) {
-            $count += $game['versionCount'];
+            $count += intval(strval($game['versionCount']));
         }
 
         $data['versionCount'] = $count;
@@ -22,15 +24,17 @@ class GameService extends AbstractService
         return $data;
     }
 
+    /** @return array<string, mixed> */
     public function search(string $keywords): array
     {
+        /** @var array{result: list<array<string, scalar>>, totalResultCount: int} $data */
         $data = $this->clientFactory
             ->getAnonymousClient()
             ->get("games?title[]={$keywords}&orderBy[]=title-asc&page=1&limit=".self::MAX_RESULT_COUNT);
 
         $versionCount = 0;
         foreach ($data['result'] as $result) {
-            $versionCount += $result['versionCount'];
+            $versionCount += intval($result['versionCount']);
         }
 
         $data['versionCount'] = $versionCount;

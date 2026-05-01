@@ -91,18 +91,20 @@ class UserAuthenticator extends AbstractAuthenticator
             $message = 'authentication.invalid_captcha_error';
         }
 
-        $request->getSession()->getFlashBag()->add('alert', $message);
+        /** @var \Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface $flashBag */
+        $flashBag = $request->getSession()->getBag('flashes');
+        $flashBag->add('alert', $message);
 
         return new RedirectResponse($this->router->generate('security_login'));
     }
 
     private function getUsernameFromRequest(Request $request): string
     {
-        return $request->request->get('_username', '');
+        return $request->request->getString('_username');
     }
 
     private function getRawPasswordFromRequest(Request $request): string
     {
-        return $request->request->get('_password', '');
+        return $request->request->getString('_password');
     }
 }

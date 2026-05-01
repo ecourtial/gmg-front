@@ -18,7 +18,7 @@ PROD
 * If you want to add extra features, just open an issue here in this repo.
 
 ## Stack
-* PHP 8.5
+* PHP >=8.4
 * Symfony 8.0
 * Bootstrap 3
 
@@ -32,7 +32,7 @@ Provided under the MIT licence.
 ![Version list](docs/versions.jpg "Version list")
 
 ## Versions
-* Version 1.x: compatible with v4 and v5 of the backend.
+* Version 1.x: compatible with v4 and v5 of the backend (but without the support of the latest features).
 * Version 2.x: compatible with v5 of the backend.
 
 ## Changelog

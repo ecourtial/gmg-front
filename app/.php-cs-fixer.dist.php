@@ -12,6 +12,9 @@ $finder = (new PhpCsFixer\Finder())
 return (new PhpCsFixer\Config())
     ->setRules([
         '@Symfony' => true,
+        // Keep inline PHPStan/Psalm variable annotations like:
+        // /** @var list<ExchangeRequest> $result */
+        'phpdoc_to_comment' => false,
     ])
     ->setFinder($finder)
 ;
