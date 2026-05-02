@@ -5,14 +5,16 @@ A front-end implementation for the project [GMG](https://github.com/ecourtial/gm
 
 ## Installation
 
-PORT 8080
+### Local environment (Docker)
+* At the root of the folder, copy the _.env.dist_ file to a _.env_ one. Update it to your needs.
+* Run _make start_.
+* In the .env.dev file, add the Google reCaptcha keys. You can also change the backend URL here (see the _.env_ file).
 
-DEV
-PROD
-
+### In production
 * Upload the code on your server.
 * Copy the _.env_ file to a _.env.local_ one and fill it with your values.
 * Run the _composer install_ command.
+* Add the Google reCaptcha keys.
 
 ## Adding extra features
 * If you want to add extra features, just open an issue here in this repo.

@@ -5,7 +5,7 @@
 ### v2.0.0
 * Version that support the new version (5.0) of the backend. Do not update if you are still with the v4 of the backend.
 * Bump to Symfony 8.0.
-* Bump to PHP 8.5.
+* Bump to PHP >=8.4.
 * The dev environment is in Docker now.
 
 ## V1
