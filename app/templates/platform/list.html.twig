@@ -9,15 +9,28 @@
         </a>
     {% endif %}
     <hr>
-    <ul>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">{% trans %} entity.id {% endtrans %}</th>
+            <th scope="col">{% trans %} see.platform {% endtrans %}</th>
+            <th scope="col">{% trans %} menu.games {% endtrans %}</th>
+            <th scope="col">{% trans %} menu.actions {% endtrans %}</th>
+        </tr>
+        </thead>
+        <tbody>
         {% for platform in data['result'] %}
-                <li>
-                    {{ platform['name'] }} ({{ platform['versionCount'] }})
-                    <a href="{{ path('platform_details', {id: platform['id']}) }}">{{ 'see.details'|trans }}</a>
+            <tr>
+                <td>{{ platform['id'] }}</td>
+                <td>{{ platform['name'] }} - <a href="{{ path('platform_details', {id: platform['id']}) }}">{{ 'see.details'|trans }}</a></td>
+                <td>{{ platform['versionCount'] }}</td>
+                <td>
                     {% if is_granted('ROLE_USER') %}
-                        - <a href="{{ url('edit_platform', {id: platform['id']}) }}">{{ 'menu.edit'|trans }}</a>
+                        <a href="{{ url('edit_platform', {id: platform['id']}) }}">{{ 'menu.edit'|trans }}</a>
                     {% endif %}
-                </li>
+                </td>
+            </tr>
         {% endfor %}
-    </ul>
+        </tbody>
+    </table>
 {% endblock %}

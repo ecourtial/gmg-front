@@ -143,6 +143,7 @@ virtual_title: Virtual versions (%count% entries)
 virtual_description: Versions for which I have a virtual copy
 bigBoxes_title: Versions on PC with a big, medium or special box copy, not a compilation or a reedition (%count%)
 bigBoxes_description: On all the platforms
+version_count: Version count
 
 # Various
 see.game: Game
