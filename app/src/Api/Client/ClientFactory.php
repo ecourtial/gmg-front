@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace App\Client;
+namespace App\Api\Client;
 
 use Symfony\Component\HttpFoundation\RequestStack;
 

@@ -8,7 +8,7 @@ use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
 class InvalidCaptchaException extends AuthenticationException
 {
-    public const ERROR_MSG = 'Invalid captcha response!';
+    public const string ERROR_MSG = 'Invalid captcha response!';
 
     public function getMessageKey(): string
     {

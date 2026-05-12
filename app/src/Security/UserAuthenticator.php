@@ -2,6 +2,7 @@
 
 namespace App\Security;
 
+use App\Api\Enum\ApiResponseCode;
 use App\Exception\GenericApiException;
 use App\Exception\Security\InvalidCaptchaException;
 use App\Service\UserService;
@@ -45,16 +46,16 @@ class UserAuthenticator extends AbstractAuthenticator
 
             $request->getSession()->set('apiToken', $user->getToken());
         } catch (GenericApiException $exception) {
-            if (403 === $exception->getCode()) {
-                if (1 === $exception->getApiReturnCode()) {
+            if (Response::HTTP_FORBIDDEN === $exception->getCode()) {
+                if (ApiResponseCode::USER_NOT_FOUND_API_CODE->value === $exception->getApiReturnCode()) {
                     throw new UserNotFoundException($exception->getMessage(), $exception->getCode(), $exception);
                 }
 
-                if (2 === $exception->getApiReturnCode()) {
+                if (ApiResponseCode::BAD_CREDENTIALS_API_CODE->value === $exception->getApiReturnCode()) {
                     throw new BadCredentialsException($exception->getMessage(), $exception->getCode(), $exception);
                 }
 
-                if (3 === $exception->getApiReturnCode()) {
+                if (ApiResponseCode::USER_ACCOUNT_DISABLED_API_CODE->value === $exception->getApiReturnCode()) {
                     throw new DisabledException($exception->getMessage(), $exception->getCode(), $exception);
                 }
             }

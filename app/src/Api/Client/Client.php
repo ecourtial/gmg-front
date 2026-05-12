@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Client;
+namespace App\Api\Client;
 
 use App\Exception\GenericApiException;
 use Symfony\Component\HttpClient\HttpClient;

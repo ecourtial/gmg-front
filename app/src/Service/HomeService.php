@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Service;
 
-use App\Client\ClientFactory;
+use App\Api\Client\ClientFactory;
 
 class HomeService extends AbstractService
 {

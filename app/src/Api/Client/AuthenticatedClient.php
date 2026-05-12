@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Client;
+namespace App\Api\Client;
 
 class AuthenticatedClient extends Client
 {
