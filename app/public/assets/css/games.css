@@ -144,3 +144,31 @@ td {
 .colored_h3 {
     color: #CC7832;
 }
+
+/** Add submenus to Bootstrap **/
+
+ /* Position submenu */
+ .dropdown-submenu {
+     position: relative;
+ }
+
+.dropdown-submenu .dropdown-menu {
+    top: 0;
+    left: 100%;
+    margin-top: -1px;
+}
+
+/* Optional: submenu arrow */
+.dropdown-submenu > a::after {
+    float: right;
+    margin-left: 10px;
+    font-size: 0.7rem;
+}
+
+/* Mobile support */
+@media (max-width: 991px) {
+    .dropdown-submenu .dropdown-menu {
+        left: 0;
+        top: 100%;
+    }
+}

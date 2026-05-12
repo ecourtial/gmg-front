@@ -8,6 +8,7 @@
 * Bump to PHP >=8.4.
 * The dev environment is in Docker now.
 * Refit of the listing of platforms, games, versions and notes.
+* Refit of the menu: the layout, and the menu is now darker and sticky when the user scrolls down.
 
 ## V1
 

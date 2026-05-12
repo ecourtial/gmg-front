@@ -22,7 +22,7 @@ A front-end implementation for the project [GMG](https://github.com/ecourtial/gm
 ## Stack
 * PHP >=8.4
 * Symfony 8.0
-* Bootstrap 3
+* Bootstrap 5
 
 ## Licence
 Provided under the MIT licence.

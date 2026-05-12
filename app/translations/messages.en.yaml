@@ -51,6 +51,7 @@ menu.virtual: Virtual
 menu.notes: Notes
 menu.add_note: Add a note
 menu.edit_note: Edit a note
+menu.list: List
 
 # Home
 home_title: Give Me a Game (GMG)
