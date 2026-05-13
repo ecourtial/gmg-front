@@ -24,7 +24,34 @@
         </a>
     {% endif %}
     <hr>
+    <h2 class="colored_h2">{% trans %} see.versions_label {% endtrans %}</h2>
     {% include 'version/list-content.html.twig' %}
+
+    <h2 class="colored_h2">{% trans %}games_mentions{% endtrans %}</h2>
+    {% for mentionType, mentions in mentions %}
+        <h3 class="colored_h3">{{ mentionType|trans()}}</h3>
+        {% for platformName, mentionsList in mentions %}
+            <h4 class="colored_h4">{{ platformName }}</h4>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">{% trans %} entity.id {% endtrans %}</th>
+                    <th scope="col">{% trans %} magazine_title {% endtrans %}</th>
+                    <th scope="col">{% trans %} entity.notes {% endtrans %}</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for mention in mentionsList %}
+                    <tr>
+                        <td>{{ mention['mentionId'] }}</td>
+                        <td>{{ mention['magazineTitle'] }} #{{ mention['magazineIssueNumber'] }} ({{ get_month_label(mention['magazineIssueMonth']) }} {{mention['magazineIssueYear']}}) - <a href="{{ path('magazine_issue_details', {issueId: mention['magazineIssueId']}) }}">{{ 'see.details'|trans }}</a></td>
+                        <td>{{ mention['notes'] }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% endfor %}
+    {% endfor %}
 {% endblock %}
 
 

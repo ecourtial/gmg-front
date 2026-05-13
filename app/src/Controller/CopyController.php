@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Api\Enum\ApiResponseCode;
 use App\Exception\GenericApiException;
 use App\Service\CopyService;
 use App\Service\VersionService;
@@ -125,7 +126,7 @@ class CopyController extends AbstractController
         } catch (GenericApiException $exception) {
             if (404 === $exception->getCode()) {
                 // Ignore, not a problem because someone might have done it
-            } elseif (400 === $exception->getCode() && 9 === $exception->getApiReturnCode()) {
+            } elseif (400 === $exception->getCode() && ApiResponseCode::RESOURCE_HAS_LINKED_RESOURCES->value === $exception->getApiReturnCode()) {
                 $this->addFlash('alert', 'version_has_children');
 
                 return $this->redirectToRoute('copies_per_version', ['versionId' => $copy['versionId']]);

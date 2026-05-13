@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Api\Enum\ApiResponseCode;
 use App\Exception\GenericApiException;
+use App\Service\GameMagazineMentionService;
 use App\Service\GameService;
+use App\Service\MagazineIssueService;
+use App\Service\MagazineService;
 use App\Service\PlatformService;
 use App\Service\VersionService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -23,6 +27,9 @@ class VersionController extends AbstractController
         private readonly TranslatorInterface $translator,
         private readonly GameService $gameService,
         private readonly PlatformService $platformService,
+        private readonly GameMagazineMentionService $gameMagazineMentionService,
+        private readonly MagazineService $magazineService,
+        private readonly MagazineIssueService $magazineIssueService,
     ) {
     }
 
@@ -30,6 +37,23 @@ class VersionController extends AbstractController
     public function versionDetails(int $id): Response
     {
         $version = $this->service->getById($id);
+        $mentions = $this->gameMagazineMentionService->getByVersionId($id)['result'];
+        $issues = [];
+        $magazines = [];
+
+        /** @todo refactorize as we could perform only one call (per type) to the API using filterBy[] */
+        foreach ($mentions as $mention) {
+            $magazineIssueId = $mention['magazineIssueId'];
+            if (false === array_key_exists($magazineIssueId, $issues)) {
+                $issue = $this->magazineIssueService->getById($magazineIssueId);
+                $issues[$magazineIssueId] = $issue;
+
+                $magazineId = $issue['magazineId'];
+                if (false === array_key_exists($magazineId, $magazines)) {
+                    $magazines[$magazineId] = $this->magazineService->getById($magazineId);
+                }
+            }
+        }
 
         return $this->render(
             'version/details.html.twig',
@@ -43,6 +67,7 @@ class VersionController extends AbstractController
                         ]
                     ),
                 'version' => $version,
+                'mentionsByType' => $this->service->formatMentions($magazines, $issues, $mentions),
             ]
         );
     }
@@ -241,7 +266,7 @@ class VersionController extends AbstractController
         } catch (GenericApiException $exception) {
             if (404 === $exception->getCode()) {
                 // Ignore, not a problem because someone might have done it
-            } elseif (400 === $exception->getCode() && 9 === $exception->getApiReturnCode()) {
+            } elseif (400 === $exception->getCode() && ApiResponseCode::RESOURCE_HAS_LINKED_RESOURCES->value === $exception->getApiReturnCode()) {
                 $this->addFlash('alert', 'version_has_children');
 
                 return $this->redirectToRoute('version_details', ['id' => $id]);

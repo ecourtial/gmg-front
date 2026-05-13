@@ -33,10 +33,6 @@ Provided under the MIT licence.
 
 ![Version list](docs/versions.jpg "Version list")
 
-## Versions
-* Version 1.x: compatible with v4 and v5 of the backend (but without the support of the latest features).
-* Version 2.x: compatible with v5 of the backend.
-
 ## Changelog
 
 See [here](CHANGELOG.md).

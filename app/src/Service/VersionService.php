@@ -341,4 +341,32 @@ class VersionService extends AbstractService
             ->getAnonymousClient()
             ->get("versions?orderBy[]=gameTitle-asc{$query}&page=1&limit=".$maxResultCount);
     }
+
+    public function formatMentions(array $magazines, array $issues, array $mentions): array
+    {
+        $mentionsData = [];
+
+        foreach ($mentions as $mention) {
+            $mentionType = $mention['type'];
+
+            if (false === array_key_exists($mentionType, $mentionsData)) {
+                $mentionsData[$mentionType] = [];
+            }
+
+            $magazineIssueId = $mention['magazineIssueId'];
+            $issue = $issues[$magazineIssueId];
+
+            $mentionsData[$mentionType][] = [
+                'mentionId' => $mention['id'],
+                'magazineTitle' => $magazines[$issue['magazineId']]['title'],
+                'magazineIssueId' => $magazineIssueId,
+                'magazineIssueYear' => $issue['year'],
+                'magazineIssueMonth' => $issue['month'],
+                'magazineIssueNumber' => $issue['issueNumber'],
+                'notes' => $mention['notes'],
+            ];
+        }
+
+        return $mentionsData;
+    }
 }

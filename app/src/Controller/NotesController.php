@@ -68,7 +68,7 @@ class NotesController extends AbstractController
             $this->addFlash('alert', 'entry_deleted_with_success');
         } catch (GenericApiException $exception) {
             if (404 === $exception->getCode()) {
-                // Ignore, not a problem because someone might have done it
+                // Ignore, not a problem because someone else might have done it in the meantime.
             }
         }
 

@@ -63,6 +63,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url('notes_list') }}">{{ 'menu.notes'|trans }}</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url('magazines_list') }}">{{ 'menu.magazine'|trans }}</a>
+                </li>
                 {% if is_granted('ROLE_USER') %}
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">

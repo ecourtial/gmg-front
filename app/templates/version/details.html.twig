@@ -36,6 +36,7 @@
         </a>
     {% endif %}
     <hr>
+    <h2 class="colored_h2">{% trans %} see.details {% endtrans %}</h2>
     <p>{% trans with {'%count%': version['storyCount']}%} entity.storyCount {% endtrans %}
     <p>{% trans with {'%count%': version['copyCount']}%} entity.copyCount {% endtrans %} <a href="{{ path('copies_per_version', {versionId: version['id']}) }}">{% trans %} see_copies {% endtrans %}</a> </p>
     <p><strong>{% trans %} entity.id {% endtrans %}:</strong> {{ version['id'] }}</p>
@@ -69,4 +70,28 @@
     <p><strong>{% trans %} entity.bestGameForever {% endtrans %}:</strong> {{ get_yes_no_key(version['bestGameForever'])}} </p>
     <p><strong>{% trans %} entity.finished {% endtrans %}:</strong> {{ get_yes_no_key(version['finished'])}} </p>
     <p><strong>{% trans %} entity.comments {% endtrans %}:</strong> {{ version['comments']|default('')|raw|nl2br }} </p>
+
+    <h2 class="colored_h2">{% trans %}games_mentions{% endtrans %}</h2>
+    {% for mentionType, mentions in mentionsByType %}
+        <h3 class="colored_h3">{{ mentionType|trans()}}</h3>
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">{% trans %} entity.id {% endtrans %}</th>
+                <th scope="col">{% trans %} magazine_title {% endtrans %}</th>
+                <th scope="col">{% trans %} entity.notes {% endtrans %}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for mention in mentions %}
+                <tr>
+                    <td>{{ mention['mentionId'] }}</td>
+                    <td>{{ mention['magazineTitle'] }} #{{ mention['magazineIssueNumber'] }} ({{ get_month_label(mention['magazineIssueMonth']) }} {{mention['magazineIssueYear']}}) - <a href="{{ path('magazine_issue_details', {issueId: mention['magazineIssueId']}) }}">{{ 'see.details'|trans }}</a></td>
+                    <td>{{ mention['notes'] }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endfor %}
+
 {% endblock %}

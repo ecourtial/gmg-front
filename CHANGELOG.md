@@ -1,16 +1,12 @@
 # Changelog
 
-## V2
-
-### v2.0.0
+### v1.9.0
 * Version that support the new version (5.0) of the backend. Do not update if you are still with the v4 of the backend.
 * Bump to Symfony 8.0.
 * Bump to PHP >=8.4.
 * The dev environment is in Docker now.
 * Refit of the listing of platforms, games, versions and notes.
 * Refit of the menu: the layout, and the menu is now darker and sticky when the user scrolls down.
-
-## V1
 
 ### v1.8.0
 * Bump to Symfony 7.2

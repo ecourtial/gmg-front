@@ -52,6 +52,11 @@ menu.notes: Notes
 menu.add_note: Add a note
 menu.edit_note: Edit a note
 menu.list: List
+menu.magazine: Magazines
+menu.add_magazine: Add a new magazine
+menu.edit_magazine: "Edit a magazine: <i>%title%</i>"
+menu.magazine_add_issue: Add issue
+menu.add_mention_in_magazine: Add new game mention
 
 # Home
 home_title: Give Me a Game (GMG)
@@ -169,6 +174,7 @@ see.day: Day
 see.none: None
 see.version: See the version
 see.criteria: Criteria
+Digital: Digital
 
 # Generic fields for entities
 entity.id: Id
@@ -204,6 +210,7 @@ entity.comments: Comments
 entity.storyCount: This version has %count% story/stories related to it.
 entity.copyCount: This version has %count% copy/copies.
 entity.type: Type
+entity.notes: Notes
 entity.region: Region
 entity.original: Original
 entity.boxType: Box type
@@ -229,6 +236,7 @@ entity.bought_by_platform: Repartition among platforms
 
 # Copies
 copy: copy
+copies: Copies
 copies_for_version_title: Copies for the version <strong>%title%</strong> on <strong>%platform%</strong> (%count%)
 
 # Transactions
@@ -283,3 +291,30 @@ language_french: French
 language_spanish: Spanish
 language_german: German
 language_italian: Italian
+
+# Magazines
+magazines_list_title: Magazines (%count% entries)
+magazine_label: Magazine
+magazine_title: Title
+magazine_issue_count: Issues
+magazine_issues_list: <strong>Issues of the magazine <em>%title%</em></strong>
+issue: Issue
+issue_number: Issue number
+games_mentions: Games mentions
+magazine_has_issues: Cannot delete this magazine because it has related issues (publications).
+magazine_edit_issue: Edit magazine issue
+magazine_issue_has_linked_resources: Cannot delete this magazine issue because it has linked resources (copies or mentions).
+magazine_add_issue_copy: Add a copy for a magazine issue
+Printed-Original: Printed (Original)
+Printed-Copy: Printed (Copy)
+Advertisement: Advertisement
+Comparison: Comparison
+Guide: Guide
+Mention: Mention
+Playable-demo: Playable-demo
+Other: Other
+Preview: Preview
+Short-preview: Short-preview
+Short-test: Short-test
+Test: Test
+Watchable-demo: Watchable-demo

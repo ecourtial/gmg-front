@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Api\Enum\ApiResponseCode;
 use App\Exception\GenericApiException;
+use App\Service\GameMagazineMentionService;
 use App\Service\GameService;
+use App\Service\MagazineIssueService;
+use App\Service\MagazineService;
 use App\Service\VersionService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,6 +24,9 @@ class GameController extends AbstractController
         private readonly GameService $service,
         private readonly VersionService $versionService,
         private readonly TranslatorInterface $translator,
+        private readonly MagazineService $magazineService,
+        private readonly GameMagazineMentionService $gameMagazineMentionService,
+        private readonly MagazineIssueService $magazineIssueService,
     ) {
     }
 
@@ -47,10 +54,39 @@ class GameController extends AbstractController
     #[Route('/game/{id<\d+>}', name: 'game_details', methods: ['GET'])]
     public function get(int $id): Response
     {
-        $data = $this->versionService->getByGame($id);
+        $versionsData = $this->versionService->getByGame($id);
         /** @var array{result: mixed, totalResultCount: mixed, ownedCount: mixed} $versions */
-        $versions = $data['versions'];
+
+        $versions = [];
+        foreach ($versionsData['versions']['result'] as $version) {
+            $versions[$version['id']] = $version;
+        }
+
         $game = $this->service->getById($id);
+
+        $versionsIds = [];
+        foreach ($versions as $version) {
+            $versionsIds[] = $version['id'];
+        }
+        $mentions = $this->gameMagazineMentionService->getByVersionsIds($versionsIds)['result'];
+        $issues = [];
+        $magazines = [];
+
+        /** @todo refactorize as we could perform only one call (per type) to the API using filterBy[] */
+        foreach ($mentions as $mention) {
+            $magazineIssueId = $mention['magazineIssueId'];
+            if (false === array_key_exists($magazineIssueId, $issues)) {
+                $issue = $this->magazineIssueService->getById($magazineIssueId);
+                $issues[$magazineIssueId] = $issue;
+
+                $magazineId = $issue['magazineId'];
+                if (false === array_key_exists($magazineId, $magazines)) {
+                    $magazines[$magazineId] = $this->magazineService->getById($magazineId);
+                }
+            }
+        }
+
+        $orderedMentions = $this->service->formatMentions($magazines, $versions, $mentions, $issues);
 
         return $this->render(
             'game/details.html.twig',
@@ -64,12 +100,13 @@ class GameController extends AbstractController
                     ->trans(
                         'games_versions_subtitle',
                         [
-                            '%resultCount%' => $versions['totalResultCount'],
-                            '%copyCount%' => $data['ownedCount'],
+                            '%resultCount%' => $versionsData['versions']['totalResultCount'],
+                            '%copyCount%' => $versionsData['ownedCount'],
                         ]
                     ),
-                'versions' => $versions['result'],
+                'versions' => $versions,
                 'game' => $game,
+                'mentions' => $orderedMentions,
             ]
         );
     }
@@ -89,7 +126,7 @@ class GameController extends AbstractController
         } catch (GenericApiException $exception) {
             if (404 === $exception->getCode()) {
                 // Ignore, not a problem because someone might have done it
-            } elseif (400 === $exception->getCode() && 9 === $exception->getApiReturnCode()) {
+            } elseif (400 === $exception->getCode() && ApiResponseCode::RESOURCE_HAS_LINKED_RESOURCES->value === $exception->getApiReturnCode()) {
                 $this->addFlash('alert', 'games_has_versions');
 
                 return $this->redirectToRoute('game_details', ['id' => $id]);
