@@ -30,6 +30,8 @@ class GameMagazineMentionService extends AbstractService
     /** @return array<string, mixed> */
     public function getByVersionsIds(array $versionsIds): array
     {
+        if (empty($versionsIds)) return ['result' => []];
+
         $versionsFilter = '';
         foreach ($versionsIds as $versionId) {
             $versionsFilter .= "&gameVersionId[]=".$versionId;

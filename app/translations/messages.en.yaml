@@ -298,6 +298,7 @@ magazine_label: Magazine
 magazine_title: Title
 magazine_issue_count: Issues
 magazine_issues_list: <strong>Issues of the magazine <em>%title%</em></strong>
+see_magazine_issues_list: See the magazine issue list
 issue: Issue
 issue_number: Issue number
 games_mentions: Games mentions
@@ -311,10 +312,12 @@ Advertisement: Advertisement
 Comparison: Comparison
 Guide: Guide
 Mention: Mention
-Playable-demo: Playable-demo
+Playable-demo: Playable demo with the magazine
 Other: Other
 Preview: Preview
-Short-preview: Short-preview
-Short-test: Short-test
+Short-preview: Short preview
+Short-test: Short test
 Test: Test
-Watchable-demo: Watchable-demo
+Watchable-demo: Watchable demo with the magazine
+Full-game-included: Full game included
+Cheat: Cheat

@@ -7,7 +7,11 @@ namespace App\Entity\Enum;
 enum MentionTypeEnum: string
 {
     case ADVERTISEMENT = 'Advertisement';
+
+    case CHEAT = 'Cheat';
     case COMPARISON = 'Comparison';
+
+    case FULL_GAME_INCLUDED = 'Full-game-included';
     case GUIDE = 'Guide';
     case MENTION = 'Mention';
     case PLAYABLE_DEMO = 'Playable-demo';

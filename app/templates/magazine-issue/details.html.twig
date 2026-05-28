@@ -1,6 +1,9 @@
 {% extends 'base.html.twig' %}
 {% block body %}
     <em>{{ issue.notes }}</em>
+    <p>
+        <a href="{{ path('magazine_details', {id: issue['magazineId']}) }}">{{ 'see_magazine_issues_list'|trans }}</a>
+    </p>
     <hr>
     {% if is_granted('ROLE_USER') %}
         <form action="{{ url('delete_magazine_issue', {id: issue['id']}) }}" method="post" data-confirmation="true" id="delete-form">

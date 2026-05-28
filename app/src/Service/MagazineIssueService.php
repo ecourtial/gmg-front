@@ -18,6 +18,7 @@ class MagazineIssueService extends AbstractService
 
     public function getByIds(array $ids): array
     {
+        // if (empty($versionsIds)) return ['result' => []];
         $issuesFilter = '';
         foreach ($ids as $id) {
             $issuesFilter .= "&id[]=".$id;
