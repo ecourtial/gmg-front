@@ -37,6 +37,7 @@
                 <tr>
                     <th scope="col">{% trans %} entity.id {% endtrans %}</th>
                     <th scope="col">{% trans %} magazine_title {% endtrans %}</th>
+                    <th scope="col">{% trans %} page_number {% endtrans %}</th>
                     <th scope="col">{% trans %} entity.notes {% endtrans %}</th>
                 </tr>
                 </thead>
@@ -45,6 +46,7 @@
                     <tr>
                         <td>{{ mention['mentionId'] }}</td>
                         <td>{{ mention['magazineTitle'] }} #{{ mention['magazineIssueNumber'] }} ({{ get_month_label(mention['magazineIssueMonth']) }} {{mention['magazineIssueYear']}}) - <a href="{{ path('magazine_issue_details', {issueId: mention['magazineIssueId']}) }}">{{ 'see.details'|trans }}</a></td>
+                        <td>{{ mention['pageNumber'] }}</td>
                         <td>{{ mention['notes'] }}</td>
                     </tr>
                 {% endfor %}

@@ -56,6 +56,7 @@ class MagazineIssueService extends AbstractService
                 'id' => $gameMention['id'],
                 'gameVersionId' => $gameMention['gameVersionId'],
                 'gameTitle' => $version['gameTitle'],
+                'pageNumber' => $gameMention['pageNumber'],
                 'notes' => $gameMention['notes'],
             ];
         }

@@ -14,15 +14,15 @@
             </div>
             <div class="form-group">
                 <label for="issueNumber">{{ 'issue_number'|trans }}</label>
-                <input type="text" id="issueNumber" name="issueNumber" value="{{ issue['issueNumber']|default('') }}" class="form-control"/>
+                <input type="number" id="issueNumber" name="issueNumber" value="{{ issue['issueNumber']|default('') }}" class="form-control"/>
             </div>
             <div class="form-group">
                 <label for="year">{{ 'see.year'|trans }}</label>
-                <input type="text" id="year" name="year" value="{{ issue['year']|default('') }}" class="form-control"/>
+                <input type="number" id="year" name="year" value="{{ issue['year']|default('') }}" class="form-control"/>
             </div>
             <div class="form-group">
                 <label for="month">{{ 'see.month'|trans }}</label>
-                <input type="text" id="month" name="month" value="{{ issue['month']|default('') }}" class="form-control"/>
+                <input type="number" id="month" name="month" value="{{ issue['month']|default('') }}" class="form-control"/>
             </div>
             <div class="form-group">
                 <label for="notes">{{ 'games_notes'|trans }}</label>

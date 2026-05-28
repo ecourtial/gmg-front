@@ -68,6 +68,7 @@ class GameService extends AbstractService
                 'magazineIssueYear' => $issue['year'],
                 'magazineIssueMonth' => $issue['month'],
                 'magazineIssueNumber' => $issue['issueNumber'],
+                'pageNumber' => $mention['pageNumber'],
                 'notes' => $mention['notes'],
             ];
         }

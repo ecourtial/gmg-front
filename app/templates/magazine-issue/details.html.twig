@@ -77,6 +77,7 @@
                 <tr>
                     <th scope="col">{% trans %} entity.id {% endtrans %}</th>
                     <th scope="col">{% trans %} games_title {% endtrans %}</th>
+                    <th scope="col">{% trans %} page_number {% endtrans %}</th>
                     <th scope="col">{% trans %} entity.notes {% endtrans %}</th>
                     <th scope="col">{% trans %} menu.actions {% endtrans %}</th>
                 </tr>
@@ -86,6 +87,7 @@
                     <tr>
                         <td>{{ versionData['id'] }}</td>
                         <td>{{ versionData['gameTitle'] }} - <a href="{{ path('version_details', {id: versionData['gameVersionId']}) }}">{{ 'see.details'|trans }}</a></td>
+                        <td>{{ versionData['pageNumber'] }}</td>
                         <td>{{ versionData['notes'] }}</td>
                         <td>
                             {% if is_granted('ROLE_USER') %}
