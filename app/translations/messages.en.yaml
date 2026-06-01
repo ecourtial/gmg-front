@@ -1,6 +1,7 @@
 # Menu
 menu.home: Home
 greetings_collection: Greetings. Below are a few figures about my collection.
+menu.all: All
 menu.platforms: Platforms
 menu.one_random_solo: One random in solo
 menu.one_random_multi: One random in multiplayer

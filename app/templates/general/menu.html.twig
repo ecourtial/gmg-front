@@ -16,7 +16,12 @@
                         {{ 'menu.games'|trans }}
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="{{ url('games_list') }}">{{ 'menu.list'|trans }}</a></li>
+                        {% if is_granted('ROLE_USER') %}
+                            <li>
+                                <a class="dropdown-item" href="{{ url('add_game') }}">{{ 'menu.add_game'|trans }} </a>
+                            </li>
+                        {% endif %}
+                        <li><a class="dropdown-item" href="{{ url('games_list') }}">{{ 'menu.all'|trans }}</a></li>
                         <li class="dropdown-submenu">
                             <a class="dropdown-item dropdown-toggle" href="#">
                                 {{ 'see.random'|trans }}

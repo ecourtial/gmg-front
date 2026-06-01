@@ -11,7 +11,7 @@ class GameMagazineMentionService extends AbstractService
         /** @var array{result: list<array<string, scalar>>, totalResultCount: int} $data */
         $data = $this->clientFactory
             ->getAnonymousClient()
-            ->get("game-version-magazine-mentions?magazineIssueId[]={$issueId}&orderBy[]=id-asc&limit=".self::MAX_RESULT_COUNT);
+            ->get("game-version-magazine-mentions?magazineIssueId[]={$issueId}&orderBy[]=gameVersionId-asc&orderBy[]=pageNumber-asc&limit=".self::MAX_RESULT_COUNT);
 
         return $data;
     }
@@ -22,7 +22,7 @@ class GameMagazineMentionService extends AbstractService
         /** @var array{result: list<array<string, scalar>>, totalResultCount: int} $data */
         $data = $this->clientFactory
             ->getAnonymousClient()
-            ->get("game-version-magazine-mentions?gameVersionId[]={$versionId}&orderBy[]=id-asc&limit=".self::MAX_RESULT_COUNT);
+            ->get("game-version-magazine-mentions?gameVersionId[]={$versionId}&orderBy[]=pageNumber-asc&limit=".self::MAX_RESULT_COUNT);
 
         return $data;
     }
@@ -40,7 +40,7 @@ class GameMagazineMentionService extends AbstractService
         /** @var array{result: list<array<string, scalar>>, totalResultCount: int} $data */
         $data = $this->clientFactory
             ->getAnonymousClient()
-            ->get("game-version-magazine-mentions?orderBy[]=id-asc&limit=".self::MAX_RESULT_COUNT.$versionsFilter);
+            ->get("game-version-magazine-mentions?orderBy[]=pageNumber-asc&limit=".self::MAX_RESULT_COUNT.$versionsFilter);
 
         return $data;
     }

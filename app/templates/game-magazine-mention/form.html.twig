@@ -16,7 +16,10 @@
                 <label for="type">{{ 'entity.type'|trans }}</label>
                 <select name="type">
                     {% for mention in mentionTypes %}
-                        <option value="{{ mention.value }}">
+                        <option
+                            value="{{ mention.value }}"
+                            {% if mention.value == defaultMentionType %} selected {% endif %}
+                        >
                             {{ mention.value|trans }}
                         </option>
                     {% endfor %}

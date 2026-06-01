@@ -59,6 +59,14 @@ class MagazineIssueService extends AbstractService
                 'pageNumber' => $gameMention['pageNumber'],
                 'notes' => $gameMention['notes'],
             ];
+
+            foreach ($sortedMentions as &$mentions) {
+                foreach ($mentions as &$mentionByConsole) {
+                    usort($mentionByConsole, function (array $a, array $b) { return strcmp($a['gameTitle'], $b['gameTitle']); });
+                }
+            }
+            unset($mentions);
+            unset($mentionByConsole);
         }
 
         return $sortedMentions;

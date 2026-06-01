@@ -44,6 +44,7 @@ class GameMagazineMentionController extends AbstractController
                     'screenSubTitle' => $magazine['title'] . ' - ' . 'Issue #'.$issue['issueNumber'] . ' ('.$this->toolsExtension->getMonthLabel($issue['month']).' '.$issue['year'].')',
                     'versions' => $this->versionService->getList()['result'],
                     'mentionTypes' => MentionTypeEnum::cases(),
+                    'defaultMentionType' => MentionTypeEnum::MENTION->value,
                     'issueId' => $issueId,
                 ]
             );
