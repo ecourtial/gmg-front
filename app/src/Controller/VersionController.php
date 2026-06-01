@@ -66,6 +66,7 @@ class VersionController extends AbstractController
                             '%platform%' => $version['platformName'],
                         ]
                     ),
+                'screenSubTitle' => $version['comments'],
                 'version' => $version,
                 'mentionsByType' => $this->service->formatMentions($magazines, $issues, $mentions),
             ]

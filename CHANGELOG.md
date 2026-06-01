@@ -13,6 +13,7 @@ Version that support the new version (5.0) of the backend.
 * Refit of the listing of platforms, games, versions and notes.
 * Refit of the menu: the layout, and the menu is now darker and sticky when the user scrolls down.
 * Add a new resource: magazine. You can manage issues, copies, games mentions.
+* In the version details screen: the comments are now displayed as the subtitle of the page.
 
 #### Fixes
 * Version release year has now a field of type 'number'.
