@@ -20,7 +20,6 @@ class HomeController extends AbstractController
     public function __construct(private readonly HomeService $service, private readonly TranslatorInterface $translator)
     {
     }
-
     #[Route('/', name: 'homepage', methods: ['GET'])]
     public function __invoke(): Response
     {

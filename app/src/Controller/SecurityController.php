@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Api\Enum\ApiResponseCode;
 use App\Exception\GenericApiException;
 use App\Service\UserService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -50,7 +51,7 @@ class SecurityController extends AbstractController
     }
 
     /**
-     * This is the route the user can use to logout.
+     * This is the route the user can use to log-out.
      *
      * But, this will never be executed. Symfony will intercept this first
      * and handle the logout automatically. See logout in config/packages/security.yaml
@@ -100,7 +101,7 @@ class SecurityController extends AbstractController
 
             return $this->redirect($this->logoutUrlGenerator->getLogoutUrl());
         } catch (GenericApiException $exception) {
-            if (2 === $exception->getApiReturnCode()) {
+            if (ApiResponseCode::BAD_CREDENTIALS_API_CODE === $exception->getApiReturnCode()) {
                 $this->addFlash('alert', 'authentication.bad_current_password');
 
                 return $this->redirectToRoute('change_password');

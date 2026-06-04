@@ -8,6 +8,7 @@ Version that support the new version (5.0) of the backend.
 * Bump to Symfony 8.0.
 * Bump to PHP >=8.4.
 * The dev environment is in Docker now.
+* Use HTTP constants instead of the raw code.
 
 #### Features
 * Refit of the listing of platforms, games, versions and notes.

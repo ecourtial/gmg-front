@@ -6,6 +6,7 @@ namespace App\Security;
 
 use App\Exception\GenericApiException;
 use App\Service\UserService;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\DisabledException;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UserNotFoundException;
@@ -70,7 +71,7 @@ class UserProvider implements UserProviderInterface
 
             return $user;
         } catch (GenericApiException $exception) {
-            if (404 === $exception->getCode()) {
+            if (Response::HTTP_NOT_FOUND === $exception->getCode()) {
                 throw new UserNotFoundException($exception->getMessage(), $exception->getCode(), $exception);
             }
 

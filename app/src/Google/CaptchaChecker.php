@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace App\Google;
 
 use App\Exception\Security\InvalidCaptchaException;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class CaptchaChecker
@@ -44,7 +45,7 @@ class CaptchaChecker
 
         $statusCode = $googleResponse->getStatusCode();
 
-        if (200 !== $statusCode) {
+        if (Response::HTTP_OK !== $statusCode) {
             throw new \RuntimeException('Error when contacting Google for Captcha validation. HTTP Status code was: '.$statusCode.'.');
         }
 

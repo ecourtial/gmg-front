@@ -76,9 +76,9 @@ class MagazineIssueCopyController extends AbstractController
 
             return $this->redirectToRoute('magazine_issue_details', ['issueId' => $copy['magazineIssueId']]);
         } catch (GenericApiException $exception) {
-            if (404 === $exception->getCode()) {
+            if (Response::HTTP_NOT_FOUND === $exception->getCode()) {
                 // Ignore, not a problem because someone might have done it in the meantime.
-            } elseif (400 === $exception->getCode() && ApiResponseCode::RESOURCE_HAS_LINKED_RESOURCES->value === $exception->getApiReturnCode()) {
+            } elseif (Response::HTTP_BAD_REQUEST === $exception->getCode() && ApiResponseCode::RESOURCE_HAS_LINKED_RESOURCES->value === $exception->getApiReturnCode()) {
                 $this->addFlash('alert', 'magazine_issue_has_linked_resources');
             }
         }
