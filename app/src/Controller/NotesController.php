@@ -40,7 +40,7 @@ class NotesController extends AbstractController
         );
     }
 
-    #[Route('/note/{id<\d+>}', name: 'note_details', methods: ['GET'])]
+    #[Route('/note/{id<\d+>}', name: 'note_details', methods: ['GET']), IsGranted('ROLE_USER')]
     public function get(int $id): Response
     {
         $note = $this->service->getById($id);

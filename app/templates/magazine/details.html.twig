@@ -38,7 +38,7 @@
                 <td>{{ issue['id'] }}</td>
                 <td>#{{ issue['issueNumber'] }} - <a href="{{ path('magazine_issue_details', {issueId: issue['id']}) }}">{{ 'see.details'|trans }}</a></td>
                 <td>{{ get_month_label(issue['month']) }} {{ issue['year'] }}</td>
-                <td>{{ issue['notes'] }}</td>
+                <td>{% if is_granted('ROLE_USER') %}{{ issue['notes'] }}{% endif %}</td>
             </tr>
         {% endfor %}
         </tbody>

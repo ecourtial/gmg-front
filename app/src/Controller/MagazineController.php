@@ -56,7 +56,7 @@ class MagazineController extends AbstractController
                         'magazine_issues_list',
                         ['%title%' => $magazine['title']]
                     ),
-                'screenSubTitle' => $magazine['notes'],
+                'screenSubTitle' => $this->isGranted('ROLE_USER') ? $magazine['notes'] : '',
                 'issues' => $data['result'],
                 'magazine' => $magazine,
             ]

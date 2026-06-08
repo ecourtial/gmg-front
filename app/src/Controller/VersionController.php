@@ -66,7 +66,7 @@ class VersionController extends AbstractController
                             '%platform%' => $version['platformName'],
                         ]
                     ),
-                'screenSubTitle' => $version['comments'],
+                'screenSubTitle' => $this->isGranted('ROLE_USER') ? $version['comments'] : '',
                 'version' => $version,
                 'mentionsByType' => $this->service->formatMentions($magazines, $issues, $mentions),
             ]

@@ -1,6 +1,8 @@
 {% extends 'base.html.twig' %}
 {% block body %}
+    {% if is_granted('ROLE_USER') %}
     <em>{{ issue.notes }}</em>
+    {% endif %}
     <p>
         <a href="{{ path('magazine_details', {id: issue['magazineId']}) }}">{{ 'see_magazine_issues_list'|trans }}</a>
     </p>
@@ -49,7 +51,7 @@
             <tr>
                 <td>{{ copy['id'] }}</td>
                 <td>{{ copy['type'] }}</td>
-                <td>{{ copy['notes'] }}</td>
+                <td>{% if is_granted('ROLE_USER') %}{{ copy['notes'] }}{% endif %}</td>
                 <td>
                     {% if is_granted('ROLE_USER') %}
                         <form action="{{ url('delete_magazine_issue_copy', {id: copy['id']}) }}" method="post" data-confirmation="true" id="delete-form">
@@ -88,7 +90,7 @@
                         <td>{{ versionData['id'] }}</td>
                         <td>{{ versionData['gameTitle'] }} - <a href="{{ path('version_details', {id: versionData['gameVersionId']}) }}">{{ 'see.details'|trans }}</a></td>
                         <td>{{ versionData['pageNumber'] }}</td>
-                        <td>{{ versionData['notes'] }}</td>
+                        <td>{% if is_granted('ROLE_USER') %}{{ versionData['notes'] }}{% endif %}</td>
                         <td>
                             {% if is_granted('ROLE_USER') %}
                                 <form action="{{ url('delete_game_magazine_mention', {id: versionData['id']}) }}" method="post" data-confirmation="true" id="delete-form">

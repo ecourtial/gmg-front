@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 {% block body %}
-    <p><i>{{ game['notes']|default('')|raw|nl2br }}</i></p>
     {% if is_granted('ROLE_USER') %}
+        <p><i>{{ game['notes']|default('')|raw|nl2br }}</i></p>
         <form action="{{ url('delete_game', {id: game['id']}) }}" method="post" data-confirmation="true" id="delete-form">
             <input type="hidden" name="_csrf_token" value="{{ csrf_token('delete_game') }}" />
             <button type="submit" id="deletePostSubmitButton" class="btn btn-lg btn-block btn-danger" onclick="return areYouSure('{{ 'delete_entry_confirmation'|trans }}');">
@@ -47,7 +47,7 @@
                         <td>{{ mention['mentionId'] }}</td>
                         <td>{{ mention['magazineTitle'] }} #{{ mention['magazineIssueNumber'] }} ({{ get_month_label(mention['magazineIssueMonth']) }} {{mention['magazineIssueYear']}}) - <a href="{{ path('magazine_issue_details', {issueId: mention['magazineIssueId']}) }}">{{ 'see.details'|trans }}</a></td>
                         <td>{{ mention['pageNumber'] }}</td>
-                        <td>{{ mention['notes'] }}</td>
+                        <td>{% if is_granted('ROLE_USER') %}{{ mention['notes'] }}{% endif %}</td>
                     </tr>
                 {% endfor %}
                 </tbody>

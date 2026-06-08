@@ -53,17 +53,21 @@
     <ul>
         <li>{% trans with {'%count%': data['gameCount']}%}app_figure_records{% endtrans %}</li>
         <li>{% trans with {'%count%': data['versionCount'], '%platform_count%': data['platformCount']}%}app_figure_versions{% endtrans %}</li>
-        <li>{% trans %}app_figure_for_these_versions{% endtrans %}:
-            <ul>
-                <li>{% trans with {'%count%': data['ownedGameCount'], '%original_count%': data['originalCount']}%}app_figure_records_own{% endtrans %}</li>
-                <li>{% trans with {'%count%': data['versionFinishedCount']}%}app_figure_records_finished{% endtrans %}</li>
-            </ul>
-        <li>{% trans with {'%count%': data['toDoSoloOrToWatch']}%}app_figure_records_to_do_or_to_watch{% endtrans %}</li>
+        {% if is_granted('ROLE_USER') %}
+            <li>{% trans %}app_figure_for_these_versions{% endtrans %}:
+                <ul>
+                    <li>{% trans with {'%count%': data['ownedGameCount'], '%original_count%': data['originalCount']}%}app_figure_records_own{% endtrans %}</li>
+                    <li>{% trans with {'%count%': data['versionFinishedCount']}%}app_figure_records_finished{% endtrans %}</li>
+                </ul>
+            <li>{% trans with {'%count%': data['toDoSoloOrToWatch']}%}app_figure_records_to_do_or_to_watch{% endtrans %}</li>
+        {% endif %}
     </ul>
 
-    <div id="copiesDistributionStatsContainer" style="height: 370px; width: 100%;"></div>
-    <div id="copiesDistributionNotOnCompilationStatsContainer" style="height: 370px; width: 100%;"></div>
-    <br>
+    {% if is_granted('ROLE_USER') %}
+        <div id="copiesDistributionStatsContainer" style="height: 370px; width: 100%;"></div>
+        <div id="copiesDistributionNotOnCompilationStatsContainer" style="height: 370px; width: 100%;"></div>
+        <br>
+    {% endif %}
     <h2 class="colored_h2">{{ 'my_hall_of_fame'|trans }}</h2>
 
     <h3 class="colored_h3">{{ 'see.criteria'|trans }}</h3>
