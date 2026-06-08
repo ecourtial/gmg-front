@@ -82,6 +82,17 @@ class VersionController extends AbstractController
 
         $data = $this->service->getFilteredList($filter);
 
+        // Ugly! @TODO implement that on API side please.
+        if ($filter === VersionService::WITH_COMMENTS_FILTER) {
+            foreach ($data['result'] as $key => $item) {
+                if (null === $item['comments']
+                    || trim($item['comments']) === '') {
+                    unset($data['result'][$key]);
+                }
+            }
+            unset($item);
+        }
+
         return $this->render(
             'version/standard-list.html.twig',
             [

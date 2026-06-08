@@ -6,7 +6,9 @@ namespace App\Service;
 
 class VersionService extends AbstractService
 {
-    public const FILTERS = [
+    public const string WITH_COMMENTS_FILTER = 'withComments';
+
+    public const array FILTERS = [
         'bgf' => [
             'attribute' => 'bestGameForever',
             'title' => 'best_game_forever_title',
@@ -79,6 +81,13 @@ class VersionService extends AbstractService
             'description' => 'bigBoxes_description',
             'filter_from_copies' => true,
             'attribute_value' => 'Big box&boxType[]=Medium box&boxType[]=Special box&reedition[]=0&onCompilation[]=0',
+        ],
+        // Ugly way to bypass API limitation. See the controller.
+        self::WITH_COMMENTS_FILTER => [
+            'attribute' => 'id',
+            'title' => 'version_with_comments',
+            'description' => 'bigBoxes_description',
+            'attribute_value' => 'neq-0',
         ],
     ];
 

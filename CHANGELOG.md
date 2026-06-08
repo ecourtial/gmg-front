@@ -16,6 +16,7 @@ Version that support the new version (5.0) of the backend.
 * Add a new resource: magazine. You can manage issues, copies, games mentions.
 * In the version details screen: the comments are now displayed as the subtitle of the page.
 * Some fields, like notes, comment... are now hidden of the user is not logged-in.
+* New filter for versions: show versions with comments.
 
 #### Fixes
 * Version release year has now a field of type 'number'.
