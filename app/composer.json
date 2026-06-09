@@ -10,10 +10,10 @@
         "symfony/asset": "8.0.*",
         "symfony/console": "8.0.*",
         "symfony/dotenv": "8.0.*",
-        "symfony/flex": "^2.10",
+        "symfony/flex": "^2.11",
         "symfony/framework-bundle": "8.0.*",
         "symfony/http-client": "8.0.*",
-        "symfony/monolog-bundle": "^4.0",
+        "symfony/monolog-bundle": "^4.0.2",
         "symfony/runtime": "8.0.*",
         "symfony/security-bundle": "8.0.*",
         "symfony/translation": "8.0.*",
@@ -21,9 +21,9 @@
         "symfony/yaml": "8.0.*"
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "^3.95.2",
-        "phpstan/phpstan": ">=2.1.55",
-        "rector/rector": "^2.4.4",
+        "friendsofphp/php-cs-fixer": "^3.95.5",
+        "phpstan/phpstan": ">=2.2.2",
+        "rector/rector": "^2.4.5",
         "symfony/web-profiler-bundle": "8.0.*"
     },
     "config": {
