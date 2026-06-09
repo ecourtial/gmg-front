@@ -58,6 +58,8 @@ menu.add_magazine: Add a new magazine
 menu.edit_magazine: "Edit a magazine: <i>%title%</i>"
 menu.magazine_add_issue: Add issue
 menu.add_mention_in_magazine: Add new game mention
+menu.version_with_comments: Version(s) with comments
+menu.game_with_comments: Game(s) with comments
 
 # Home
 home_title: Give Me a Game (GMG)
@@ -93,6 +95,7 @@ games_has_versions: Cannot delete this game because it has versions.
 games_title: Title
 games_notes: Notes
 see_game_versions: See all the versions of this game
+games_with_comments_subtitle: Game(s) with comments (%count%).
 
 # Versions
 have_at_least_one_copy: I have at least one copy of this version.
@@ -151,7 +154,6 @@ virtual_description: Versions for which I have a virtual copy
 bigBoxes_title: Versions on PC with a big, medium or special box copy, not a compilation or a reedition (%count%)
 bigBoxes_description: On all the platforms
 version_count: Version count
-version_with_comments: Version(s) with comments
 
 # Various
 see.game: Game

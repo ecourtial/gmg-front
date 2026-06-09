@@ -14,6 +14,7 @@ use App\Service\VersionService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -32,9 +33,9 @@ class GameController extends AbstractController
 
     /** @param array<string, mixed>|null $data */
     #[Route('/games', name: 'games_list', methods: ['GET'])]
-    public function list(?array $data = null): Response
+    public function list(): Response
     {
-        $data = $data ?? $this->service->getList();
+        $data = $this->service->getList();
 
         return $this->render(
             'game/list.html.twig',
@@ -194,6 +195,61 @@ class GameController extends AbstractController
         $query = \trim($request->request->getString('query'));
         $data = '' !== $query ? $this->service->search($query) : ['result' => [], 'totalResultCount' => 0, 'versionCount' => 0];
 
-        return $this->list($data);
+        return $this->render(
+            'game/list.html.twig',
+            [
+                'screenTitle' => $this->translator
+                    ->trans(
+                        'search_results',
+                        ['%count%' => $data['totalResultCount']]
+                    ),
+                'screenSubTitle' => $this->translator->trans(
+                    'search_results_subtitle',
+                    ['%query%' => $query]
+                ),
+                'games' => $data['result'],
+            ]
+        );
+    }
+
+    #[Route('/games/filtered/{filter<\w+>}', name: 'games_filtered_list', methods: ['GET'])]
+    public function filteredList(string $filter): Response
+    {
+        if (false === \array_key_exists($filter, GameService::FILTERS)) {
+            throw new NotFoundHttpException();
+        }
+
+        // When using actual filtering, implement a method like we did in the VersionService.
+        $data = $this->service->getList();
+
+        // Ugly! @TODO implement that on API side please.
+        if ($filter === GameService::WITH_COMMENTS_FILTER) {
+            foreach ($data['result'] as $key => $item) {
+                if (null === $item['notes']
+                    || trim($item['notes']) === '') {
+                    if (0 < $item['versionCount']) {
+                        $data['versionCount'] -= $item['versionCount'];
+                        $data['resultCount']--;
+                        $data['totalResultCount']--;
+                    }
+                    unset($data['result'][$key]);
+                }
+            }
+            unset($item);
+        }
+
+        return $this->render(
+            'game/list.html.twig',
+            [
+                'screenTitle' => $this->translator
+                    ->trans(
+                        'games_with_comments_subtitle',
+                        ['%count%' => $data['totalResultCount']]
+                    ),
+                'screenSubTitle' => $this->translator
+                    ->trans('games_list_subtitle', ['%count%' => $data['versionCount']]),
+                'games' => $data['result'],
+            ]
+        );
     }
 }

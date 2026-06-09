@@ -73,7 +73,7 @@ class VersionController extends AbstractController
         );
     }
 
-    #[Route('/games/filtered/{filter<\w+>}', name: 'versions_filtered_list', methods: ['GET'])]
+    #[Route('/versions/filtered/{filter<\w+>}', name: 'versions_filtered_list', methods: ['GET'])]
     public function filteredList(string $filter): Response
     {
         if (false === \array_key_exists($filter, VersionService::FILTERS)) {
@@ -82,11 +82,18 @@ class VersionController extends AbstractController
 
         $data = $this->service->getFilteredList($filter);
 
-        // Ugly! @TODO implement that on API side please.
+        /**
+         * Ugly! @TODO implement that on API side please.
+         * On top of that we could have used a simple getList() from the service.
+         * But at least it reminds use that we need to improve filters on the API side.
+         */
         if ($filter === VersionService::WITH_COMMENTS_FILTER) {
             foreach ($data['result'] as $key => $item) {
                 if (null === $item['comments']
                     || trim($item['comments']) === '') {
+                    if (0 < $item['copyCount']) {
+                        $data['ownedCount']--;
+                    }
                     unset($data['result'][$key]);
                 }
             }
@@ -110,7 +117,7 @@ class VersionController extends AbstractController
         );
     }
 
-    #[Route('/game/random/{filter<\w+>}', name: 'version_random', methods: ['GET'])]
+    #[Route('/version/random/{filter<\w+>}', name: 'version_random', methods: ['GET'])]
     public function getRandom(string $filter): Response
     {
         /** @var array{result: list<array<string, scalar>>, totalResultCount: int} $result */
@@ -144,7 +151,7 @@ class VersionController extends AbstractController
         );
     }
 
-    #[Route('/game/with-priority/{filter<\w+>}', name: 'versions_with_priority', methods: ['GET'])]
+    #[Route('/version/with-priority/{filter<\w+>}', name: 'versions_with_priority', methods: ['GET'])]
     public function getListWithPriority(string $filter): Response
     {
         if (false === \array_key_exists($filter, VersionService::FILTERS_WITH_PRIORITY)) {

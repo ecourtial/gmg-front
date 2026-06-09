@@ -85,13 +85,13 @@ class VersionService extends AbstractService
         // Ugly way to bypass API limitation. See the controller.
         self::WITH_COMMENTS_FILTER => [
             'attribute' => 'id',
-            'title' => 'version_with_comments',
+            'title' => 'menu.version_with_comments',
             'description' => 'bigBoxes_description',
             'attribute_value' => 'neq-0',
         ],
     ];
 
-    public const FILTERS_WITH_PRIORITY = [
+    public const array FILTERS_WITH_PRIORITY = [
         'to_do' => [
             'attribute1' => 'toDo',
             'attribute2' => 'toDoPosition',

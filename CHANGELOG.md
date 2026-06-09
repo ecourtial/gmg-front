@@ -17,6 +17,9 @@ Version that support the new version (5.0) of the backend.
 * In the version details screen: the comments are now displayed as the subtitle of the page.
 * Some fields, like notes, comment... are now hidden of the user is not logged-in.
 * New filter for versions: show versions with comments.
+* New filter for games: show versions with comments.
+* The routes for listing filtered versions, versions with priority or random version, now uses the "version" name as resource in the URL to be more consistent.
+* When performing a search query for games: the title now shows how many results were found, like for the versions.
 
 #### Fixes
 * Version release year has now a field of type 'number'.

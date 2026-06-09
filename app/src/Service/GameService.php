@@ -6,6 +6,12 @@ namespace App\Service;
 
 class GameService extends AbstractService
 {
+    public const string WITH_COMMENTS_FILTER = 'withComments';
+
+    public const array FILTERS = [
+        self::WITH_COMMENTS_FILTER => []
+    ];
+
     /** @return array<string, mixed> */
     public function getList(): array
     {
