@@ -37,23 +37,7 @@ class VersionController extends AbstractController
     public function versionDetails(int $id): Response
     {
         $version = $this->service->getById($id);
-        $mentions = $this->gameMagazineMentionService->getByVersionId($id)['result'];
-        $issues = [];
-        $magazines = [];
-
-        /** @todo refactorize as we could perform only one call (per type) to the API using filterBy[] */
-        foreach ($mentions as $mention) {
-            $magazineIssueId = $mention['magazineIssueId'];
-            if (false === array_key_exists($magazineIssueId, $issues)) {
-                $issue = $this->magazineIssueService->getById($magazineIssueId);
-                $issues[$magazineIssueId] = $issue;
-
-                $magazineId = $issue['magazineId'];
-                if (false === array_key_exists($magazineId, $magazines)) {
-                    $magazines[$magazineId] = $this->magazineService->getById($magazineId);
-                }
-            }
-        }
+        [$magazines, $issues, $mentions] = $this->prepareMentions($id);
 
         return $this->render(
             'version/details.html.twig',
@@ -134,6 +118,7 @@ class VersionController extends AbstractController
 
         /** @var array<string, scalar> $version */
         $version = $result['result'][0];
+        [$magazines, $issues, $mentions] = $this->prepareMentions($version['id']);
 
         return $this->render(
             'version/details.html.twig',
@@ -147,6 +132,7 @@ class VersionController extends AbstractController
                         ]
                     ),
                 'version' => $version,
+                'mentionsByType' => $this->service->formatMentions($magazines, $issues, $mentions),
             ]
         );
     }
@@ -293,5 +279,28 @@ class VersionController extends AbstractController
         }
 
         return $this->redirectToRoute('games_list');
+    }
+
+    private function prepareMentions(int $versionId): array
+    {
+        $mentions = $this->gameMagazineMentionService->getByVersionId($versionId)['result'];
+        $issues = [];
+        $magazines = [];
+
+        /** @todo refactorize as we could perform only one call (per type) to the API using filterBy[] */
+        foreach ($mentions as $mention) {
+            $magazineIssueId = $mention['magazineIssueId'];
+            if (false === array_key_exists($magazineIssueId, $issues)) {
+                $issue = $this->magazineIssueService->getById($magazineIssueId);
+                $issues[$magazineIssueId] = $issue;
+
+                $magazineId = $issue['magazineId'];
+                if (false === array_key_exists($magazineId, $magazines)) {
+                    $magazines[$magazineId] = $this->magazineService->getById($magazineId);
+                }
+            }
+        }
+
+        return [$magazines, $issues, $mentions];
     }
 }
