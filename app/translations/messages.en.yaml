@@ -108,6 +108,8 @@ top_game: Is a top game.
 best_game_forever: In the 'best games forever list'
 game.version_details: <strong>%title%</strong> on <strong>%platform%</strong>
 see_copies: See the copies for this game
+see_stories: See the stories for this game
+stories_for_version: Stories for <em>%title%</em>
 have_copy_for_x_of_them: I have a copy for %count% of them
 best_game_forever_title: Best Games Forever (%count% entries)
 best_game_forever_description: Games that, despite their age, are timeless and still gems today (different of the hall of fame entries, since the hall of fame is on the context of the era)

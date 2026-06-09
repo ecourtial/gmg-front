@@ -7,12 +7,18 @@ namespace App\Service;
 class StoryService extends AbstractService
 {
     /** @return array<string, mixed> */
-    public function getList(): array
+    public function getList(int $versionId = 0): array
     {
+        $versionFilter = '';
+
+        if (0 !== $versionId) {
+            $versionFilter = '&versionId[]='.$versionId;
+        }
+
         /** @var array{result: list<array<string, scalar>>, totalResultCount: int} $data */
         $data = $this->clientFactory
             ->getAnonymousClient()
-            ->get('stories?orderBy[]=year-asc&orderBy[]=position-asc&limit='.self::MAX_RESULT_COUNT);
+            ->get('stories?orderBy[]=year-asc&orderBy[]=position-asc'.$versionFilter.'&limit='.self::MAX_RESULT_COUNT);
 
         $result = [
             'totalResultCount' => $data['totalResultCount'],

@@ -38,7 +38,7 @@
     {% endif %}
     <hr>
     <h2 class="colored_h2">{% trans %} see.details {% endtrans %}</h2>
-    <p>{% trans with {'%count%': version['storyCount']}%} entity.storyCount {% endtrans %}
+    <p>{% trans with {'%count%': version['storyCount']}%} entity.storyCount {% endtrans %} - <a href="{{ url('story_list') }}?version={{version['id']}}">{{ 'see_stories'|trans }}</a>
     <p>{% trans with {'%count%': version['copyCount']}%} entity.copyCount {% endtrans %} <a href="{{ path('copies_per_version', {versionId: version['id']}) }}">{% trans %} see_copies {% endtrans %}</a> </p>
     <p><strong>{% trans %} entity.id {% endtrans %}:</strong> {{ version['id'] }}</p>
     <p><strong>{% trans %} entity.badges {% endtrans %}:</strong>

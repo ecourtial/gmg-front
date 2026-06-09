@@ -24,19 +24,33 @@ class StoryController extends AbstractController
     }
 
     #[Route('/stories', name: 'story_list', methods: ['GET'])]
-    public function getList(): Response
+    public function getList(Request $request): Response
     {
-        $data = $this->service->getList();
+        $versionId = (int)$request->query->get('version', 0);
+        $data = $this->service->getList($versionId);
+
+        if (0 === $versionId) {
+            $screenTitle = $this->translator
+                ->trans(
+                    'stories_title',
+                    ['%count%' => $data['totalResultCount']]
+                );
+            $screenDescription =  $this->translator->trans('stories_description');
+        } else {
+            $version = $this->versionService->getById($versionId);
+            $screenTitle = $this->translator
+                ->trans(
+                    'stories_for_version',
+                    ['%title%' => $version['gameTitle']]
+                );
+            $screenDescription = '';
+        }
 
         return $this->render(
             'story/list.html.twig',
             [
-                'screenTitle' => $this->translator
-                    ->trans(
-                        'stories_title',
-                        ['%count%' => $data['totalResultCount']]
-                    ),
-                'screenDescription' => $this->translator->trans('stories_description'),
+                'screenTitle' => $screenTitle,
+                'screenDescription' => $screenDescription,
                 'stories' => $data['stories'],
             ]
         );
