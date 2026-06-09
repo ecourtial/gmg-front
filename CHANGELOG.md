@@ -21,6 +21,7 @@ Version that support the new version (5.0) of the backend.
 * The routes for listing filtered versions, versions with priority or random version, now uses the "version" name as resource in the URL to be more consistent.
 * When performing a search query for games: the title now shows how many results were found, like for the versions.
 * From the version screen, we can now access to a filtered stories list for this version.
+* From the version screen, we can now access to a filtered transactions list for this version.
 
 #### Fixes
 * Version release year has now a field of type 'number'.

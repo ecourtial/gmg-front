@@ -26,19 +26,33 @@ class TransactionController extends AbstractController
     }
 
     #[Route('/transactions', name: 'transaction_list', methods: ['GET'])]
-    public function getList(): Response
+    public function getList(Request $request): Response
     {
-        $data = $this->service->getList();
+        $versionId = (int)$request->query->get('version', 0);
+        $data = $this->service->getList($versionId);
+
+        if (0 === $versionId) {
+            $screenTitle = $this->translator
+                ->trans(
+                    'transactions_title',
+                    ['%count%' => $data['totalResultCount']]
+            );
+            $screenDescription =  $this->translator->trans('transactions_description');
+        } else {
+            $version = $this->versionService->getById($versionId);
+            $screenTitle = $this->translator
+                ->trans(
+                    'transactions_for_version',
+                    ['%title%' => $version['gameTitle']]
+                );
+            $screenDescription = '';
+        }
 
         return $this->render(
             'transaction/list.html.twig',
             [
-                'screenTitle' => $this->translator
-                    ->trans(
-                        'transactions_title',
-                        ['%count%' => $data['totalResultCount']]
-                    ),
-                'screenDescription' => $this->translator->trans('transactions_description'),
+                'screenTitle' => $screenTitle,
+                'screenDescription' => $screenDescription,
                 'transactions' => $data['transactions'],
                 'gamesBoughtChartData' => \json_encode($data['gamesBoughtChartData']),
                 'copiesDistributionAmongPlatformsStats' => \json_encode($data['copiesDistributionAmongPlatformsStats']),

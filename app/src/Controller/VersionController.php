@@ -11,6 +11,7 @@ use App\Service\GameService;
 use App\Service\MagazineIssueService;
 use App\Service\MagazineService;
 use App\Service\PlatformService;
+use App\Service\TransactionService;
 use App\Service\VersionService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -30,6 +31,7 @@ class VersionController extends AbstractController
         private readonly GameMagazineMentionService $gameMagazineMentionService,
         private readonly MagazineService $magazineService,
         private readonly MagazineIssueService $magazineIssueService,
+        private readonly TransactionService $transactionService,
     ) {
     }
 
@@ -37,6 +39,7 @@ class VersionController extends AbstractController
     public function versionDetails(int $id): Response
     {
         $version = $this->service->getById($id);
+        $transactions = $this->transactionService->getList($id);
         [$magazines, $issues, $mentions] = $this->prepareMentions($id);
 
         return $this->render(
@@ -53,6 +56,7 @@ class VersionController extends AbstractController
                 'screenSubTitle' => $this->isGranted('ROLE_USER') ? $version['comments'] : '',
                 'version' => $version,
                 'mentionsByType' => $this->service->formatMentions($magazines, $issues, $mentions),
+                'transactionsCount' => $transactions['totalResultCount'],
             ]
         );
     }

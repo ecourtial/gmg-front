@@ -7,12 +7,18 @@ namespace App\Service;
 class TransactionService extends AbstractService
 {
     /** @return array<string, mixed> */
-    public function getList(): array
+    public function getList(int $versionId = 0): array
     {
+        $versionFilter = '';
+
+        if (0 !== $versionId) {
+            $versionFilter = '&versionId[]='.$versionId;
+        }
+
         /** @var array{result: list<array<string, scalar>>, totalResultCount: int} $data */
         $data = $this->clientFactory
             ->getAnonymousClient()
-            ->get('transactions?orderBy[]=year-asc&orderBy[]=month-asc&orderBy[]=day-asc&limit='.self::MAX_RESULT_COUNT);
+            ->get('transactions?orderBy[]=year-asc&orderBy[]=month-asc'.$versionFilter.'&orderBy[]=day-asc&limit='.self::MAX_RESULT_COUNT);
 
         $result = [
             'totalResultCount' => $data['totalResultCount'],
