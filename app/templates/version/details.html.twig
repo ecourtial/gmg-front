@@ -35,6 +35,12 @@
                 {{ 'menu.add_transaction'|trans }}
             </button>
         </a>
+        <a href="{{ url('add_note') }}?gameVersionId={{ version['id'] }}">
+            <button type="submit" class="btn btn-lg btn-block btn-success">
+                <i class="fa fa-trash" aria-hidden="true"></i>
+                {{ 'menu.add_note'|trans }}
+            </button>
+        </a>
     {% endif %}
     <hr>
     <h2 class="colored_h2">{% trans %} see.details {% endtrans %}</h2>
@@ -71,6 +77,29 @@
     <p><strong>{% trans %} entity.ongoing {% endtrans %}:</strong> {{ get_yes_no_key(version['ongoing'])}} </p>
     <p><strong>{% trans %} entity.bestGameForever {% endtrans %}:</strong> {{ get_yes_no_key(version['bestGameForever'])}} </p>
     <p><strong>{% trans %} entity.finished {% endtrans %}:</strong> {{ get_yes_no_key(version['finished'])}} </p>
+    <hr>
+
+    {% if is_granted('ROLE_USER') %}
+    <h2 class="colored_h2">{% trans %}entity.notes{% endtrans %}</h2>
+    {% for note in notes %}
+        <div class="mb-3">
+            <button
+                class="btn btn-link p-0"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#details-{{ note.id }}"
+            >{{ note.title }} - {% trans %}show{% endtrans %}</button>
+
+            <div class="collapse mt-2" id="details-{{ note.id }}">
+                <a href="{{ url('edit_note', {id: note['id']}) }}">{{ 'menu.edit'|trans }}</a>
+                <div class="card card-body">
+                {{ note.content|raw|nl2br }}
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    {% endif %}
+    <hr>
 
     <h2 class="colored_h2">{% trans %}games_mentions{% endtrans %}</h2>
     {% for mentionType, mentions in mentionsByType %}

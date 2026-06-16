@@ -17,6 +17,9 @@
         </a>
     {% endif %}
     <hr>
+    {% if note['gameVersionId'] is not null %}
+        <a href="{{ path('version_details', {id: note['gameVersionId']}) }}">{{ 'see.version'|trans }}</a>
+    {% endif %}
     <p>{{ note['content']|default('')|raw|nl2br }} </p>
 {% endblock %}
 

@@ -36,3 +36,7 @@ Provided under the MIT licence.
 ## Changelog
 
 See [here](CHANGELOG.md).
+
+## Release procedure
+
+* Before merging into _master_, remember to change the version of the app in _App\Api\Client\Client_.

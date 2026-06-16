@@ -10,6 +10,9 @@
                 <label for="content">{{ 'note_content'|trans }}</label>
                 <textarea id="content" name="content" class="form-control">{{ note['content']|default('') }}</textarea>
             </div>
+            {% if gameVersionId is defined %}
+                <input type="hidden" name="gameVersionId" value="{{ gameVersionId }}" />
+            {% endif %}
             <input type="hidden" name="_csrf_token" value="{{ csrf_token('add_note') }}" />
             <button type="submit" id="loginSubmitButton" class="btn btn-primary">
                 <i class="fa fa-sign-in" aria-hidden="true"></i> {{ 'menu.save'|trans }}

@@ -10,6 +10,7 @@ use App\Service\GameMagazineMentionService;
 use App\Service\GameService;
 use App\Service\MagazineIssueService;
 use App\Service\MagazineService;
+use App\Service\NoteService;
 use App\Service\PlatformService;
 use App\Service\TransactionService;
 use App\Service\VersionService;
@@ -32,6 +33,7 @@ class VersionController extends AbstractController
         private readonly MagazineService $magazineService,
         private readonly MagazineIssueService $magazineIssueService,
         private readonly TransactionService $transactionService,
+        private readonly NoteService $noteService,
     ) {
     }
 
@@ -41,6 +43,7 @@ class VersionController extends AbstractController
         $version = $this->service->getById($id);
         $transactions = $this->transactionService->getList($id);
         [$magazines, $issues, $mentions] = $this->prepareMentions($id);
+        $notes = $this->noteService->getList($id);
 
         return $this->render(
             'version/details.html.twig',
@@ -57,6 +60,7 @@ class VersionController extends AbstractController
                 'version' => $version,
                 'mentionsByType' => $this->service->formatMentions($magazines, $issues, $mentions),
                 'transactionsCount' => $transactions['totalResultCount'],
+                'notes' => $notes['result'],
             ]
         );
     }

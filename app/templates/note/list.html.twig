@@ -18,17 +18,15 @@
         </tr>
         </thead>
         <tbody>
-        {% for note in notes %}
-            <tr>
-                <td>{{ note['id'] }}</td>
-                <td>{{ note['title'] }} - <a href="{{ path('note_details', {id: note['id']}) }}">{{ 'see.details'|trans }}</a></td>
-                <td>
-                    {% if is_granted('ROLE_USER') %}
-                        <a href="{{ url('edit_note', {id: note['id']}) }}">{{ 'menu.edit'|trans }}</a>
-                    {% endif %}
-                </td>
-            </tr>
-        {% endfor %}
+        {% if is_granted('ROLE_USER') %}
+            {% for note in notes %}
+                <tr>
+                    <td>{{ note['id'] }}</td>
+                    <td>{{ note['title'] }} - <a href="{{ path('note_details', {id: note['id']}) }}">{{ 'see.details'|trans }}</a></td>
+                    <td><a href="{{ url('edit_note', {id: note['id']}) }}">{{ 'menu.edit'|trans }}</a></td>
+                </tr>
+            {% endfor %}
+        {% endif %}
         </tbody>
     </table>
 {% endblock %}

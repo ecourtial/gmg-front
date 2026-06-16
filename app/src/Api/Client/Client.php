@@ -29,7 +29,7 @@ abstract class Client
     {
         $headers = \array_merge(
             $headers,
-            ['Content-Type' => 'application/json', 'Accept' => 'application/json', 'User-Agent' => 'GMG-Front/2.0']
+            ['Content-Type' => 'application/json', 'Accept' => 'application/json', 'User-Agent' => 'GMG-Front/1.9']
         );
 
         $targetUrl = $this->backendUrl.$query;

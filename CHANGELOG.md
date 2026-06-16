@@ -22,9 +22,10 @@ Version that support the new version (5.0) of the backend.
 * When performing a search query for games: the title now shows how many results were found, like for the versions.
 * From the version screen, we can now access to a filtered stories list for this version.
 * From the version screen, we can now access to a filtered transactions list for this version.
+* We can add notes to a game version.
 
 #### Fixes
-* Version release year has now a field of type 'number'.
+* Version: in the form, the release year has now a field of type 'number'.
 
 ### v1.8.0
 * Bump to Symfony 7.2

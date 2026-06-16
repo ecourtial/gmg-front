@@ -6,6 +6,7 @@ namespace App\Controller;
 
 use App\Exception\GenericApiException;
 use App\Service\NoteService;
+use App\Service\VersionService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,21 +19,22 @@ class NotesController extends AbstractController
     public function __construct(
         private readonly TranslatorInterface $translator,
         private readonly NoteService $service,
+        private readonly VersionService $versionService,
     ) {
     }
 
-    /** @param array<string, mixed>|null $data */
     #[Route('/notes', name: 'notes_list', methods: ['GET'])]
-    public function list(?array $data = null): Response
+    public function list(Request $request): Response
     {
-        $data = $data ?? $this->service->getList();
+        $gameVersionId = (int)$request->query->get('gameVersionId', 0);
+        $data = $this->service->getList($gameVersionId);
 
         return $this->render(
             'note/list.html.twig',
             [
                 'screenTitle' => $this->translator
                     ->trans(
-                        'menu.notes',
+                        'menu.global_notes',
                         ['%count%' => $data['totalResultCount']]
                     ),
                 'notes' => $data['result'],
@@ -79,9 +81,19 @@ class NotesController extends AbstractController
     public function add(Request $request): Response
     {
         if ('GET' === $request->getMethod()) {
+            $gameVersionId = (int)$request->query->get('gameVersionId', 0);
+            $payload = ['screenTitle' => $this->translator->trans('menu.add_note')];
+
+            if (0 < $gameVersionId) {
+                $version = $this->versionService->getById($gameVersionId);
+                $payload['gameVersionId'] = $gameVersionId;
+                $payload['screenTitle'] = $this->translator->trans('add_note_for_game_version');
+                $payload['screenSubTitle'] = $version['gameTitle'];
+            }
+
             return $this->render(
                 'note/form.html.twig',
-                ['screenTitle' => $this->translator->trans('menu.add_note')]
+                $payload
             );
         }
 
