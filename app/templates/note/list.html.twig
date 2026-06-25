@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    {% if is_granted('ROLE_USER') %}
+        <a href="{{ url('add_note') }}">
+            <button type="submit" class="btn btn-lg btn-block btn-success">
+                <i class="fa fa-trash" aria-hidden="true"></i>
+                {{ 'menu.add_note'|trans }}
+            </button>
+        </a>
+    {% endif %}
+    <hr>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">{% trans %} entity.id {% endtrans %}</th>
+            <th scope="col">{% trans %} note_title {% endtrans %}</th>
+            <th scope="col">{% trans %} menu.actions {% endtrans %}</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% if is_granted('ROLE_USER') %}
+            {% for note in notes %}
+                <tr>
+                    <td>{{ note['id'] }}</td>
+                    <td>{{ note['title'] }} - <a href="{{ path('note_details', {id: note['id']}) }}">{{ 'see.details'|trans }}</a></td>
+                    <td><a href="{{ url('edit_note', {id: note['id']}) }}">{{ 'menu.edit'|trans }}</a></td>
+                </tr>
+            {% endfor %}
+        {% endif %}
+        </tbody>
+    </table>
+{% endblock %}

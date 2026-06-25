@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <form method="POST" action="">
+        <fieldset>
+            <div class="form-group">
+                <label>
+                    {{ 'entity.version'|trans }}
+                    <select name="gameVersionId">
+                        {% for version in versions %}
+                            <option value="{{ version['id'] }}">{{ version['gameTitle'] }} ({{ version['platformName'] }})</option>
+                        {% endfor %}
+                    </select>
+                </label>
+            </div>
+            <div class="form-group">
+                <label for="type">{{ 'entity.type'|trans }}</label>
+                <select name="type">
+                    {% for mention in mentionTypes %}
+                        <option
+                            value="{{ mention.value }}"
+                            {% if mention.value == defaultMentionType %} selected {% endif %}
+                        >
+                            {{ mention.value|trans }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="pageNumber">{{ 'page_number'|trans }}</label>
+                <input type="number" id="pageNumber" name="pageNumber" value="" class="form-control"/>
+            </div>
+            <div class="form-group">
+                <label for="notes">{{ 'menu.notes'|trans }}</label>
+                <textarea id="notes" name="notes" class="form-control"></textarea>
+            </div>
+            <input type="hidden" name="magazineIssueId" value="{{ issueId }}" />
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('add_game_magazine_mention') }}" />
+            <button type="submit" id="loginSubmitButton" class="btn btn-primary">
+                <i class="fa fa-sign-in" aria-hidden="true"></i> {{ 'menu.save'|trans }}
+            </button>
+        </fieldset>
+    </form>
+{% endblock %}

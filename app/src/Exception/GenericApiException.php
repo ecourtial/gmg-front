@@ -1,0 +1,50 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Exception;
+
+use Symfony\Contracts\HttpClient\Exception\HttpExceptionInterface;
+
+class GenericApiException extends \Exception
+{
+    private ?int $apiReturnCode = null;
+    private ?string $apiOriginalMessage = null;
+
+    public function __construct(\Throwable $previous, string $targetUrl)
+    {
+        if (0 === $previous->getCode()) {
+            $message = 'Impossible to contact the backend!';
+        } else {
+            $message = "The API return an unexpected HTTP status code: {$previous->getCode()} when trying to access the following URL: '$targetUrl'.";
+
+            if ($previous instanceof HttpExceptionInterface) {
+                $content = \json_decode($previous->getResponse()->getContent(false), true);
+
+                if (is_array($content) && array_key_exists('message', $content)) {
+                    /** @var array<string, scalar> $content */
+                    $this->apiOriginalMessage = strval($content['message']);
+                    $message .= " The message returned was the following: '{$this->apiOriginalMessage}'.";
+
+                    if (array_key_exists('code', $content)) {
+                        $this->apiReturnCode = intval(strval($content['code']));
+                    }
+                }
+
+                $message .= " If you were submitting a form, please just click on the 'Previous' button of your browser.";
+            }
+        }
+
+        parent::__construct($message, (int) $previous->getCode(), $previous);
+    }
+
+    public function getApiReturnCode(): ?int
+    {
+        return $this->apiReturnCode;
+    }
+
+    public function getApiOriginalMessage(): ?string
+    {
+        return $this->apiOriginalMessage;
+    }
+}

@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    {% if is_granted('ROLE_USER') %}
+        <a href="{{ url('add_platform') }}">
+            <button type="submit" class="btn btn-lg btn-block btn-success">
+                <i class="fa fa-trash" aria-hidden="true"></i>
+                {{ 'menu.add_platform'|trans }}
+            </button>
+        </a>
+    {% endif %}
+    <hr>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">{% trans %} entity.id {% endtrans %}</th>
+            <th scope="col">{% trans %} see.platform {% endtrans %}</th>
+            <th scope="col">{% trans %} menu.games {% endtrans %}</th>
+            <th scope="col">{% trans %} menu.actions {% endtrans %}</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for platform in data['result'] %}
+            <tr>
+                <td>{{ platform['id'] }}</td>
+                <td>{{ platform['name'] }} - <a href="{{ path('platform_details', {id: platform['id']}) }}">{{ 'see.details'|trans }}</a></td>
+                <td>{{ platform['versionCount'] }}</td>
+                <td>
+                    {% if is_granted('ROLE_USER') %}
+                        <a href="{{ url('edit_platform', {id: platform['id']}) }}">{{ 'menu.edit'|trans }}</a>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

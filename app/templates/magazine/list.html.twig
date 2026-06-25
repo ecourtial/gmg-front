@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    {% if is_granted('ROLE_USER') %}
+        <a href="{{ url('add_magazine') }}">
+            <button type="submit" class="btn btn-lg btn-block btn-success">
+                <i class="fa fa-trash" aria-hidden="true"></i>
+                {{ 'menu.add_magazine'|trans }}
+            </button>
+        </a>
+    {% endif %}
+    <hr>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">{% trans %} entity.id {% endtrans %}</th>
+            <th scope="col">{% trans %} magazine_title {% endtrans %}</th>
+            <th scope="col">{% trans %} magazine_issue_count {% endtrans %}</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for magazine in magazines %}
+            <tr>
+                <td>{{ magazine['id'] }}</td>
+                <td>{{ magazine['title'] }} - <a href="{{ path('magazine_details', {id: magazine['id']}) }}">{{ 'see.details'|trans }}</a></td>
+                <td>{{ magazine['issueCount'] }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

@@ -1,0 +1,39 @@
+{% block body %}
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">{% trans %} entity.id {% endtrans %}</th>
+            <th scope="col">{% trans %} games_title {% endtrans %}</th>
+            <th scope="col">{% trans %} entity.platform {% endtrans %}</th>
+            <th scope="col">{% trans %} entity.badges {% endtrans %}</th>
+            <th scope="col">{% trans %} menu.actions {% endtrans %}</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for version in versions %}
+            <tr>
+                <td>{{ version['id'] }}</td>
+                <td>
+                    {% for badge, alt in get_ownership_badge(version) %}
+                        {% set path = 'assets/img/badges/' ~ badge ~ '.png' %}
+                        <img src="{{ asset(path) }}" title="{{ alt|trans }}"/>
+                    {% endfor %}
+                    {{ version['gameTitle'] }} - <a href="{{ path('version_details', {id: version['id']}) }}">{% trans %}see.details{% endtrans %}</a>
+                </td>
+                <td>{{ version['platformName'] }}</td>
+                <td>
+                    {% for badge, alt in get_badges_for_version(version) %}
+                        {% set path = 'assets/img/badges/' ~ badge ~ '.png' %}
+                        <img src="{{ asset(path) }}" title="{{ alt|trans }}"/>
+                    {% endfor %}
+                </td>
+                <td>
+                    {% if is_granted('ROLE_USER') %}
+                        <a href="{{ url('edit_version', {id: version['id']}) }}">{{ 'menu.edit'|trans }}</a>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    {% if is_granted('ROLE_USER') %}
+        <form action="{{ url('delete_magazine', {id: magazine['id']}) }}" method="post" data-confirmation="true" id="delete-form">
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('delete_magazine') }}" />
+            <button type="submit" id="deletePostSubmitButton" class="btn btn-lg btn-block btn-danger" onclick="return areYouSure('{{ 'delete_entry_confirmation'|trans }}');">
+                <i class="fa fa-trash" aria-hidden="true"></i>
+                {{ 'delete_action'|trans }}
+            </button>
+        </form>
+        <br/>
+        <a href="{{ url('add_magazine_issue') }}?selectedMagazine={{ magazine['id'] }}">
+            <button type="submit" class="btn btn-lg btn-block btn-success">
+                <i class="fa fa-trash" aria-hidden="true"></i>
+                {{ 'menu.magazine_add_issue'|trans }}
+            </button>
+        </a>
+        <a href="{{ url('edit_magazine', {'id': magazine['id']}) }}">
+            <button type="submit" class="btn btn-lg btn-block btn-outline-info">
+                <i class="fa fa-trash" aria-hidden="true"></i>
+                {{ 'menu.edit'|trans }}
+            </button>
+        </a>
+    {% endif %}
+    <hr>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">{% trans %} entity.id {% endtrans %}</th>
+            <th scope="col">{% trans %} issue_number {% endtrans %}</th>
+            <th scope="col">{% trans %} see.month {% endtrans %}</th>
+            <th scope="col">{% trans %} entity.notes {% endtrans %}</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for issue in issues %}
+            <tr>
+                <td>{{ issue['id'] }}</td>
+                <td>#{{ issue['issueNumber'] }} - <a href="{{ path('magazine_issue_details', {issueId: issue['id']}) }}">{{ 'see.details'|trans }}</a></td>
+                <td>{{ get_month_label(issue['month']) }} {{ issue['year'] }}</td>
+                <td>{% if is_granted('ROLE_USER') %}{{ issue['notes'] }}{% endif %}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

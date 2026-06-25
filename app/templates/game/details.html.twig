@@ -1,0 +1,61 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    {% if is_granted('ROLE_USER') %}
+        <p><i>{{ game['notes']|default('')|raw|nl2br }}</i></p>
+        <form action="{{ url('delete_game', {id: game['id']}) }}" method="post" data-confirmation="true" id="delete-form">
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('delete_game') }}" />
+            <button type="submit" id="deletePostSubmitButton" class="btn btn-lg btn-block btn-danger" onclick="return areYouSure('{{ 'delete_entry_confirmation'|trans }}');">
+                <i class="fa fa-trash" aria-hidden="true"></i>
+                {{ 'delete_action'|trans }}
+            </button>
+        </form>
+        <br/>
+        <a href="{{ url('edit_game', {'id': game['id']}) }}">
+            <button type="submit" class="btn btn-lg btn-block btn-outline-info">
+                <i class="fa fa-trash" aria-hidden="true"></i>
+                {{ 'menu.edit'|trans }}
+            </button>
+        </a>
+        <a href="{{ url('add_version') }}?game={{ game['id'] }}">
+            <button type="submit" class="btn btn-lg btn-block btn-success">
+                <i class="fa fa-trash" aria-hidden="true"></i>
+                {{ 'menu.add_version'|trans }}
+            </button>
+        </a>
+    {% endif %}
+    <hr>
+    <h2 class="colored_h2">{% trans %} see.versions_label {% endtrans %}</h2>
+    {% include 'version/list-content.html.twig' %}
+
+    <h2 class="colored_h2">{% trans %}games_mentions{% endtrans %}</h2>
+    {% for mentionType, mentions in mentions %}
+        <h3 class="colored_h3">{{ mentionType|trans()}}</h3>
+        {% for platformName, mentionsList in mentions %}
+            <h4 class="colored_h4">{{ platformName }}</h4>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">{% trans %} entity.id {% endtrans %}</th>
+                    <th scope="col">{% trans %} magazine_title {% endtrans %}</th>
+                    <th scope="col">{% trans %} page_number {% endtrans %}</th>
+                    <th scope="col">{% trans %} entity.notes {% endtrans %}</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for mention in mentionsList %}
+                    <tr>
+                        <td>{{ mention['mentionId'] }}</td>
+                        <td>{{ mention['magazineTitle'] }} #{{ mention['magazineIssueNumber'] }} ({{ get_month_label(mention['magazineIssueMonth']) }} {{mention['magazineIssueYear']}}) - <a href="{{ path('magazine_issue_details', {issueId: mention['magazineIssueId']}) }}">{{ 'see.details'|trans }}</a></td>
+                        <td>{{ mention['pageNumber'] }}</td>
+                        <td>{% if is_granted('ROLE_USER') %}{{ mention['notes'] }}{% endif %}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% endfor %}
+    {% endfor %}
+{% endblock %}
+
+
+
+

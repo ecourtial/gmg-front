@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    {% if is_granted('ROLE_USER') %}
+        <a href="{{ url('add_game') }}">
+            <button type="submit" class="btn btn-lg btn-block btn-success">
+                <i class="fa fa-trash" aria-hidden="true"></i>
+                {{ 'menu.add_game'|trans }}
+            </button>
+        </a>
+    {% endif %}
+    <hr>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">{% trans %} entity.id {% endtrans %}</th>
+            <th scope="col">{% trans %} games_title {% endtrans %}</th>
+            <th scope="col">{% trans %} version_count {% endtrans %}</th>
+            <th scope="col">{% trans %} menu.actions {% endtrans %}</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for game in games %}
+            <tr>
+                <td>{{ game['id'] }}</td>
+                <td>{{ game['title'] }} - <a href="{{ path('game_details', {id: game['id']}) }}">{{ 'see.details'|trans }}</a></td>
+                <td>{{ 'see.versions'|trans({'%qty%': game['versionCount'],'%count%': game['versionCount']}) }}</td>
+                <td>
+                    {% if is_granted('ROLE_USER') %}
+                        <a href="{{ url('edit_game', {id: game['id']}) }}">{{ 'menu.edit'|trans }}</a>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

@@ -1,0 +1,53 @@
+name: Symfony
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+permissions:
+  contents: read
+
+jobs:
+  symfony-tests:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./app
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: shivammathur/setup-php@2cb9b829437ee246e9b3cac53555a39208ca6d28
+        with:
+          php-version: "8.5"
+
+      - name: Copy .env.test.local
+        run: php -r "file_exists('.env.test.local') || copy('.env.test', '.env.test.local');"
+
+      - name: Cache Composer packages
+        id: composer-cache
+        uses: actions/cache@v3
+        with:
+          path: vendor
+          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-php-
+
+      - name: Run composer install
+        run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist && composer audit
+
+      - name: Create storage directory
+        run: mkdir -p var/storage/default
+
+      - name: Run PHPCS
+        run: vendor/bin/php-cs-fixer fix --dry-run
+
+      - name: Run PHPStan
+        env:
+          DATABASE_URL: ${{ env.DATABASE_DSN }}
+        run: |
+          APP_ENV=test bin/console cache:warmup
+          vendor/bin/phpstan clear-result-cache
+          vendor/bin/phpstan analyse --memory-limit=-1
