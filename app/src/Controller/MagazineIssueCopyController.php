@@ -6,9 +6,9 @@ namespace App\Controller;
 use App\Api\Enum\ApiResponseCode;
 use App\Entity\Enum\MagazineIssueCopyType;
 use App\Exception\GenericApiException;
-use App\Service\MagazineIssueCopyService;
-use App\Service\MagazineIssueService;
-use App\Service\MagazineService;
+use App\ResourceService\MagazineIssueCopyService;
+use App\ResourceService\MagazineIssueService;
+use App\ResourceService\MagazineService;
 use App\Twig\ToolsExtension;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -33,13 +33,13 @@ class MagazineIssueCopyController extends AbstractController
     {
         if ('GET' === $request->getMethod()) {
             $issue = $this->magazineIssueService->getById($issueId);
-            $magazine = $this->magazineService->getById($issue['magazineId']);
+            $magazine = $this->magazineService->getById($issue->magazineId);
 
             return $this->render(
                 'magazine-issue-copy/form.html.twig',
                 [
                     'screenTitle' => $this->translator->trans('magazine_add_issue_copy'),
-                    'screenSubTitle' => $magazine['title'] . ' - ' . 'Issue #'.$issue['issueNumber'] . ' ('.$this->toolsExtension->getMonthLabel($issue['month']).' '.$issue['year'].')',
+                    'screenSubTitle' => $magazine->title . ' - ' . 'Issue #'.$issue->issueNumber . ' ('.$this->toolsExtension->getMonthLabel($issue->month).' '.$issue->year.')',
                     'issueId' => $issueId,
                     'copyTypes' => MagazineIssueCopyType::cases(),
                 ]
@@ -74,7 +74,7 @@ class MagazineIssueCopyController extends AbstractController
             $this->magazineIssueCopyService->delete($id);
             $this->addFlash('alert', 'entry_deleted_with_success');
 
-            return $this->redirectToRoute('magazine_issue_details', ['issueId' => $copy['magazineIssueId']]);
+            return $this->redirectToRoute('magazine_issue_details', ['issueId' => $copy->magazineIssueId]);
         } catch (GenericApiException $exception) {
             if (Response::HTTP_NOT_FOUND === $exception->getCode()) {
                 // Ignore, not a problem because someone might have done it in the meantime.

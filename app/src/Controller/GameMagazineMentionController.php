@@ -6,10 +6,10 @@ namespace App\Controller;
 use App\Api\Enum\ApiResponseCode;
 use App\Entity\Enum\MentionTypeEnum;
 use App\Exception\GenericApiException;
-use App\Service\GameMagazineMentionService;
-use App\Service\MagazineIssueService;
-use App\Service\MagazineService;
-use App\Service\VersionService;
+use App\ResourceService\GameMagazineMentionService;
+use App\ResourceService\MagazineIssueService;
+use App\ResourceService\MagazineService;
+use App\ResourceService\VersionService;
 use App\Twig\ToolsExtension;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -35,14 +35,14 @@ class GameMagazineMentionController extends AbstractController
     {
         if ('GET' === $request->getMethod()) {
             $issue = $this->magazineIssueService->getById($issueId);
-            $magazine = $this->magazineService->getById($issue['magazineId']);
+            $magazine = $this->magazineService->getById($issue->magazineId);
 
             return $this->render(
                 'game-magazine-mention/form.html.twig',
                 [
                     'screenTitle' => $this->translator->trans('menu.add_mention_in_magazine'),
-                    'screenSubTitle' => $magazine['title'] . ' - ' . 'Issue #'.$issue['issueNumber'] . ' ('.$this->toolsExtension->getMonthLabel($issue['month']).' '.$issue['year'].')',
-                    'versions' => $this->versionService->getList()['result'],
+                    'screenSubTitle' => $magazine->title . ' - ' . 'Issue #'.$issue->issueNumber . ' ('.$this->toolsExtension->getMonthLabel($issue->month).' '.$issue->year.')',
+                    'versions' => $this->versionService->getList()->versions->result,
                     'mentionTypes' => MentionTypeEnum::cases(),
                     'defaultMentionType' => MentionTypeEnum::MENTION->value,
                     'issueId' => $issueId,

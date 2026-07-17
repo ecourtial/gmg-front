@@ -21,12 +21,12 @@
         <tbody>
         {% for game in games %}
             <tr>
-                <td>{{ game['id'] }}</td>
-                <td>{{ game['title'] }} - <a href="{{ path('game_details', {id: game['id']}) }}">{{ 'see.details'|trans }}</a></td>
-                <td>{{ 'see.versions'|trans({'%qty%': game['versionCount'],'%count%': game['versionCount']}) }}</td>
+                <td>{{ game.id }}</td>
+                <td>{{ game.title }} - <a href="{{ path('game_details', {id: game.id}) }}">{{ 'see.details'|trans }}</a></td>
+                <td>{{ 'see.versions'|trans({'%qty%': game.versionCount,'%count%': game.versionCount}) }}</td>
                 <td>
                     {% if is_granted('ROLE_USER') %}
-                        <a href="{{ url('edit_game', {id: game['id']}) }}">{{ 'menu.edit'|trans }}</a>
+                        <a href="{{ url('edit_game', {id: game.id}) }}">{{ 'menu.edit'|trans }}</a>
                     {% endif %}
                 </td>
             </tr>

@@ -11,7 +11,7 @@ namespace App\Controller;
 
 use App\Api\Enum\ApiResponseCode;
 use App\Exception\GenericApiException;
-use App\Service\UserService;
+use App\ResourceService\UserService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

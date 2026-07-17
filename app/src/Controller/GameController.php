@@ -5,12 +5,14 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Api\Enum\ApiResponseCode;
+use App\Api\ResourceCollectionResponseDto;
+use App\Entity\Dto\Specific\GamesDataDto;
 use App\Exception\GenericApiException;
-use App\Service\GameMagazineMentionService;
-use App\Service\GameService;
-use App\Service\MagazineIssueService;
-use App\Service\MagazineService;
-use App\Service\VersionService;
+use App\ResourceService\GameMagazineMentionService;
+use App\ResourceService\GameService;
+use App\ResourceService\MagazineIssueService;
+use App\ResourceService\MagazineService;
+use App\ResourceService\VersionService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -31,7 +33,6 @@ class GameController extends AbstractController
     ) {
     }
 
-    /** @param array<string, mixed>|null $data */
     #[Route('/games', name: 'games_list', methods: ['GET'])]
     public function list(): Response
     {
@@ -43,11 +44,11 @@ class GameController extends AbstractController
                 'screenTitle' => $this->translator
                     ->trans(
                         'games_list_title',
-                        ['%count%' => $data['totalResultCount']]
+                        ['%count%' => $data->games->totalResultCount]
                     ),
                 'screenSubTitle' => $this->translator
-                    ->trans('games_list_subtitle', ['%count%' => $data['versionCount']]),
-                'games' => $data['result'],
+                    ->trans('games_list_subtitle', ['%count%' => $data->ownedCount]),
+                'games' => $data->games->result,
             ]
         );
     }
@@ -56,31 +57,30 @@ class GameController extends AbstractController
     public function get(int $id): Response
     {
         $versionsData = $this->versionService->getByGame($id);
-        /** @var array{result: mixed, totalResultCount: mixed, ownedCount: mixed} $versions */
 
         $versions = [];
-        foreach ($versionsData['versions']['result'] as $version) {
-            $versions[$version['id']] = $version;
+        foreach ($versionsData->versions->result as $version) {
+            $versions[$version->id] = $version;
         }
 
         $game = $this->service->getById($id);
 
         $versionsIds = [];
         foreach ($versions as $version) {
-            $versionsIds[] = $version['id'];
+            $versionsIds[] = $version->id;
         }
-        $mentions = $this->gameMagazineMentionService->getByVersionsIds($versionsIds)['result'];
+        $mentions = $this->gameMagazineMentionService->getByVersionsIds($versionsIds)->result;
         $issues = [];
         $magazines = [];
 
         /** @todo refactorize as we could perform only one call (per type) to the API using filterBy[] */
         foreach ($mentions as $mention) {
-            $magazineIssueId = $mention['magazineIssueId'];
+            $magazineIssueId = $mention->magazineIssueId;
             if (false === array_key_exists($magazineIssueId, $issues)) {
                 $issue = $this->magazineIssueService->getById($magazineIssueId);
                 $issues[$magazineIssueId] = $issue;
 
-                $magazineId = $issue['magazineId'];
+                $magazineId = $issue->magazineId;
                 if (false === array_key_exists($magazineId, $magazines)) {
                     $magazines[$magazineId] = $this->magazineService->getById($magazineId);
                 }
@@ -95,14 +95,14 @@ class GameController extends AbstractController
                 'screenTitle' => $this->translator
                     ->trans(
                         'game_versions_list',
-                        ['%title%' => $game['title']]
+                        ['%title%' => $game->title]
                     ),
                 'screenSubTitle' => $this->translator
                     ->trans(
                         'games_versions_subtitle',
                         [
-                            '%resultCount%' => $versionsData['versions']['totalResultCount'],
-                            '%copyCount%' => $versionsData['ownedCount'],
+                            '%resultCount%' => $versionsData->versions->totalResultCount,
+                            '%copyCount%' => $versionsData->ownedCount,
                         ]
                     ),
                 'versions' => $versions,
@@ -155,7 +155,7 @@ class GameController extends AbstractController
 
         $payload = $request->request->all();
         unset($payload['_csrf_token']);
-        $id = $this->service->add($payload)['id'];
+        $id = $this->service->add($payload)->id;
 
         return $this->redirectToRoute('game_details', ['id' => $id]);
     }
@@ -169,7 +169,7 @@ class GameController extends AbstractController
             return $this->render(
                 'game/form.html.twig',
                 [
-                    'screenTitle' => $this->translator->trans('menu.edit_game', ['%title%' => $game['title']]),
+                    'screenTitle' => $this->translator->trans('menu.edit_game', ['%title%' => $game->title]),
                     'game' => $game,
                 ]
             );
@@ -201,13 +201,13 @@ class GameController extends AbstractController
                 'screenTitle' => $this->translator
                     ->trans(
                         'search_results',
-                        ['%count%' => $data['totalResultCount']]
+                        ['%count%' => $data->versions->totalResultCount]
                     ),
                 'screenSubTitle' => $this->translator->trans(
                     'search_results_subtitle',
                     ['%query%' => $query]
                 ),
-                'games' => $data['result'],
+                'games' => $data->versions->result,
             ]
         );
     }
@@ -222,20 +222,38 @@ class GameController extends AbstractController
         // When using actual filtering, implement a method like we did in the VersionService.
         $data = $this->service->getList();
 
-        // Ugly! @TODO implement that on API side please.
+        /**
+         * Ugly! @TODO implement that on API side please.
+         * On top of that we could have used a simple getList() from the service.
+         * But at least it reminds us that we need to improve filters on the API side.
+         * On top of that, pagination is broken!
+         */
         if ($filter === GameService::WITH_COMMENTS_FILTER) {
-            foreach ($data['result'] as $key => $item) {
-                if (null === $item['notes']
-                    || trim($item['notes']) === '') {
-                    if (0 < $item['versionCount']) {
-                        $data['versionCount'] -= $item['versionCount'];
-                        $data['resultCount']--;
-                        $data['totalResultCount']--;
-                    }
-                    unset($data['result'][$key]);
+            $results = $data->games->result;
+            $resultCount = 0;
+            $totalResultCount = 0;
+            $versionCount = 0;
+
+            foreach ($results as $key => $item) {
+                if (null === $item->notes
+                    || trim($item->notes) === '') {
+                    unset($results[$key]);
+                } else {
+                    $versionCount += $item->versionCount;
+                    $resultCount++;
+                    $totalResultCount++;
                 }
             }
             unset($item);
+
+            $data = new GamesDataDto(
+                new ResourceCollectionResponseDto(
+                    $resultCount,
+                    $totalResultCount,
+                    result: $results,
+                ),
+                $versionCount
+            );
         }
 
         return $this->render(
@@ -244,11 +262,11 @@ class GameController extends AbstractController
                 'screenTitle' => $this->translator
                     ->trans(
                         'games_with_comments_subtitle',
-                        ['%count%' => $data['totalResultCount']]
+                        ['%count%' => $data->games->totalResultCount]
                     ),
                 'screenSubTitle' => $this->translator
-                    ->trans('games_list_subtitle', ['%count%' => $data['versionCount']]),
-                'games' => $data['result'],
+                    ->trans('games_list_subtitle', ['%count%' => $data->ownedCount]),
+                'games' => $data->games->result,
             ]
         );
     }

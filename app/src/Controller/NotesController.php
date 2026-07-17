@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Exception\GenericApiException;
-use App\Service\NoteService;
-use App\Service\VersionService;
+use App\ResourceService\NoteService;
+use App\ResourceService\VersionService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -35,9 +35,9 @@ class NotesController extends AbstractController
                 'screenTitle' => $this->translator
                     ->trans(
                         'menu.global_notes',
-                        ['%count%' => $data['totalResultCount']]
+                        ['%count%' => $data->totalResultCount]
                     ),
-                'notes' => $data['result'],
+                'notes' => $data->result,
             ]
         );
     }
@@ -50,7 +50,7 @@ class NotesController extends AbstractController
         return $this->render(
             'note/details.html.twig',
             [
-                'screenTitle' => $note['title'],
+                'screenTitle' => $note->title,
                 'note' => $note,
             ]
         );
@@ -88,7 +88,7 @@ class NotesController extends AbstractController
                 $version = $this->versionService->getById($gameVersionId);
                 $payload['gameVersionId'] = $gameVersionId;
                 $payload['screenTitle'] = $this->translator->trans('add_note_for_game_version');
-                $payload['screenSubTitle'] = $version['gameTitle'];
+                $payload['screenSubTitle'] = $version->gameTitle;
             }
 
             return $this->render(
@@ -105,7 +105,7 @@ class NotesController extends AbstractController
 
         $payload = $request->request->all();
         unset($payload['_csrf_token']);
-        $id = $this->service->add($payload)['id'];
+        $id = $this->service->add($payload)->id;
 
         return $this->redirectToRoute('note_details', ['id' => $id]);
     }
@@ -119,7 +119,7 @@ class NotesController extends AbstractController
             return $this->render(
                 'note/form.html.twig',
                 [
-                    'screenTitle' => $this->translator->trans('menu.edit_note', ['%title%' => $note['title']]),
+                    'screenTitle' => $this->translator->trans('menu.edit_note', ['%title%' => $note->title]),
                     'note' => $note,
                 ]
             );

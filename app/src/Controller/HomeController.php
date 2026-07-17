@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Service\HomeService;
+use App\PageService\HomePageService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -17,7 +17,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class HomeController extends AbstractController
 {
-    public function __construct(private readonly HomeService $service, private readonly TranslatorInterface $translator)
+    public function __construct(private readonly HomePageService $service, private readonly TranslatorInterface $translator)
     {
     }
     #[Route('/', name: 'homepage', methods: ['GET'])]

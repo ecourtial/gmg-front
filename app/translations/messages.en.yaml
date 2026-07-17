@@ -285,6 +285,7 @@ user.label.form.new_password: New password
 user.label.form.new_password_confirm: Confirm new password
 user.label.form.remember_me: Keep me logged in
 user.label.form.new_password_no_match: The new password confirmation must be identical to the new password.
+user.label.my_profile: My profile
 
 # Authentication
 authentication.unknown_error: Unknown authentication error.

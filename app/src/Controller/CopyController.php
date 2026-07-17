@@ -6,8 +6,8 @@ namespace App\Controller;
 
 use App\Api\Enum\ApiResponseCode;
 use App\Exception\GenericApiException;
-use App\Service\CopyService;
-use App\Service\VersionService;
+use App\ResourceService\CopyService;
+use App\ResourceService\VersionService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -37,12 +37,12 @@ class CopyController extends AbstractController
                     ->trans(
                         'copies_for_version_title',
                         [
-                            '%title%' => $version['gameTitle'],
-                            '%platform%' => $version['platformName'],
-                            '%count%' => $copies['totalResultCount'],
+                            '%title%' => $version->gameTitle,
+                            '%platform%' => $version->platformName,
+                            '%count%' => $copies->totalResultCount,
                         ]
                     ),
-                'copies' => $copies['result'],
+                'copies' => $copies->result,
                 'versionId' => $versionId,
             ]
         );
@@ -56,7 +56,7 @@ class CopyController extends AbstractController
                 'copy/form.html.twig',
                 [
                     'screenTitle' => $this->translator->trans('menu.add_copy'),
-                    'versions' => $this->versionService->getList()['result'],
+                    'versions' => $this->versionService->getList()->versions->result,
                     'selectedVersion' => $request->query->get('version', 0),
                 ]
             );
@@ -74,7 +74,7 @@ class CopyController extends AbstractController
 
         $copy = $this->service->add($payload);
 
-        return $this->redirectToRoute('version_details', ['id' => $copy['versionId']]);
+        return $this->redirectToRoute('version_details', ['id' => $copy->versionId]);
     }
 
     #[Route('/copy/edit/{id<\d+>}', name: 'edit_copy', methods: ['GET', 'POST']), IsGranted('ROLE_USER')]
@@ -87,8 +87,8 @@ class CopyController extends AbstractController
                 'copy/form.html.twig',
                 [
                     'screenTitle' => $this->translator->trans('menu.edit_copy'),
-                    'versions' => $this->versionService->getList()['result'],
-                    'selectedVersion' => $copy['versionId'],
+                    'versions' => $this->versionService->getList()->versions->result,
+                    'selectedVersion' => $copy->versionId,
                     'copy' => $copy,
                 ]
             );
@@ -106,7 +106,7 @@ class CopyController extends AbstractController
 
         $this->service->update($id, $payload);
 
-        return $this->redirectToRoute('copies_per_version', ['versionId' => $copy['versionId']]);
+        return $this->redirectToRoute('copies_per_version', ['versionId' => $copy->versionId]);
     }
 
     #[Route('/copy/delete/{id<\d+>}', name: 'delete_copy', methods: ['POST']), IsGranted('ROLE_USER')]
@@ -117,7 +117,7 @@ class CopyController extends AbstractController
         if (false === $this->isCsrfTokenValid('delete_copy', $request->request->getString('_csrf_token'))) {
             $this->addFlash('alert', 'see.invalid_csrf_token');
 
-            return $this->redirectToRoute('copies_per_version', ['versionId' => $copy['versionId']]);
+            return $this->redirectToRoute('copies_per_version', ['versionId' => $copy->versionId]);
         }
 
         try {
@@ -129,10 +129,10 @@ class CopyController extends AbstractController
             } elseif (Response::HTTP_BAD_REQUEST === $exception->getCode() && ApiResponseCode::RESOURCE_HAS_LINKED_RESOURCES->value === $exception->getApiReturnCode()) {
                 $this->addFlash('alert', 'version_has_children');
 
-                return $this->redirectToRoute('copies_per_version', ['versionId' => $copy['versionId']]);
+                return $this->redirectToRoute('copies_per_version', ['versionId' => $copy->versionId]);
             }
         }
 
-        return $this->redirectToRoute('copies_per_version', ['versionId' => $copy['versionId']]);
+        return $this->redirectToRoute('copies_per_version', ['versionId' => $copy->versionId]);
     }
 }

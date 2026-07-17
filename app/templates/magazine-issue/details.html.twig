@@ -4,11 +4,11 @@
     <em>{{ issue.notes }}</em>
     {% endif %}
     <p>
-        <a href="{{ path('magazine_details', {id: issue['magazineId']}) }}">{{ 'see_magazine_issues_list'|trans }}</a>
+        <a href="{{ path('magazine_details', {id: issue.magazineId}) }}">{{ 'see_magazine_issues_list'|trans }}</a>
     </p>
     <hr>
     {% if is_granted('ROLE_USER') %}
-        <form action="{{ url('delete_magazine_issue', {id: issue['id']}) }}" method="post" data-confirmation="true" id="delete-form">
+        <form action="{{ url('delete_magazine_issue', {id: issue.id}) }}" method="post" data-confirmation="true" id="delete-form">
             <input type="hidden" name="_csrf_token" value="{{ csrf_token('delete_magazine_issue') }}" />
             <button type="submit" id="deletePostSubmitButton" class="btn btn-lg btn-block btn-danger" onclick="return areYouSure('{{ 'delete_entry_confirmation'|trans }}');">
                 <i class="fa fa-trash" aria-hidden="true"></i>
@@ -16,19 +16,19 @@
             </button>
         </form>
         <br/>
-        <a href="{{ url('edit_magazine_issue', {'id': issue['id']}) }}">
+        <a href="{{ url('edit_magazine_issue', {'id': issue.id}) }}">
             <button type="submit" class="btn btn-lg btn-block btn-outline-info">
                 <i class="fa fa-trash" aria-hidden="true"></i>
                 {{ 'menu.edit'|trans }}
             </button>
         </a>
-        <a href="{{ url('add_magazine_issue_copy', {'issueId': issue['id']}) }}">
+        <a href="{{ url('add_magazine_issue_copy', {'issueId': issue.id}) }}">
             <button type="submit" class="btn btn-lg btn-block btn-success">
                 <i class="fa fa-trash" aria-hidden="true"></i>
                 {{ 'menu.add_copy'|trans }}
             </button>
         </a>
-        <a href="{{ url('add_game_magazine_mention', {'issueId': issue['id']}) }}">
+        <a href="{{ url('add_game_magazine_mention', {'issueId': issue.id}) }}">
             <button type="submit" class="btn btn-lg btn-block btn-success">
                 <i class="fa fa-trash" aria-hidden="true"></i>
                 {{ 'menu.add_mention_in_magazine'|trans }}
@@ -49,12 +49,12 @@
         <tbody>
         {% for copy in copies %}
             <tr>
-                <td>{{ copy['id'] }}</td>
-                <td>{{ copy['type'] }}</td>
-                <td>{% if is_granted('ROLE_USER') %}{{ copy['notes'] }}{% endif %}</td>
+                <td>{{ copy.id }}</td>
+                <td>{{ copy.type }}</td>
+                <td>{% if is_granted('ROLE_USER') %}{{ copy.notes }}{% endif %}</td>
                 <td>
                     {% if is_granted('ROLE_USER') %}
-                        <form action="{{ url('delete_magazine_issue_copy', {id: copy['id']}) }}" method="post" data-confirmation="true" id="delete-form">
+                        <form action="{{ url('delete_magazine_issue_copy', {id: copy.id}) }}" method="post" data-confirmation="true" id="delete-form">
                             <input type="hidden" name="_csrf_token" value="{{ csrf_token('delete_magazine_issue_copy') }}" />
                             <button type="submit" id="deletePostSubmitButton" class="btn btn-lg btn-block btn-danger btn-in-list" onclick="return areYouSure('{{ 'delete_entry_confirmation'|trans }}');">
                                 <i class="fa fa-trash" aria-hidden="true"></i>
@@ -87,13 +87,13 @@
                 <tbody>
                 {% for versionData in platformData %}
                     <tr>
-                        <td>{{ versionData['id'] }}</td>
-                        <td>{{ versionData['gameTitle'] }} - <a href="{{ path('version_details', {id: versionData['gameVersionId']}) }}">{{ 'see.details'|trans }}</a></td>
-                        <td>{{ versionData['pageNumber'] }}</td>
-                        <td>{% if is_granted('ROLE_USER') %}{{ versionData['notes'] }}{% endif %}</td>
+                        <td>{{ versionData.id }}</td>
+                        <td>{{ versionData.gameTitle }} - <a href="{{ path('version_details', {id: versionData.gameVersionId}) }}">{{ 'see.details'|trans }}</a></td>
+                        <td>{{ versionData.pageNumber }}</td>
+                        <td>{% if is_granted('ROLE_USER') %}{{ versionData.notes }}{% endif %}</td>
                         <td>
                             {% if is_granted('ROLE_USER') %}
-                                <form action="{{ url('delete_game_magazine_mention', {id: versionData['id']}) }}" method="post" data-confirmation="true" id="delete-form">
+                                <form action="{{ url('delete_game_magazine_mention', {id: versionData.id}) }}" method="post" data-confirmation="true" id="delete-form">
                                     <input type="hidden" name="_csrf_token" value="{{ csrf_token('delete_game_magazine_mention') }}" />
                                     <button type="submit" id="deletePostSubmitButton" class="btn btn-lg btn-block btn-danger btn-in-list" onclick="return areYouSure('{{ 'delete_entry_confirmation'|trans }}');">
                                         <i class="fa fa-trash" aria-hidden="true"></i>

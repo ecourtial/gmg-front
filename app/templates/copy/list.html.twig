@@ -36,36 +36,36 @@
         <tbody>
         {% for copy in copies %}
             <tr>
-                <th scope="row">{{ copy['id'] }}</th>
+                <th scope="row">{{ copy.id }}</th>
 
                 {% if displayGameTitle is defined and displayGameTitle == true %}
-                    <td>{{ copy['gameTitle'] }}</td>
+                    <td>{{ copy.gameTitle }}</td>
                 {% endif %}
 
                 {% if displayPlatformName is defined and displayPlatformName == true %}
-                    <td>{{ copy['platformName'] }}</td>
+                    <td>{{ copy.platformName }}</td>
                 {% endif %}
 
-                <td>{{ copy['versionId'] }}</td>
-                <td>{{ copy['type'] }}</td>
-                {% if is_granted('ROLE_USER') %}<td><img src="{{ get_status_badge(copy['original']) }}"/></td>{% endif %}
-                {% if is_granted('ROLE_USER') %}<td><img src="{{ get_status_badge(copy['isROM']) }}"/></td>{% endif %}
-                <td>{{ constant('App\\Service\\CopyService::LANGUAGES')[copy['language']]|trans }}</td>
-                <td>{{ copy['region'] }}</td>
-                <td>{{ copy['boxType'] }}</td>
-                <td>{{ copy['isBoxRepro'] }}</td>
-                <td>{{ copy['casingType'] }}</td>
-                <td>{{ copy['supportType'] }}</td>
-                {% if is_granted('ROLE_USER') %}<td><img src="{{ get_status_badge(copy['onCompilation']) }}"/></td>{% endif %}
-                <td><img src="{{ get_status_badge(copy['reedition']) }}"/></td>
-                <td><img src="{{ get_status_badge(copy['hasManual']) }}"/></td>
-                <td>{{ copy['transactionCount'] }}</td>
-                <td>{{ copy['status'] }}</td>
-                <td>{% if is_granted('ROLE_USER') %}{{ copy['comments']|default('')|raw|nl2br }}{% endif %}</td>
+                <td>{{ copy.versionId }}</td>
+                <td>{{ copy.type }}</td>
+                {% if is_granted('ROLE_USER') %}<td><img src="{{ get_status_badge(copy.original) }}"/></td>{% endif %}
+                {% if is_granted('ROLE_USER') %}<td><img src="{{ get_status_badge(copy.isROM) }}"/></td>{% endif %}
+                <td>{{ constant('App\\ResourceService\\CopyService::LANGUAGES')[copy.language]|trans }}</td>
+                <td>{{ copy.region }}</td>
+                <td>{{ copy.boxType }}</td>
+                <td>{{ copy.isBoxRepro }}</td>
+                <td>{{ copy.casingType }}</td>
+                <td>{{ copy.supportType }}</td>
+                {% if is_granted('ROLE_USER') %}<td><img src="{{ get_status_badge(copy.onCompilation) }}"/></td>{% endif %}
+                <td><img src="{{ get_status_badge(copy.reedition) }}"/></td>
+                <td><img src="{{ get_status_badge(copy.hasManual) }}"/></td>
+                <td>{{ copy.transactionCount }}</td>
+                <td>{{ copy.status }}</td>
+                <td>{% if is_granted('ROLE_USER') %}{{ copy.comments|default('')|raw|nl2br }}{% endif %}</td>
                 <td>
                     {% if is_granted('ROLE_USER') %}
-                        <a href="{{ url('edit_copy', {id: copy['id']}) }}">{{ 'menu.edit'|trans }}</a>
-                         - <a href="{{ url('add_transaction_form')}}?copy={{ copy['id'] }}">{{ 'menu.add_transaction'|trans }}</a>
+                        <a href="{{ url('edit_copy', {id: copy.id}) }}">{{ 'menu.edit'|trans }}</a>
+                         - <a href="{{ url('add_transaction_form')}}?copy={{ copy.id }}">{{ 'menu.add_transaction'|trans }}</a>
                     {% endif %}
                 </td>
             </tr>

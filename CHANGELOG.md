@@ -9,6 +9,8 @@ Version that support the new version (5.0) of the backend.
 * Bump to PHP >=8.4.
 * The dev environment is in Docker now.
 * Use HTTP constants instead of the raw code.
+* ApiResource are no longer an array, but a DTO.
+* Added a service layer for each kind of page, to lighten the controllers, and avoid resource service to call endpoints of other resources.
 
 #### Features
 * Refit of the listing of platforms, games, versions and notes.
@@ -23,6 +25,7 @@ Version that support the new version (5.0) of the backend.
 * From the version screen, we can now access to a filtered stories list for this version.
 * From the version screen, we can now access to a filtered transactions list for this version.
 * We can add notes to a game version.
+* Display "My profile" instead of "User" in the navbar when the user is logged-in.
 
 #### Fixes
 * Version: in the form, the release year has now a field of type 'number'.

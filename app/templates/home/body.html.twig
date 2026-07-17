@@ -84,7 +84,7 @@
             <li><strong>{{ year }}</strong> ({{ games|length }}) {% trans %}entries{% endtrans %}:</li>
             <ul>
                 {% for game in games %}
-                    <li><i>{{ game['gameTitle'] }}</i> ({{ game['platformName'] }})</li>
+                    <li><i>{{ game.gameTitle }}</i> ({{ game.platformName }})</li>
                 {% endfor %}
             </ul>
         {% endif %}

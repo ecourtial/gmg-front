@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace App\Twig;
 
+use App\Entity\Dto\GameVersionDto;
+use App\Entity\Dto\StoryDto;
 use Symfony\Component\Asset\Packages;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
 class BadgeExtension extends AbstractExtension
 {
-    public function __construct(private readonly Packages $packages)
-    {
-    }
+    public function __construct(private readonly Packages $packages) {}
 
-    private const VERSIONS_BADGES = [
+    private const array VERSIONS_BADGES = [
         'bestGameForever' => ['img' => 'diamond', 'title' => 'best_game_forever'],
         'hallOfFame' => ['img' => 'hall-of-fame', 'title' => 'in_the_hall_of_fame'],
         'todoWithHelp' => ['img' => 'help', 'title' => 'to_do_with_help'],
@@ -23,22 +23,22 @@ class BadgeExtension extends AbstractExtension
         'topGame' => ['img' => 'top', 'title' => 'top_game'],
     ];
 
-    private const OWNERSHIP_BADGES = [
+    private const array OWNERSHIP_BADGES = [
         'no' => ['img' => 'no', 'title' => 'have_no_copy'],
         'yes' => ['img' => 'check', 'title' => 'have_at_least_one_copy'],
     ];
 
-    private const STORIES_BADGES = [
+    private const array STORIES_BADGES = [
         'watched' => ['img' => 'eye', 'title' => 'entity.watched_it'],
         'played' => ['img' => 'controller', 'title' => 'entity.played_at_it'],
     ];
 
-    private const TRANSACTIONS_BADGES = [
+    private const array TRANSACTIONS_BADGES = [
         'in' => ['img' => 'in', 'title' => 'entity.transaction_in'],
         'out' => ['img' => 'out', 'title' => 'entity.transaction_out'],
     ];
 
-    private const TRANSACTIONS_IN_BADGE = ['Bought', 'Loan-out-return', 'Loan-in'];
+    private const array TRANSACTIONS_IN_BADGE = ['Bought', 'Loan-out-return', 'Loan-in'];
 
     public function getFunctions(): array
     {
@@ -52,16 +52,13 @@ class BadgeExtension extends AbstractExtension
     }
 
     /**
-     * @param array<string, mixed> $version
-     *
      * @return array<string, string>
      */
-    public function getOwnershipBadge(array $version): array
+    public function getOwnershipBadge(GameVersionDto $version): array
     {
-        /** @var array<string, scalar> $version */
         $key = 'no';
 
-        if (intval(strval($version['copyCount'])) > 0) {
+        if ($version->copyCount > 0) {
             $key = 'yes';
         }
 
@@ -69,18 +66,15 @@ class BadgeExtension extends AbstractExtension
     }
 
     /**
-     * @param array<string, mixed> $version
-     *
      * @return array<string, string>
      */
-    public function getBadgesForVersion(array $version, bool $setOwnershipBadge = false): array
+    public function getBadgesForVersion(GameVersionDto $version, bool $setOwnershipBadge = false): array
     {
-        /** @var array<string, scalar> $version */
         $badges = [];
         $ownerShipBadge = [];
 
         foreach (self::VERSIONS_BADGES as $key => $attributes) {
-            if (1 === intval(strval($version[$key]))) {
+            if (true === $version->$key) {
                 $badges[$attributes['img']] = $attributes['title'];
             }
         }
@@ -88,7 +82,7 @@ class BadgeExtension extends AbstractExtension
         if ($setOwnershipBadge) {
             $key = 'no';
 
-            if (intval(strval($version['copyCount'])) > 0) {
+            if ($version->copyCount > 0) {
                 $key = 'yes';
             }
 
@@ -112,17 +106,15 @@ class BadgeExtension extends AbstractExtension
     }
 
     /**
-     * @param array<string, mixed> $story
-     *
      * @return array<string, string>
      */
-    public function getStoryBadges(array $story): array
+    public function getStoryBadges(StoryDto $story): array
     {
         /** @var array<string, scalar> $story */
         $badges = [];
 
         foreach (self::STORIES_BADGES as $key => $attributes) {
-            if (1 === intval(strval($story[$key]))) {
+            if (true === $story->$key) {
                 $badges[$attributes['img']] = $attributes['title'];
             }
         }

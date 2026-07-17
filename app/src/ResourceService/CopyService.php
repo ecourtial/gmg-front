@@ -1,0 +1,143 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\ResourceService;
+
+use App\Api\ResourceCollectionResponseDto;
+use App\Entity\Dto\GameVersionCopyDto;
+
+/**
+ * @extends AbstractService<GameVersionCopyDto>
+ */
+class CopyService extends AbstractService
+{
+    public const array BOX_TYPES = [
+        'None',
+        'Big box',
+        'Medium box',
+        'Special box',
+        'Cartridge box',
+        'Other',
+    ];
+
+    public const array CASING_TYPES = [
+        'DVD-like',
+        'CD-like',
+        'Cardboard sleeve',
+        'Paper Sleeve',
+        'Plastic Sleeve',
+        'Plastic tube',
+        'Other',
+        'None',
+    ];
+
+    public const array SUPPORT_TYPES = [
+        'Blu-ray',
+        'DVD-ROM',
+        'CD-ROM',
+        'GD-ROM',
+        'MINI-Blu-ray',
+        'MINI-DVD-ROM',
+        'MINI-CD-ROM',
+        'Cartridge',
+        '3.5-inch floppy',
+        '5.25-inch floppy',
+        'Other disc',
+        'Other floppy',
+        'External drive',
+        'None',
+    ];
+
+    public const array TYPES = [
+        'Physical',
+        'Virtual',
+    ];
+
+    public const array REGIONS = [
+        'PAL',
+        'JAP',
+        'NTSC',
+        'CHINA',
+    ];
+
+    public const array LANGUAGES = [
+        'mul' => 'language_multi',
+        'en' => 'language_english',
+        'fr' => 'language_french',
+        'es' => 'language_spanish',
+        'ge' => 'language_german',
+        'it' => 'language_italian',
+    ];
+
+    /**
+     * @return ResourceCollectionResponseDto<GameVersionCopyDto>
+     */
+    public function getByVersion(int $versionId): ResourceCollectionResponseDto
+    {
+        return $this->hydrateResultCollection($this->clientFactory
+            ->getAnonymousClient()
+            ->get("copies?versionId[]={$versionId}&limit=".self::MAX_RESULT_COUNT)
+        );
+    }
+
+    protected function getResourceType(): string
+    {
+        return 'copy';
+    }
+
+    protected function hydrateObject(array $data): GameVersionCopyDto
+    {
+        return new GameVersionCopyDto(
+            $data['id'],
+            $data['versionId'],
+            $data['original'],
+            $data['language'],
+            $data['boxType'],
+            $data['isBoxRepro'],
+            $data['casingType'],
+            $data['supportType'],
+            $data['onCompilation'],
+            $data['reedition'],
+            $data['hasManual'],
+            $data['status'],
+            $data['type'],
+            $data['region'],
+            $data['comments'],
+            $data['isROM'],
+            $data['platformName'],
+            $data['gameTitle'],
+            $data['transactionCount'],
+        );
+    }
+
+    public function getList(
+        string $filter,
+        string $filterValue,
+        int $maxResultCount = self::MAX_RESULT_COUNT
+    ): ResourceCollectionResponseDto
+    {
+        // There is a limit of the API here... Consider allowing more accurate filtering
+        return $this->hydrateResultCollection(
+            $this->clientFactory
+                ->getAnonymousClient()
+                ->get("copies?{$filter}[]={$filterValue}&orderBy[]=gameTitle-asc&limit=" . $maxResultCount)
+        );
+    }
+
+    public function getOriginals(): ResourceCollectionResponseDto
+    {
+        return $this->getList(
+            'original',
+            '1'
+        );
+    }
+
+    public function getOriginalsWhereCopyIsNotOnCompilation(): ResourceCollectionResponseDto
+    {
+        return $this->getList(
+            'onCompilation[]=0&original',
+            '1'
+        );
+    }
+}

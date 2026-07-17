@@ -5,15 +5,18 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Api\Enum\ApiResponseCode;
+use App\Api\ResourceCollectionResponseDto;
+use App\Entity\Dto\Specific\VersionsDataDto;
 use App\Exception\GenericApiException;
-use App\Service\GameMagazineMentionService;
-use App\Service\GameService;
-use App\Service\MagazineIssueService;
-use App\Service\MagazineService;
-use App\Service\NoteService;
-use App\Service\PlatformService;
-use App\Service\TransactionService;
-use App\Service\VersionService;
+use App\ResourceService\CopyService;
+use App\ResourceService\GameMagazineMentionService;
+use App\ResourceService\GameService;
+use App\ResourceService\MagazineIssueService;
+use App\ResourceService\MagazineService;
+use App\ResourceService\NoteService;
+use App\ResourceService\PlatformService;
+use App\ResourceService\TransactionService;
+use App\ResourceService\VersionService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -34,6 +37,7 @@ class VersionController extends AbstractController
         private readonly MagazineIssueService $magazineIssueService,
         private readonly TransactionService $transactionService,
         private readonly NoteService $noteService,
+        private readonly CopyService $copyService,
     ) {
     }
 
@@ -41,7 +45,7 @@ class VersionController extends AbstractController
     public function versionDetails(int $id): Response
     {
         $version = $this->service->getById($id);
-        $transactions = $this->transactionService->getList($id);
+        $transactions = $this->transactionService->getTransactionsData($id);
         [$magazines, $issues, $mentions] = $this->prepareMentions($id);
         $notes = $this->noteService->getList($id);
 
@@ -52,15 +56,15 @@ class VersionController extends AbstractController
                     ->trans(
                         'game.version_details',
                         [
-                            '%title%' => $version['gameTitle'],
-                            '%platform%' => $version['platformName'],
+                            '%title%' => $version->gameTitle,
+                            '%platform%' => $version->platformName,
                         ]
                     ),
-                'screenSubTitle' => $this->isGranted('ROLE_USER') ? $version['comments'] : '',
+                'screenSubTitle' => $this->isGranted('ROLE_USER') ? $version->comments : '',
                 'version' => $version,
                 'mentionsByType' => $this->service->formatMentions($magazines, $issues, $mentions),
                 'transactionsCount' => $transactions['totalResultCount'],
-                'notes' => $notes['result'],
+                'notes' => $notes->result,
             ]
         );
     }
@@ -72,24 +76,46 @@ class VersionController extends AbstractController
             throw new NotFoundHttpException();
         }
 
-        $data = $this->service->getFilteredList($filter);
+        $needCopies = VersionService::FILTERS[$filter]['filter_from_copies'] ?? false;
+        $copies = null;
+
+        if (true === $needCopies) {
+            $filterValue = strval(VersionService::FILTERS[$filter]['attribute_value'] ?? '1');
+            $filterAttribute = VersionService::FILTERS[$filter]['attribute'];
+            $copies = $this->copyService->getList($filterAttribute, $filterValue);
+        }
+
+        $data = $this->service->getFilteredList($filter, copies: $copies);
 
         /**
          * Ugly! @TODO implement that on API side please.
          * On top of that we could have used a simple getList() from the service.
-         * But at least it reminds use that we need to improve filters on the API side.
+         * But at least it reminds us that we need to improve filters on the API side.
          */
         if ($filter === VersionService::WITH_COMMENTS_FILTER) {
-            foreach ($data['result'] as $key => $item) {
-                if (null === $item['comments']
-                    || trim($item['comments']) === '') {
-                    if (0 < $item['copyCount']) {
-                        $data['ownedCount']--;
+            $results = $data->versions->result;
+            $ownedCount = $data->ownedCount;
+
+            foreach ($data->versions->result as $key => $item) {
+                if (null === $item->comments
+                    || trim($item->comments) === '') {
+                    if (0 < $item->copyCount) {
+                        $ownedCount--;
                     }
-                    unset($data['result'][$key]);
+                    unset($results[$key]);
                 }
             }
-            unset($item);
+
+            $data = new VersionsDataDto(
+                new ResourceCollectionResponseDto(
+                    $data->versions->resultCount,
+                    $data->versions->totalResultCount,
+                    $data->versions->page,
+                    $data->versions->totalPageCount,
+                    $results
+                ),
+                $ownedCount
+            );
         }
 
         return $this->render(
@@ -98,13 +124,13 @@ class VersionController extends AbstractController
                 'screenTitle' => $this->translator
                     ->trans(
                         VersionService::FILTERS[$filter]['title'],
-                        ['%count%' => $data['totalResultCount']]
+                        ['%count%' => $data->versions->totalResultCount],
                     ),
                 'screenSubTitle' => $this->translator
-                    ->trans('have_copy_for_x_of_them', ['%count%' => $data['ownedCount']]),
+                    ->trans('have_copy_for_x_of_them', ['%count%' => $data->ownedCount]),
                 'screenDescription' => $this->translator
                     ->trans(VersionService::FILTERS[$filter]['description']),
-                'versions' => $data['result'],
+                'versions' => $data->versions->result,
             ]
         );
     }
@@ -112,10 +138,9 @@ class VersionController extends AbstractController
     #[Route('/version/random/{filter<\w+>}', name: 'version_random', methods: ['GET'])]
     public function getRandom(string $filter): Response
     {
-        /** @var array{result: list<array<string, scalar>>, totalResultCount: int} $result */
         $result = $this->service->getRandom($filter);
 
-        if (0 === $result['totalResultCount']) {
+        if (0 === $result->totalResultCount) {
             return $this->render(
                 'general/no-result.html.twig',
                 [
@@ -124,9 +149,10 @@ class VersionController extends AbstractController
             );
         }
 
-        /** @var array<string, scalar> $version */
-        $version = $result['result'][0];
-        [$magazines, $issues, $mentions] = $this->prepareMentions($version['id']);
+        $version = $result->result[0];
+        [$magazines, $issues, $mentions] = $this->prepareMentions($version->id);
+        $transactions = $this->transactionService->getTransactionsData($version->id);
+        $notes = $this->noteService->getList($version->id);
 
         return $this->render(
             'version/details.html.twig',
@@ -135,12 +161,14 @@ class VersionController extends AbstractController
                     ->trans(
                         'game.version_details',
                         [
-                            '%title%' => $version['gameTitle'],
-                            '%platform%' => $version['platformName'],
+                            '%title%' => $version->gameTitle,
+                            '%platform%' => $version->platformName,
                         ]
                     ),
                 'version' => $version,
+                'transactionsCount' => $transactions['totalResultCount'],
                 'mentionsByType' => $this->service->formatMentions($magazines, $issues, $mentions),
+                'notes' => $notes['result'],
             ]
         );
     }
@@ -153,17 +181,16 @@ class VersionController extends AbstractController
         }
 
         $data = $this->service->getFilteredListWithPrio($filter);
-
         return $this->render(
             'version/list-with-priority.html.twig',
             [
                 'screenTitle' => $this->translator
                     ->trans(
                         VersionService::FILTERS_WITH_PRIORITY[$filter]['title'],
-                        ['%count%' => $data['totalResultCount']]
+                        ['%count%' => $data->totalResultCount]
                     ),
                 'screenSubTitle' => $this->translator
-                    ->trans('have_copy_for_x_of_them', ['%count%' => $data['ownedCount']]),
+                    ->trans('have_copy_for_x_of_them', ['%count%' => $data->ownedCount]),
                 'screenDescription' => $this->translator
                     ->trans(VersionService::FILTERS_WITH_PRIORITY[$filter]['description']),
                 'data' => $data,
@@ -175,24 +202,24 @@ class VersionController extends AbstractController
     public function search(Request $request): Response
     {
         $query = \trim($request->request->getString('query'));
-        $data = '' !== $query ? $this->service->search($query) : ['result' => [], 'totalResultCount' => 0];
+        $data = '' !== $query ? $this->service->search($query) : new VersionsDataDto(new ResourceCollectionResponseDto(), 0);
 
         $params = [
             'screenTitle' => $this->translator
                 ->trans(
                     'search_results',
-                    ['%count%' => $data['totalResultCount']]
+                    ['%count%' => $data->versions->totalResultCount],
                 ),
             'screenSubTitle' => $this->translator->trans(
                 'search_results_subtitle',
                 ['%query%' => $query]
             ),
-            'versions' => $data['result'],
+            'versions' => $data->versions->result,
         ];
 
-        if ($data['totalResultCount'] > 0) {
+        if ($data->versions->totalResultCount > 0) {
             $params['screenDescription'] = $this->translator
-                ->trans('have_copy_for_x_of_them', ['%count%' => $data['ownedCount']]);
+                ->trans('have_copy_for_x_of_them', ['%count%' => $data->ownedCount]);
         }
 
         return $this->render(
@@ -209,8 +236,8 @@ class VersionController extends AbstractController
                 'version/form.html.twig',
                 [
                     'screenTitle' => $this->translator->trans('menu.add_version'),
-                    'games' => $this->gameService->getList()['result'],
-                    'platforms' => $this->platformService->getList()['result'],
+                    'games' => $this->gameService->getList()->games->result,
+                    'platforms' => $this->platformService->getList()->result,
                     'selectedPlatform' => $request->query->get('platform', 0),
                     'selectedGame' => $request->query->get('game', 0),
                 ]
@@ -226,7 +253,7 @@ class VersionController extends AbstractController
         $payload = $request->request->all();
         unset($payload['_csrf_token']);
 
-        $id = $this->service->add($payload)['id'];
+        $id = $this->service->add($payload)->id;
 
         return $this->redirectToRoute('version_details', ['id' => $id]);
     }
@@ -241,10 +268,10 @@ class VersionController extends AbstractController
                 'version/form.html.twig',
                 [
                     'screenTitle' => $this->translator->trans('menu.edit_version'),
-                    'games' => $this->gameService->getList()['result'],
-                    'platforms' => $this->platformService->getList()['result'],
-                    'selectedPlatform' => $version['platformId'],
-                    'selectedGame' => $version['gameId'],
+                    'games' => $this->gameService->getList()->games->result,
+                    'platforms' => $this->platformService->getList()->result,
+                    'selectedPlatform' => $version->platformId,
+                    'selectedGame' => $version->gameId,
                     'version' => $version,
                 ]
             );
@@ -291,18 +318,18 @@ class VersionController extends AbstractController
 
     private function prepareMentions(int $versionId): array
     {
-        $mentions = $this->gameMagazineMentionService->getByVersionId($versionId)['result'];
+        $mentions = $this->gameMagazineMentionService->getByVersionId($versionId)->result;
         $issues = [];
         $magazines = [];
 
         /** @todo refactorize as we could perform only one call (per type) to the API using filterBy[] */
         foreach ($mentions as $mention) {
-            $magazineIssueId = $mention['magazineIssueId'];
+            $magazineIssueId = $mention->magazineIssueId;
             if (false === array_key_exists($magazineIssueId, $issues)) {
                 $issue = $this->magazineIssueService->getById($magazineIssueId);
                 $issues[$magazineIssueId] = $issue;
 
-                $magazineId = $issue['magazineId'];
+                $magazineId = $issue->magazineId;
                 if (false === array_key_exists($magazineId, $magazines)) {
                     $magazines[$magazineId] = $this->magazineService->getById($magazineId);
                 }

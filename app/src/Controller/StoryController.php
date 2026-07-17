@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Exception\GenericApiException;
-use App\Service\StoryService;
-use App\Service\VersionService;
+use App\ResourceService\StoryService;
+use App\ResourceService\VersionService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,13 +27,13 @@ class StoryController extends AbstractController
     public function getList(Request $request): Response
     {
         $versionId = (int)$request->query->get('version', 0);
-        $data = $this->service->getList($versionId);
+        $data = $this->service->getListOrderedByYear($versionId);
 
         if (0 === $versionId) {
             $screenTitle = $this->translator
                 ->trans(
                     'stories_title',
-                    ['%count%' => $data['totalResultCount']]
+                    ['%count%' => $data->totalResultCount]
                 );
             $screenDescription =  $this->translator->trans('stories_description');
         } else {
@@ -41,7 +41,7 @@ class StoryController extends AbstractController
             $screenTitle = $this->translator
                 ->trans(
                     'stories_for_version',
-                    ['%title%' => $version['gameTitle']]
+                    ['%title%' => $version->gameTitle]
                 );
             $screenDescription = '';
         }
@@ -51,7 +51,7 @@ class StoryController extends AbstractController
             [
                 'screenTitle' => $screenTitle,
                 'screenDescription' => $screenDescription,
-                'stories' => $data['stories'],
+                'stories' => $data->stories,
             ]
         );
     }
@@ -64,7 +64,7 @@ class StoryController extends AbstractController
                 'story/form.html.twig',
                 [
                     'screenTitle' => $this->translator->trans('menu.add_story'),
-                    'versions' => $this->versionService->getList()['result'],
+                    'versions' => $this->versionService->getList()->versions->result,
                     'selectedVersion' => $request->query->get('version', 0),
                 ]
             );
@@ -94,8 +94,8 @@ class StoryController extends AbstractController
                 'story/form.html.twig',
                 [
                     'screenTitle' => $this->translator->trans('menu.edit_story'),
-                    'versions' => $this->versionService->getList()['result'],
-                    'selectedVersion' => $story['versionId'],
+                    'versions' => $this->versionService->getList()->versions->result,
+                    'selectedVersion' => $story->versionId,
                     'story' => $story,
                 ]
             );

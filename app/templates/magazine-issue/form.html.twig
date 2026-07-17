@@ -7,26 +7,26 @@
                     {{ 'magazine_label'|trans }}
                     <select name="magazineId">
                         {% for magazine in magazines %}
-                            <option value="{{ magazine['id'] }}" {% if magazine['id'] == selectedMagazine %}selected{% endif %}>{{ magazine['title'] }}</option>
+                            <option value="{{ magazine.id }}" {% if magazine.id == selectedMagazine %}selected{% endif %}>{{ magazine.title }}</option>
                         {% endfor %}
                     </select>
                 </label>
             </div>
             <div class="form-group">
                 <label for="issueNumber">{{ 'issue_number'|trans }}</label>
-                <input type="number" id="issueNumber" name="issueNumber" value="{{ issue['issueNumber']|default('') }}" class="form-control"/>
+                <input type="number" id="issueNumber" name="issueNumber" value="{{ issue.issueNumber|default('') }}" class="form-control"/>
             </div>
             <div class="form-group">
                 <label for="year">{{ 'see.year'|trans }}</label>
-                <input type="number" id="year" name="year" value="{{ issue['year']|default('') }}" class="form-control"/>
+                <input type="number" id="year" name="year" value="{{ issue.year|default('') }}" class="form-control"/>
             </div>
             <div class="form-group">
                 <label for="month">{{ 'see.month'|trans }}</label>
-                <input type="number" id="month" name="month" value="{{ issue['month']|default('') }}" class="form-control"/>
+                <input type="number" id="month" name="month" value="{{ issue.month|default('') }}" class="form-control"/>
             </div>
             <div class="form-group">
                 <label for="notes">{{ 'games_notes'|trans }}</label>
-                <textarea id="notes" name="notes" class="form-control">{{ issue['notes']|default('') }}</textarea>
+                <textarea id="notes" name="notes" class="form-control">{{ issue.notes|default('') }}</textarea>
             </div>
         </fieldset>
         <fieldset>

@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Exception\GenericApiException;
-use App\Service\CopyService;
-use App\Service\TransactionService;
-use App\Service\VersionService;
+use App\ResourceService\CopyService;
+use App\ResourceService\TransactionService;
+use App\ResourceService\VersionService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,7 +29,7 @@ class TransactionController extends AbstractController
     public function getList(Request $request): Response
     {
         $versionId = (int)$request->query->get('version', 0);
-        $data = $this->service->getList($versionId);
+        $data = $this->service->getTransactionsData($versionId);
 
         if (0 === $versionId) {
             $screenTitle = $this->translator
@@ -43,7 +43,7 @@ class TransactionController extends AbstractController
             $screenTitle = $this->translator
                 ->trans(
                     'transactions_for_version',
-                    ['%title%' => $version['gameTitle']]
+                    ['%title%' => $version->gameTitle]
                 );
             $screenDescription = '';
         }

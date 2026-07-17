@@ -5,8 +5,8 @@ namespace App\Controller;
 
 use App\Api\Enum\ApiResponseCode;
 use App\Exception\GenericApiException;
-use App\Service\MagazineIssueService;
-use App\Service\MagazineService;
+use App\ResourceService\MagazineIssueService;
+use App\ResourceService\MagazineService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -34,9 +34,9 @@ class MagazineController extends AbstractController
                 'screenTitle' => $this->translator
                     ->trans(
                         'magazines_list_title',
-                        ['%count%' => $data['totalResultCount']]
+                        ['%count%' => $data->totalResultCount]
                     ),
-                'magazines' => $data['result'],
+                'magazines' => $data->result,
             ]
         );
     }
@@ -45,7 +45,6 @@ class MagazineController extends AbstractController
     public function get(int $id): Response
     {
         $data = $this->magazineIssueService->getByMagazine($id);
-        /** @var array{result: mixed, totalResultCount: mixed, ownedCount: mixed} $versions */
         $magazine = $this->magazineService->getById($id);
 
         return $this->render(
@@ -54,11 +53,12 @@ class MagazineController extends AbstractController
                 'screenTitle' => $this->translator
                     ->trans(
                         'magazine_issues_list',
-                        ['%title%' => $magazine['title']]
+                        ['%title%' => $magazine->title]
                     ),
-                'screenSubTitle' => $this->isGranted('ROLE_USER') ? $magazine['notes'] : '',
-                'issues' => $data['result'],
+                'screenSubTitle' => $this->isGranted('ROLE_USER') ? $magazine->notes : '',
+                'issues' => $data->result,
                 'magazine' => $magazine,
+                'magazineid' => $magazine->id,
             ]
         );
     }
@@ -83,7 +83,7 @@ class MagazineController extends AbstractController
 
         unset($payload['_csrf_token']);
 
-        $id = $this->magazineService->add($payload)['id'];
+        $id = $this->magazineService->add($payload)->id;
 
         return $this->redirectToRoute('magazine_details', ['id' => $id]);
     }
@@ -97,7 +97,7 @@ class MagazineController extends AbstractController
             return $this->render(
                 'magazine/form.html.twig',
                 [
-                    'screenTitle' => $this->translator->trans('menu.edit_magazine', ['%title%' => $magazine['title']]),
+                    'screenTitle' => $this->translator->trans('menu.edit_magazine', ['%title%' => $magazine->title]),
                     'magazine' => $magazine,
                 ]
             );

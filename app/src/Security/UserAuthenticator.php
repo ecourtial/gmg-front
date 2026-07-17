@@ -5,7 +5,7 @@ namespace App\Security;
 use App\Api\Enum\ApiResponseCode;
 use App\Exception\GenericApiException;
 use App\Exception\Security\InvalidCaptchaException;
-use App\Service\UserService;
+use App\ResourceService\UserService;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
