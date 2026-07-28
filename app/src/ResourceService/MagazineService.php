@@ -13,16 +13,19 @@ class MagazineService extends AbstractService
 {
     public function getList(): ResourceCollectionResponseDto
     {
-        return $this->hydrateResultCollection(
-            $this->clientFactory
-                ->getAnonymousClient()
-                ->get($this->getResourceType() . 's?orderBy[]=title-asc&limit=' . self::MAX_RESULT_COUNT)
-        );
+        return $this->getCollection('orderBy[]=title-asc&limit=' . self::MAX_RESULT_COUNT);
     }
 
-    protected function getResourceType(): string
+    public function getByIds(array $magazinesIds): ResourceCollectionResponseDto
     {
-        return 'magazine';
+        $query = 'id[]='.implode("&id[]=", $magazinesIds);
+
+        return $this->getCollection($query."&orderBy[]=year-asc&orderBy[]=month-asc&limit=".self::MAX_RESULT_COUNT);
+    }
+
+    protected function getResourceNamePlural(): string
+    {
+        return 'magazines';
     }
 
     protected function hydrateObject(array $data): MagazineDto

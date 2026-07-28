@@ -22,16 +22,12 @@ class GameService extends AbstractService
 
     public function getFirst(): ResourceCollectionResponseDto
     {
-        return $this->hydrateResultCollection($this->clientFactory->getAnonymousClient()->get('games?page=1&limit=1'));
+        return $this->getCollection('page=1&limit=1');
     }
 
     public function getList(): GamesDataDto
     {
-        $data = $this->hydrateResultCollection(
-            $this->clientFactory
-            ->getAnonymousClient()
-            ->get($this->getResourceType().'s?orderBy[]=title-asc&limit='.self::MAX_RESULT_COUNT)
-        );
+        $data = $this->getCollection('orderBy[]=title-asc&limit='.self::MAX_RESULT_COUNT);
 
         $count = 0;
         foreach ($data->result as $game) {
@@ -43,11 +39,7 @@ class GameService extends AbstractService
 
     public function search(string $keywords): VersionsDataDto
     {
-        $data = $this->hydrateResultCollection(
-            $this->clientFactory
-                ->getAnonymousClient()
-                ->get($this->getResourceType() . "s?title[]={$keywords}&orderBy[]=title-asc&page=1&limit=" . self::MAX_RESULT_COUNT)
-        );
+        $data = $this->getCollection("title[]={$keywords}&orderBy[]=title-asc&page=1&limit=" . self::MAX_RESULT_COUNT);
 
         $versionCount = 0;
         foreach ($data->result as $result) {
@@ -57,43 +49,9 @@ class GameService extends AbstractService
         return new VersionsDataDto($data, $versionCount);
     }
 
-    public function formatMentions(array $magazines, array $versions, array $mentions, array $issues): array
+    protected function getResourceNamePlural(): string
     {
-        $mentionsData = [];
-
-        foreach ($mentions as $mention) {
-            $mentionType = $mention->type;
-
-            if (false === array_key_exists($mentionType, $mentionsData)) {
-                $mentionsData[$mentionType] = [];
-            }
-
-            $magazineIssueId = $mention->magazineIssueId;
-            $issue = $issues[$magazineIssueId];
-            $platformName = $versions[$mention->gameVersionId]->platformName;
-
-            if (false === array_key_exists($platformName, $mentionsData[$mentionType])) {
-                $mentionsData[$mentionType][$platformName] = [];
-            }
-
-            $mentionsData[$mentionType][$platformName][] = [
-                'mentionId' => $mention->id,
-                'magazineTitle' => $magazines[$issue->magazineId]->title,
-                'magazineIssueId' => $magazineIssueId,
-                'magazineIssueYear' => $issue->year,
-                'magazineIssueMonth' => $issue->month,
-                'magazineIssueNumber' => $issue->issueNumber,
-                'pageNumber' => $mention->pageNumber,
-                'notes' => $mention->notes,
-            ];
-        }
-
-        return $mentionsData;
-    }
-
-    protected function getResourceType(): string
-    {
-        return 'game';
+        return 'games';
     }
 
     protected function hydrateObject(array $data): GameDto

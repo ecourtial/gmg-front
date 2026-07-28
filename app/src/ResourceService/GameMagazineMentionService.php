@@ -13,20 +13,12 @@ class GameMagazineMentionService extends AbstractService
 {
     public function getByIssueId(int $issueId): ResourceCollectionResponseDto
     {
-        return $this->hydrateResultCollection(
-            $this->clientFactory
-                ->getAnonymousClient()
-                ->get($this->getResourceType()."s?magazineIssueId[]={$issueId}&orderBy[]=gameVersionId-asc&orderBy[]=pageNumber-asc&limit=".self::MAX_RESULT_COUNT)
-        );
+        return $this->getCollection("magazineIssueId[]={$issueId}&orderBy[]=gameVersionId-asc&orderBy[]=pageNumber-asc&limit=".self::MAX_RESULT_COUNT);
     }
 
     public function getByVersionId(int $versionId): ResourceCollectionResponseDto
     {
-        return $this->hydrateResultCollection(
-            $this->clientFactory
-                ->getAnonymousClient()
-                ->get($this->getResourceType()."s?gameVersionId[]={$versionId}&orderBy[]=pageNumber-asc&limit=".self::MAX_RESULT_COUNT)
-        );
+        return $this->getCollection("gameVersionId[]={$versionId}&orderBy[]=pageNumber-asc&limit=".self::MAX_RESULT_COUNT);
     }
 
     public function getByVersionsIds(array $versionsIds): ResourceCollectionResponseDto
@@ -38,16 +30,12 @@ class GameMagazineMentionService extends AbstractService
             $versionsFilter .= "&gameVersionId[]=".$versionId;
         }
 
-        return $this->hydrateResultCollection(
-            $this->clientFactory
-                ->getAnonymousClient()
-                ->get($this->getResourceType()."s?orderBy[]=pageNumber-asc&limit=".self::MAX_RESULT_COUNT.$versionsFilter)
-        );
+        return $this->getCollection("orderBy[]=pageNumber-asc&limit=".self::MAX_RESULT_COUNT.$versionsFilter);
     }
 
-    protected function getResourceType(): string
+    protected function getResourceNamePlural(): string
     {
-        return 'game-version-magazine-mention';
+        return 'game-version-magazine-mentions';
     }
 
     protected function hydrateObject(array $data): GameVersionMentionDto

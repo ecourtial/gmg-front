@@ -97,7 +97,7 @@ class CopyController extends AbstractController
         if (false === $this->isCsrfTokenValid('add_copy', $request->request->getString('_csrf_token'))) {
             $this->addFlash('alert', 'see.invalid_csrf_token');
 
-            return $this->redirectToRoute('copies_per_version', ['versionId' => $copy['versionId']]);
+            return $this->redirectToRoute('copies_per_version', ['versionId' => $copy->versionId]);
         }
 
         $payload = $request->request->all();

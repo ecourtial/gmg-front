@@ -5,6 +5,7 @@ namespace App\Controller;
 
 use App\Api\Enum\ApiResponseCode;
 use App\Exception\GenericApiException;
+use App\PageService\MagazineIssuePageService;
 use App\ResourceService\GameMagazineMentionService;
 use App\ResourceService\MagazineIssueCopyService;
 use App\ResourceService\MagazineIssueService;
@@ -23,9 +24,8 @@ class MagazineIssueController extends AbstractController
     public function __construct(
         private readonly MagazineService $magazineService,
         private readonly MagazineIssueService $magazineIssueService,
-        private readonly GameMagazineMentionService $gameMagazineMentionService,
-        private readonly VersionService $versionService,
         private readonly MagazineIssueCopyService $magazineIssueCopyService,
+        private readonly MagazineIssuePageService $magazineIssuePageService,
         private readonly ToolsExtension $toolsExtension,
         private readonly TranslatorInterface $translator,
     ) {
@@ -35,18 +35,7 @@ class MagazineIssueController extends AbstractController
     {
         $issue = $this->magazineIssueService->getById($issueId);
         $magazine = $this->magazineService->getById($issue->magazineId);
-        $gameMentions = $this->gameMagazineMentionService->getByIssueId($issueId)->result;
-
-        /** @todo refactorize as we could perform only one call to the API using filterBy[] */
-        $gamesVersions = [];
-        foreach ($gameMentions as $gameMention) {
-            $gameVersionId = $gameMention->gameVersionId;
-            if (false === array_key_exists($gameVersionId, $gamesVersions)) {
-                $gamesVersions[$gameVersionId] = $this->versionService->getById($gameVersionId);
-            }
-        }
-
-        $sortedMentions = $this->magazineIssueService->formatMentions($gameMentions, $gamesVersions);
+        $sortedMentions = $this->magazineIssuePageService->getSortedMentions($issueId);
         $copies = $this->magazineIssueCopyService->getByIssueId($issueId)->result;
 
         return $this->render(
@@ -101,7 +90,7 @@ class MagazineIssueController extends AbstractController
                     'screenTitle' => $this->translator->trans('magazine_edit_issue'),
                     'screenSubTitle' => $this->translator->trans('issue').' #'.$issue['issueNumber'].' ('.$this->toolsExtension->getMonthLabel($issue['month']).' '.$issue['year'].')',
                     'magazines' => $this->magazineService->getList()['result'],
-                    'selectedMagazine' => $issue['magazineId'],
+                    'selectedMagazine' => $issue->magazineId,
                     'issue' => $issue,
                 ]
             );
@@ -135,7 +124,7 @@ class MagazineIssueController extends AbstractController
             $this->magazineIssueService->delete($id);
             $this->addFlash('alert', 'entry_deleted_with_success');
 
-            return $this->redirectToRoute('magazine_details', ['id' => $issue['magazineId']]);
+            return $this->redirectToRoute('magazine_details', ['id' => $issue->magazineId]);
         } catch (GenericApiException $exception) {
             if (Response::HTTP_NOT_FOUND === $exception->getCode()) {
                 // Ignore, not a problem because someone might have done it in the meantime.

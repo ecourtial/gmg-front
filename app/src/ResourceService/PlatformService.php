@@ -14,7 +14,7 @@ class PlatformService extends AbstractService
 {
     public function getFirst(): ResourceCollectionResponseDto
     {
-        return $this->hydrateResultCollection($this->clientFactory->getAnonymousClient()->get('platforms?page=1&limit=1'));
+        return $this->getCollection('page=1&limit=1');
     }
 
     /**
@@ -22,15 +22,12 @@ class PlatformService extends AbstractService
      */
     public function getList(): ResourceCollectionResponseDto
     {
-        return $this->hydrateResultCollection($this->clientFactory
-            ->getAnonymousClient()
-            ->get($this->getResourceType().'s?orderBy[]=name-asc&limit='.self::MAX_RESULT_COUNT)
-        );
+        return $this->getCollection('orderBy[]=name-asc&limit='.self::MAX_RESULT_COUNT);
     }
 
-    protected function getResourceType(): string
+    protected function getResourceNamePlural(): string
     {
-        return 'platform';
+        return 'platforms';
     }
 
     protected function hydrateObject(array $data): PlatformDto

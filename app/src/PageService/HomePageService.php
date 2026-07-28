@@ -6,6 +6,7 @@ namespace App\PageService;
 
 use App\Api\ResourceCollectionResponseDto;
 use App\Entity\Dto\GameDto;
+use App\Entity\Dto\GameVersionDto;
 use App\ResourceService\CopyService;
 use App\ResourceService\GameService;
 use App\ResourceService\PlatformService;
@@ -88,22 +89,16 @@ readonly class HomePageService
         }
     }
 
-    protected function getResourceType(): string
-    {
-        return 'home';
-    }
-
     /**
-     * @param GameDto[] $games
+     * @param GameVersionDto[] $games
      *
-     * @return array<int, GameDto>
+     * @return array<int, GameVersionDto>
      */
     private function orderGames(array $games): array
     {
         $data = [];
 
         foreach ($games as $game) {
-            /** @var array<string, scalar> $game */
             $year = strval($game->hallOfFameYear);
             if (false === \array_key_exists($year, $data)) {
                 $data[$year] = [];

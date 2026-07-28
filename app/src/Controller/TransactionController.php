@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Exception\GenericApiException;
+use App\PageService\TransactionPageService;
 use App\ResourceService\CopyService;
 use App\ResourceService\TransactionService;
 use App\ResourceService\VersionService;
@@ -22,6 +23,7 @@ class TransactionController extends AbstractController
         private readonly TranslatorInterface $translator,
         private readonly VersionService $versionService,
         private readonly CopyService $copyService,
+        private readonly TransactionPageService $transactionPageService,
     ) {
     }
 
@@ -29,7 +31,7 @@ class TransactionController extends AbstractController
     public function getList(Request $request): Response
     {
         $versionId = (int)$request->query->get('version', 0);
-        $data = $this->service->getTransactionsData($versionId);
+        $data = $this->transactionPageService->getTransactionsData($versionId);
 
         if (0 === $versionId) {
             $screenTitle = $this->translator

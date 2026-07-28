@@ -58,7 +58,7 @@ class MagazineController extends AbstractController
                 'screenSubTitle' => $this->isGranted('ROLE_USER') ? $magazine->notes : '',
                 'issues' => $data->result,
                 'magazine' => $magazine,
-                'magazineid' => $magazine->id,
+                'magazineId' => $magazine->id,
             ]
         );
     }

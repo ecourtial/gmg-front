@@ -10,17 +10,12 @@ class MagazineIssueCopyService extends AbstractService
 {
     public function getByIssueId(int $issueId): ResourceCollectionResponseDto
     {
-
-        return $this->hydrateResultCollection(
-            $this->clientFactory
-                ->getAnonymousClient()
-                ->get("magazine-issue-copies?magazineIssueId[]={$issueId}&orderBy[]=magazineIssueId-asc&limit=".self::MAX_RESULT_COUNT)
-        );
+        return $this->getCollection("magazineIssueId[]={$issueId}&orderBy[]=magazineIssueId-asc&limit=".self::MAX_RESULT_COUNT);
     }
 
-    protected function getResourceType(): string
+    protected function getResourceNamePlural(): string
     {
-        return 'magazine-issue-copy';
+        return 'magazine-issue-copies';
     }
 
     protected function hydrateObject(array $data): MagazineIssueCopyDto

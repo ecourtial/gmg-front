@@ -9,13 +9,13 @@
             </button>
         </form>
         <br/>
-        <a href="{{ url('add_magazine_issue') }}?selectedMagazine={{ magazineid }}">
+        <a href="{{ url('add_magazine_issue') }}?selectedMagazine={{ magazineId }}">
             <button type="submit" class="btn btn-lg btn-block btn-success">
                 <i class="fa fa-trash" aria-hidden="true"></i>
                 {{ 'menu.magazine_add_issue'|trans }}
             </button>
         </a>
-        <a href="{{ url('edit_magazine', {'id': magazineid}) }}">
+        <a href="{{ url('edit_magazine', {'id': magazineId}) }}">
             <button type="submit" class="btn btn-lg btn-block btn-outline-info">
                 <i class="fa fa-trash" aria-hidden="true"></i>
                 {{ 'menu.edit'|trans }}

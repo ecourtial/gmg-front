@@ -1,8 +1,9 @@
 # Changelog
 
-### v1.9.0
+### v2.0.0
 
-Version that support the new version (5.0) of the backend.
+This version supports the new version (5.0) of the backend, which includes a breaking change by changing some API routes (no the content, but the path of the routes).
+Hence, the major version bump here too.
 
 #### Tech
 * Bump to Symfony 8.0.

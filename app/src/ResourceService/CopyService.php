@@ -75,15 +75,38 @@ class CopyService extends AbstractService
      */
     public function getByVersion(int $versionId): ResourceCollectionResponseDto
     {
-        return $this->hydrateResultCollection($this->clientFactory
-            ->getAnonymousClient()
-            ->get("copies?versionId[]={$versionId}&limit=".self::MAX_RESULT_COUNT)
+        return $this->getCollection("versionId[]={$versionId}&limit=".self::MAX_RESULT_COUNT);
+    }
+
+    public function getList(
+        string $filter,
+        string $filterValue,
+        int $maxResultCount = self::MAX_RESULT_COUNT
+    ): ResourceCollectionResponseDto
+    {
+        // There is a limit of the API here... Consider allowing more accurate filtering
+        return $this->getCollection("{$filter}[]={$filterValue}&orderBy[]=gameTitle-asc&limit=" . $maxResultCount);
+    }
+
+    public function getOriginals(): ResourceCollectionResponseDto
+    {
+        return $this->getList(
+            'original',
+            '1'
         );
     }
 
-    protected function getResourceType(): string
+    public function getOriginalsWhereCopyIsNotOnCompilation(): ResourceCollectionResponseDto
     {
-        return 'copy';
+        return $this->getList(
+            'onCompilation[]=0&original',
+            '1'
+        );
+    }
+
+    protected function getResourceNamePlural(): string
+    {
+        return 'copies';
     }
 
     protected function hydrateObject(array $data): GameVersionCopyDto
@@ -108,36 +131,6 @@ class CopyService extends AbstractService
             $data['platformName'],
             $data['gameTitle'],
             $data['transactionCount'],
-        );
-    }
-
-    public function getList(
-        string $filter,
-        string $filterValue,
-        int $maxResultCount = self::MAX_RESULT_COUNT
-    ): ResourceCollectionResponseDto
-    {
-        // There is a limit of the API here... Consider allowing more accurate filtering
-        return $this->hydrateResultCollection(
-            $this->clientFactory
-                ->getAnonymousClient()
-                ->get("copies?{$filter}[]={$filterValue}&orderBy[]=gameTitle-asc&limit=" . $maxResultCount)
-        );
-    }
-
-    public function getOriginals(): ResourceCollectionResponseDto
-    {
-        return $this->getList(
-            'original',
-            '1'
-        );
-    }
-
-    public function getOriginalsWhereCopyIsNotOnCompilation(): ResourceCollectionResponseDto
-    {
-        return $this->getList(
-            'onCompilation[]=0&original',
-            '1'
         );
     }
 }

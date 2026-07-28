@@ -8,14 +8,12 @@ use App\Api\Enum\ApiResponseCode;
 use App\Api\ResourceCollectionResponseDto;
 use App\Entity\Dto\Specific\VersionsDataDto;
 use App\Exception\GenericApiException;
+use App\PageService\GameVersionPageService;
+use App\PageService\TransactionPageService;
 use App\ResourceService\CopyService;
-use App\ResourceService\GameMagazineMentionService;
 use App\ResourceService\GameService;
-use App\ResourceService\MagazineIssueService;
-use App\ResourceService\MagazineService;
 use App\ResourceService\NoteService;
 use App\ResourceService\PlatformService;
-use App\ResourceService\TransactionService;
 use App\ResourceService\VersionService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -32,12 +30,10 @@ class VersionController extends AbstractController
         private readonly TranslatorInterface $translator,
         private readonly GameService $gameService,
         private readonly PlatformService $platformService,
-        private readonly GameMagazineMentionService $gameMagazineMentionService,
-        private readonly MagazineService $magazineService,
-        private readonly MagazineIssueService $magazineIssueService,
-        private readonly TransactionService $transactionService,
         private readonly NoteService $noteService,
         private readonly CopyService $copyService,
+        private readonly GameVersionPageService $gameVersionPageService,
+        private readonly TransactionPageService $transactionPageService,
     ) {
     }
 
@@ -45,8 +41,7 @@ class VersionController extends AbstractController
     public function versionDetails(int $id): Response
     {
         $version = $this->service->getById($id);
-        $transactions = $this->transactionService->getTransactionsData($id);
-        [$magazines, $issues, $mentions] = $this->prepareMentions($id);
+        $transactions = $this->transactionPageService->getTransactionsData($id);
         $notes = $this->noteService->getList($id);
 
         return $this->render(
@@ -62,7 +57,7 @@ class VersionController extends AbstractController
                     ),
                 'screenSubTitle' => $this->isGranted('ROLE_USER') ? $version->comments : '',
                 'version' => $version,
-                'mentionsByType' => $this->service->formatMentions($magazines, $issues, $mentions),
+                'mentionsByType' => $this->gameVersionPageService->getMentionsByType($id),
                 'transactionsCount' => $transactions['totalResultCount'],
                 'notes' => $notes->result,
             ]
@@ -87,35 +82,8 @@ class VersionController extends AbstractController
 
         $data = $this->service->getFilteredList($filter, copies: $copies);
 
-        /**
-         * Ugly! @TODO implement that on API side please.
-         * On top of that we could have used a simple getList() from the service.
-         * But at least it reminds us that we need to improve filters on the API side.
-         */
         if ($filter === VersionService::WITH_COMMENTS_FILTER) {
-            $results = $data->versions->result;
-            $ownedCount = $data->ownedCount;
-
-            foreach ($data->versions->result as $key => $item) {
-                if (null === $item->comments
-                    || trim($item->comments) === '') {
-                    if (0 < $item->copyCount) {
-                        $ownedCount--;
-                    }
-                    unset($results[$key]);
-                }
-            }
-
-            $data = new VersionsDataDto(
-                new ResourceCollectionResponseDto(
-                    $data->versions->resultCount,
-                    $data->versions->totalResultCount,
-                    $data->versions->page,
-                    $data->versions->totalPageCount,
-                    $results
-                ),
-                $ownedCount
-            );
+            $data = $this->gameVersionPageService->getVersionsWithComments($data);
         }
 
         return $this->render(
@@ -150,8 +118,7 @@ class VersionController extends AbstractController
         }
 
         $version = $result->result[0];
-        [$magazines, $issues, $mentions] = $this->prepareMentions($version->id);
-        $transactions = $this->transactionService->getTransactionsData($version->id);
+        $transactions = $this->transactionPageService->getTransactionsData($version->id);
         $notes = $this->noteService->getList($version->id);
 
         return $this->render(
@@ -167,8 +134,8 @@ class VersionController extends AbstractController
                     ),
                 'version' => $version,
                 'transactionsCount' => $transactions['totalResultCount'],
-                'mentionsByType' => $this->service->formatMentions($magazines, $issues, $mentions),
-                'notes' => $notes['result'],
+                'mentionsByType' => $this->gameVersionPageService->getMentionsByType($version->id),
+                'notes' => $notes->result,
             ]
         );
     }
@@ -314,28 +281,5 @@ class VersionController extends AbstractController
         }
 
         return $this->redirectToRoute('games_list');
-    }
-
-    private function prepareMentions(int $versionId): array
-    {
-        $mentions = $this->gameMagazineMentionService->getByVersionId($versionId)->result;
-        $issues = [];
-        $magazines = [];
-
-        /** @todo refactorize as we could perform only one call (per type) to the API using filterBy[] */
-        foreach ($mentions as $mention) {
-            $magazineIssueId = $mention->magazineIssueId;
-            if (false === array_key_exists($magazineIssueId, $issues)) {
-                $issue = $this->magazineIssueService->getById($magazineIssueId);
-                $issues[$magazineIssueId] = $issue;
-
-                $magazineId = $issue->magazineId;
-                if (false === array_key_exists($magazineId, $magazines)) {
-                    $magazines[$magazineId] = $this->magazineService->getById($magazineId);
-                }
-            }
-        }
-
-        return [$magazines, $issues, $mentions];
     }
 }

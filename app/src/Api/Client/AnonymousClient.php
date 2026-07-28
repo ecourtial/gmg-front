@@ -21,6 +21,6 @@ class AnonymousClient extends Client
     {
         $customHeaders = ['Authorization' => 'Basic '.\base64_encode("{$username}:{$password}")];
 
-        return $this->execute('POST', 'user/authenticate', $customHeaders);
+        return $this->execute('POST', 'users/authenticate', $customHeaders);
     }
 }

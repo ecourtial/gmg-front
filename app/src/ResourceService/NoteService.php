@@ -19,16 +19,12 @@ class NoteService extends AbstractService
             $gameVersionIdFilter='&gameVersionId[]='.$gameVersionId;
         }
 
-        return $this->hydrateResultCollection(
-            $this->clientFactory
-                ->getAnonymousClient()
-                ->get('notes?orderBy[]=title-asc'.$gameVersionIdFilter.'&limit='.self::MAX_RESULT_COUNT)
-        );
+        return $this->getCollection('?orderBy[]=title-asc'.$gameVersionIdFilter.'&limit='.self::MAX_RESULT_COUNT);
     }
 
-    protected function getResourceType(): string
+    protected function getResourceNamePlural(): string
     {
-        return 'note';
+        return 'notes';
     }
 
     protected function hydrateObject(array $data): NoteDto

@@ -36,7 +36,7 @@
                                 {{ 'menu.filters'|trans }}
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="{{ path('versions_filtered_list', {filter: 'originals'}) }}">{{ 'menu.originals'|trans }}</a></li>
+                                {% if is_granted('ROLE_USER') %}<li><a class="dropdown-item" href="{{ path('versions_filtered_list', {filter: 'originals'}) }}">{{ 'menu.originals'|trans }}</a></li>{% endif %}
                                 <li><a class="dropdown-item" href="{{ path('versions_filtered_list', {filter: 'bigBoxes'}) }}">{{ 'menu.PC_big_boxes'|trans }}</a></li>
                                 <li><a class="dropdown-item" href="{{ path('versions_filtered_list', {filter: 'finished'}) }}">{{ 'menu.finished'|trans }}</a></li>
                                 <li><a class="dropdown-item" href="{{ path('versions_filtered_list', {filter: 'not_finished'}) }}">{{ 'menu.not_finished'|trans }}</a></li>

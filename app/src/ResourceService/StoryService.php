@@ -20,11 +20,7 @@ class StoryService extends AbstractService
             $versionFilter = '&versionId[]='.$versionId;
         }
 
-        $data = $this->hydrateResultCollection(
-            $this->clientFactory
-            ->getAnonymousClient()
-            ->get('stories?orderBy[]=year-asc&orderBy[]=position-asc'.$versionFilter.'&limit='.self::MAX_RESULT_COUNT)
-        );
+        $data = $this->getCollection('orderBy[]=year-asc&orderBy[]=position-asc'.$versionFilter.'&limit='.self::MAX_RESULT_COUNT);
 
         $totalResultCount = $data->totalResultCount;
         $stories = [];
@@ -41,9 +37,9 @@ class StoryService extends AbstractService
         return new StoriesOrderedByYearDto($stories, $totalResultCount);
     }
 
-    protected function getResourceType(): string
+    protected function getResourceNamePlural(): string
     {
-        return 'story';
+        return 'stories';
     }
 
     protected function hydrateObject(array $data): StoryDto

@@ -9,6 +9,7 @@ use App\Entity\Dto\GameVersionDto;
 use App\Entity\Dto\GameVersionMentionDto;
 use App\Entity\Dto\MagazineDto;
 use App\Entity\Dto\MagazineIssueDto;
+use App\Entity\Dto\Specific\GameVersionRawDataDto;
 use App\Entity\Dto\Specific\VersionsByPriorityDto;
 use App\Entity\Dto\Specific\VersionsDataDto;
 
@@ -123,78 +124,51 @@ class VersionService extends AbstractService
         ],
     ];
 
-    protected function hydrateObject(array $data): GameVersionDto
+    public function getByIds(array $versionsIds): ResourceCollectionResponseDto
     {
-        return new GameVersionDto(
-            $data['id'],
-            $data['platformId'],
-            $data['gameId'],
-            $data['releaseYear'],
-            $data['todoSoloSometimes'],
-            $data['todoMultiplayerSometimes'],
-            $data['singleplayerRecurring'],
-            $data['multiplayerRecurring'],
-            $data['toDo'],
-            $data['toBuy'],
-            $data['toWatchBackground'],
-            $data['toWatchSerious'],
-            $data['toRewatch'],
-            $data['topGame'],
-            $data['hallOfFame'],
-            $data['hallOfFameYear'],
-            $data['hallOfFamePosition'],
-            $data['playedItOften'],
-            $data['ongoing'],
-            $data['comments'],
-            $data['todoWithHelp'],
-            $data['bestGameForever'],
-            $data['toWatchPosition'],
-            $data['toDoPosition'],
-            $data['finished'],
-            $data['platformName'],
-            $data['gameTitle'],
-            $data['storyCount'],
-            $data['copyCount'],
-        );
+        if (empty($versionsIds)) return new ResourceCollectionResponseDto();
+
+        $versionsFilter = '';
+        foreach ($versionsIds as $versionId) {
+            $versionsFilter .= "&id[]=".$versionId;
+        }
+
+        return $this->getCollection("orderBy[]=pageNumber-asc&limit=".self::MAX_RESULT_COUNT.$versionsFilter);
     }
 
     public function getFirst(): ResourceCollectionResponseDto
     {
-        return $this->hydrateResultCollection($this->clientFactory->getAnonymousClient()->get('versions?page=1&limit=1'));
+        return $this->getCollection('page=1&limit=1');
     }
 
     public function getFinishedVersionsFirst(): ResourceCollectionResponseDto
     {
-        return $this->hydrateResultCollection($this->clientFactory->getAnonymousClient()->get('versions?finished[]=1&page=1&limit=1'));
+        return $this->getCollection('finished[]=1&page=1&limit=1');
     }
 
     public function getOwnedGameFirst(): ResourceCollectionResponseDto
     {
-        return $this->hydrateResultCollection($this->clientFactory->getAnonymousClient()->get('versions?copyCount[]=neq-0&limit=1'));
+        return $this->getCollection('copyCount[]=neq-0&limit=1');
     }
 
     public function getTodoFirst(): ResourceCollectionResponseDto
     {
-        return $this->hydrateResultCollection($this->clientFactory->getAnonymousClient()->get('versions?toDo[]=1&page=1&limit=1'));
+        return $this->getCollection('toDo[]=1&page=1&limit=1');
     }
 
     public function getToWatchInBackgroundFirst(): ResourceCollectionResponseDto
     {
-        return $this->hydrateResultCollection($this->clientFactory->getAnonymousClient()->get('versions?toWatchBackground[]=1&page=1&limit=1'));
+        return $this->getCollection('toWatchBackground[]=1&page=1&limit=1');
     }
 
     public function getToWatchSeriousFirst(): ResourceCollectionResponseDto
     {
-        return $this->hydrateResultCollection($this->clientFactory->getAnonymousClient()->get('versions?toWatchSerious[]=1&page=1&limit=1'));
+        return $this->getCollection('toWatchSerious[]=1&page=1&limit=1');
     }
 
     public function getList(int $maxResultCount = self::MAX_RESULT_COUNT): VersionsDataDto
     {
-        $versions = $this->hydrateResultCollection(
-            $this->clientFactory
-                ->getAnonymousClient()
-                ->get($this->getResourceType().'s?orderBy[]=gameTitle-asc&page=1&limit='.$maxResultCount)
-        );
+        $versions = $this->getCollection('orderBy[]=gameTitle-asc&page=1&limit='.$maxResultCount);
 
         $count = 0;
         /** @var GameVersionDto $version */
@@ -209,10 +183,7 @@ class VersionService extends AbstractService
 
     public function getByPlatform(int $platformId, int $maxResultCount = self::MAX_RESULT_COUNT): VersionsDataDto
     {
-        $versions = $this->hydrateResultCollection($this->clientFactory
-            ->getAnonymousClient()
-            ->get($this->getResourceType()."s?platformId[]={$platformId}&orderBy[]=gameTitle-asc&page=1&limit=".$maxResultCount)
-        );
+        $versions = $this->getCollection("platformId[]={$platformId}&orderBy[]=gameTitle-asc&page=1&limit=".$maxResultCount);
 
         $count = 0;
         /** @var GameVersionDto $version */
@@ -227,11 +198,7 @@ class VersionService extends AbstractService
 
     public function getByGame(int $gameId, int $maxResultCount = self::MAX_RESULT_COUNT): VersionsDataDto
     {
-        /** @var array{result: list<array<string, scalar>>, totalResultCount: int} $versions */
-        $versions = $this->hydrateResultCollection($this->clientFactory
-            ->getAnonymousClient()
-            ->get("versions?gameId[]={$gameId}&orderBy[]=gameTitle-asc&page=1&limit=".$maxResultCount)
-        );
+        $versions = $this->getCollection("gameId[]={$gameId}&orderBy[]=gameTitle-asc&page=1&limit=".$maxResultCount);
 
         $count = 0;
         foreach ($versions->result as $version) {
@@ -275,15 +242,8 @@ class VersionService extends AbstractService
 
     public function getHallOfFame(): ResourceCollectionResponseDto
     {
-        return $this->hydrateResultCollection(
-            $this
-                ->clientFactory
-                ->getAnonymousClient()
-                ->get(
-                    'versions?hallOfFame[]=1&hallOfFameYear[]=neq-0&hallOfFamePosition[]=neq-0'
-                    .'&orderBy[]=hallOfFameYear-asc&orderBy[]=hallOfFamePosition-asc&limit='.self::MAX_RESULT_COUNT
-                )
-        );
+        return $this->getCollection('hallOfFame[]=1&hallOfFameYear[]=neq-0&hallOfFamePosition[]=neq-0'
+                    .'&orderBy[]=hallOfFameYear-asc&orderBy[]=hallOfFamePosition-asc&limit='.self::MAX_RESULT_COUNT);
     }
 
     public function getFilteredListWithPrio(string $filter, int $maxResultCount = self::MAX_RESULT_COUNT): VersionsByPriorityDto
@@ -291,13 +251,7 @@ class VersionService extends AbstractService
         $filter1 = self::FILTERS_WITH_PRIORITY[$filter]['attribute1'];
         $filter2 = self::FILTERS_WITH_PRIORITY[$filter]['attribute2'];
 
-        $result = $this->hydrateResultCollection(
-            $this->clientFactory
-            ->getAnonymousClient()
-            ->get(
-                "versions?{$filter1}[]=1&orderBy[]={$filter2}-asc&orderBy[]=gameTitle-asc&page=1&limit=".$maxResultCount
-            )
-        );
+        $result = $this->getCollection("{$filter1}[]=1&orderBy[]={$filter2}-asc&orderBy[]=gameTitle-asc&page=1&limit=".$maxResultCount);
 
         $orderedResult = [
             'withPriority' => [],
@@ -363,19 +317,12 @@ class VersionService extends AbstractService
             return new ResourceCollectionResponseDto();
         }
 
-        return $this->hydrateResultCollection($this->clientFactory
-            ->getAnonymousClient()
-            ->get("versions?{$filter}[]=1'&orderBy[]=rand&page=1&limit=1")
-        );
+        return $this->getCollection("{$filter}[]=1'&orderBy[]=rand&page=1&limit=1");
     }
 
     public function search(string $keywords, int $maxResultCount = self::MAX_RESULT_COUNT): VersionsDataDto
     {
-        $data = $this->hydrateResultCollection(
-            $this->clientFactory
-            ->getAnonymousClient()
-            ->get("versions?gameTitle[]={$keywords}&orderBy[]=gameTitle-asc&page=1&limit=".$maxResultCount)
-        );
+        $data = $this->getCollection("gameTitle[]={$keywords}&orderBy[]=gameTitle-asc&page=1&limit=".$maxResultCount);
 
         $count = 0;
         foreach ($data->result as $game) {
@@ -393,18 +340,14 @@ class VersionService extends AbstractService
         return $this->getListFromCopies($copies);
     }
 
-    protected function getResourceType(): string
+    protected function getResourceNamePlural(): string
     {
-        return 'version';
+        return 'versions';
     }
 
     protected function getListFromVersions(string $filter, string $filterValue, int $maxResultCount = self::MAX_RESULT_COUNT): ResourceCollectionResponseDto
     {
-        return $this->hydrateResultCollection(
-            $this->clientFactory
-            ->getAnonymousClient()
-            ->get("versions?{$filter}[]={$filterValue}&orderBy[]=gameTitle-asc&page=1&limit=".$maxResultCount)
-        );
+        return $this->getCollection("{$filter}[]={$filterValue}&orderBy[]=gameTitle-asc&page=1&limit=".$maxResultCount);
     }
 
     protected function getListFromCopies(
@@ -428,44 +371,41 @@ class VersionService extends AbstractService
             $query .= '&id[]='.$id;
         }
 
-        return $this->hydrateResultCollection(
-            $this->clientFactory
-            ->getAnonymousClient()
-            ->get("versions?orderBy[]=gameTitle-asc{$query}&page=1&limit=".$maxResultCount)
-        );
+        return $this->getCollection("orderBy[]=gameTitle-asc{$query}&page=1&limit=".$maxResultCount);
     }
 
-    /**
-     * @param MagazineDto[] $magazines
-     * @param MagazineIssueDto[] $issues
-     * @param GameVersionMentionDto[] $mentions
-     */
-    public function formatMentions(array $magazines, array $issues, array $mentions): array
+    protected function hydrateObject(array $data): GameVersionDto
     {
-        $mentionsData = [];
-
-        foreach ($mentions as $mention) {
-            $mentionType = $mention->type;
-
-            if (false === array_key_exists($mentionType, $mentionsData)) {
-                $mentionsData[$mentionType] = [];
-            }
-
-            $magazineIssueId = $mention->magazineIssueId;
-            $issue = $issues[$magazineIssueId];
-
-            $mentionsData[$mentionType][] = [
-                'mentionId' => $mention->id,
-                'magazineTitle' => $magazines[$issue->magazineId]->title,
-                'magazineIssueId' => $magazineIssueId,
-                'magazineIssueYear' => $issue->year,
-                'magazineIssueMonth' => $issue->month,
-                'magazineIssueNumber' => $issue->issueNumber,
-                'pageNumber' => $mention->pageNumber,
-                'notes' => $mention->notes,
-            ];
-        }
-
-        return $mentionsData;
+        return new GameVersionDto(
+            $data['id'],
+            $data['platformId'],
+            $data['gameId'],
+            $data['releaseYear'],
+            $data['todoSoloSometimes'],
+            $data['todoMultiplayerSometimes'],
+            $data['singleplayerRecurring'],
+            $data['multiplayerRecurring'],
+            $data['toDo'],
+            $data['toBuy'],
+            $data['toWatchBackground'],
+            $data['toWatchSerious'],
+            $data['toRewatch'],
+            $data['topGame'],
+            $data['hallOfFame'],
+            $data['hallOfFameYear'],
+            $data['hallOfFamePosition'],
+            $data['playedItOften'],
+            $data['ongoing'],
+            $data['comments'],
+            $data['todoWithHelp'],
+            $data['bestGameForever'],
+            $data['toWatchPosition'],
+            $data['toDoPosition'],
+            $data['finished'],
+            $data['platformName'],
+            $data['gameTitle'],
+            $data['storyCount'],
+            $data['copyCount'],
+        );
     }
 }

@@ -92,7 +92,7 @@ class SecurityController extends AbstractController
         assert($user instanceof \App\Security\User);
 
         try {
-            $this->userService->changePassword(
+            $this->userService->changeUserPassword(
                 $user->getId(),
                 $user->getUserIdentifier(),
                 $request->request->getString('_current_password'),

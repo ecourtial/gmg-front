@@ -6,8 +6,8 @@ namespace App\Controller;
 
 use App\Api\Enum\ApiResponseCode;
 use App\Exception\GenericApiException;
+use App\PageService\PlatformPageService;
 use App\ResourceService\PlatformService;
-use App\ResourceService\VersionService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,7 +19,7 @@ class PlatformController extends AbstractController
 {
     public function __construct(
         private readonly PlatformService $service,
-        private readonly VersionService $versionService,
+        private readonly PlatformPageService $pageService,
         private readonly TranslatorInterface $translator,
     ) {
     }
@@ -41,10 +41,7 @@ class PlatformController extends AbstractController
     #[Route('/platform/{id<\d+>}', name: 'platform_details', methods: ['GET'])]
     public function getPlatform(int $id): Response
     {
-        $data = $this->versionService->getByPlatform($id);
-
-        $versions = $data->versions;
-        $platform = $this->service->getById($id);
+        $pageDetails = $this->pageService->getPlatformPageDetails($id);
 
         return $this->render(
             'platform/details.html.twig',
@@ -53,14 +50,14 @@ class PlatformController extends AbstractController
                     ->trans(
                         'games_for_platform_title',
                         [
-                            '%name%' => $platform->name,
-                            '%count%' => $versions->totalResultCount,
+                            '%name%' => $pageDetails->platform->name,
+                            '%count%' => $pageDetails->versionsData->versions->totalResultCount,
                         ]
                     ),
                 'screenSubTitle' => $this->translator
-                    ->trans('have_copy_for_x_of_them', ['%count%' => $data->ownedCount]),
-                'versions' => $versions->result,
-                'platform' => $platform,
+                    ->trans('have_copy_for_x_of_them', ['%count%' => $pageDetails->versionsData->ownedCount]),
+                'versions' => $pageDetails->versionsData->versions->result,
+                'platform' => $pageDetails->platform,
             ]
         );
     }

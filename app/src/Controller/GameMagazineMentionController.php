@@ -78,7 +78,7 @@ class GameMagazineMentionController extends AbstractController
             $this->gameMagazineMentionService->delete($id);
             $this->addFlash('alert', 'entry_deleted_with_success');
 
-            return $this->redirectToRoute('magazine_issue_details', ['issueId' => $mention['magazineIssueId']]);
+            return $this->redirectToRoute('magazine_issue_details', ['issueId' => $mention->magazineIssueId]);
         } catch (GenericApiException $exception) {
             if (Response::HTTP_NOT_FOUND === $exception->getCode()) {
                 // Ignore, not a problem because someone might have done it in the meantime.

@@ -17,9 +17,10 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class HomeController extends AbstractController
 {
-    public function __construct(private readonly HomePageService $service, private readonly TranslatorInterface $translator)
-    {
-    }
+    public function __construct(
+        private readonly HomePageService $service,
+        private readonly TranslatorInterface $translator
+    ) {}
     #[Route('/', name: 'homepage', methods: ['GET'])]
     public function __invoke(): Response
     {
