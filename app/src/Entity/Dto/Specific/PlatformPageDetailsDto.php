@@ -10,6 +10,7 @@ readonly class PlatformPageDetailsDto
 {
     public function __construct(
         public VersionsDataDto $versionsData,
-        public PlatformDto $platform
-    ) {}
+        public PlatformDto $platform,
+    ) {
+    }
 }

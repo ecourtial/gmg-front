@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\ResourceService;
@@ -18,9 +19,9 @@ class MagazineIssueService extends AbstractService
 
     public function getByIds(array $magazinesIds): ResourceCollectionResponseDto
     {
-        $query = 'id[]='.implode("&id[]=", $magazinesIds);
+        $query = 'id[]='.implode('&id[]=', $magazinesIds);
 
-        return $this->getCollection($query."&orderBy[]=year-asc&orderBy[]=month-asc&limit=".self::MAX_RESULT_COUNT);
+        return $this->getCollection($query.'&orderBy[]=year-asc&orderBy[]=month-asc&limit='.self::MAX_RESULT_COUNT);
     }
 
     protected function getResourceNamePlural(): string

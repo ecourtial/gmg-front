@@ -14,7 +14,9 @@ abstract class AbstractService
 {
     protected const int MAX_RESULT_COUNT = 1000;
 
-    public function __construct(private readonly ClientFactory $clientFactory) {}
+    public function __construct(private readonly ClientFactory $clientFactory)
+    {
+    }
 
     /**
      * @return TDto
@@ -107,6 +109,7 @@ abstract class AbstractService
 
     /**
      * @param array<string, mixed> $data
+     *
      * @return TDto
      */
     abstract protected function hydrateObject(array $data): object;

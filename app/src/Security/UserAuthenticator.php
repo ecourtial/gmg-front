@@ -23,8 +23,8 @@ use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPasspor
 class UserAuthenticator extends AbstractAuthenticator
 {
     public function __construct(
-        private readonly UserService   $userService,
-        private readonly Router        $router,
+        private readonly UserService $userService,
+        private readonly Router $router,
     ) {
     }
 

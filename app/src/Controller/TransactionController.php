@@ -30,7 +30,7 @@ class TransactionController extends AbstractController
     #[Route('/transactions', name: 'transaction_list', methods: ['GET'])]
     public function getList(Request $request): Response
     {
-        $versionId = (int)$request->query->get('version', 0);
+        $versionId = (int) $request->query->get('version', 0);
         $data = $this->transactionPageService->getTransactionsData($versionId);
 
         if (0 === $versionId) {
@@ -38,8 +38,8 @@ class TransactionController extends AbstractController
                 ->trans(
                     'transactions_title',
                     ['%count%' => $data['totalResultCount']]
-            );
-            $screenDescription =  $this->translator->trans('transactions_description');
+                );
+            $screenDescription = $this->translator->trans('transactions_description');
         } else {
             $version = $this->versionService->getById($versionId);
             $screenTitle = $this->translator

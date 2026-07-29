@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Entity\Dto;
@@ -35,5 +36,6 @@ readonly class GameVersionDto
         public string $gameTitle,
         public int $storyCount,
         public int $copyCount,
-    ) {}
+    ) {
+    }
 }

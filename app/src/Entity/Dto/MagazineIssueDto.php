@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Entity\Dto;
@@ -12,5 +13,6 @@ readonly class MagazineIssueDto
         public int $year,
         public int $month,
         public ?string $notes = null,
-    ) {}
+    ) {
+    }
 }

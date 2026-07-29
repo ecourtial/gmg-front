@@ -26,7 +26,7 @@ class NotesController extends AbstractController
     #[Route('/notes', name: 'notes_list', methods: ['GET'])]
     public function list(Request $request): Response
     {
-        $gameVersionId = (int)$request->query->get('gameVersionId', 0);
+        $gameVersionId = (int) $request->query->get('gameVersionId', 0);
         $data = $this->service->getList($gameVersionId);
 
         return $this->render(
@@ -81,7 +81,7 @@ class NotesController extends AbstractController
     public function add(Request $request): Response
     {
         if ('GET' === $request->getMethod()) {
-            $gameVersionId = (int)$request->query->get('gameVersionId', 0);
+            $gameVersionId = (int) $request->query->get('gameVersionId', 0);
             $payload = ['screenTitle' => $this->translator->trans('menu.add_note')];
 
             if (0 < $gameVersionId) {

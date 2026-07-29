@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\PageService;
@@ -17,7 +18,8 @@ class GameVersionPageService
         private readonly GameMagazineMentionService $gameMagazineMentionService,
         private readonly MagazineService $magazineService,
         private readonly MagazineIssueService $magazineIssueService,
-    ) {}
+    ) {
+    }
 
     public function getVersionsWithComments(VersionsDataDto $data): VersionsDataDto
     {
@@ -31,9 +33,9 @@ class GameVersionPageService
 
         foreach ($data->versions->result as $key => $item) {
             if (null === $item->comments
-                || trim($item->comments) === '') {
+                || '' === trim($item->comments)) {
                 if (0 < $item->copyCount) {
-                    $ownedCount--;
+                    --$ownedCount;
                 }
                 unset($results[$key]);
             }

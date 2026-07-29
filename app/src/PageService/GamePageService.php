@@ -10,8 +10,6 @@ use App\Entity\Dto\Specific\GamesDataDto;
 use App\Entity\Dto\Specific\GameVersionMentionDetailsDto;
 use App\ResourceService\GameMagazineMentionService;
 use App\ResourceService\GameService;
-use App\ResourceService\MagazineIssueService;
-use App\ResourceService\MagazineService;
 use App\ResourceService\VersionService;
 
 readonly class GamePageService
@@ -21,7 +19,8 @@ readonly class GamePageService
         private VersionService $versionService,
         private GameMagazineMentionService $gameMagazineMentionService,
         private GameVersionPageService $gameVersionPageService,
-    ) {}
+    ) {
+    }
 
     public function getForDetailsPage(int $gameId): GameDetailsPageDto
     {
@@ -62,7 +61,7 @@ readonly class GamePageService
          * But at least it reminds us that we need to improve filters on the API side.
          * On top of that, pagination is broken!
          */
-        if ($filter === GameService::WITH_COMMENTS_FILTER) {
+        if (GameService::WITH_COMMENTS_FILTER === $filter) {
             $results = $data->games->result;
             $resultCount = 0;
             $totalResultCount = 0;
@@ -70,12 +69,12 @@ readonly class GamePageService
 
             foreach ($results as $key => $item) {
                 if (null === $item->notes
-                    || trim($item->notes) === '') {
+                    || '' === trim($item->notes)) {
                     unset($results[$key]);
                 } else {
                     $versionCount += $item->versionCount;
-                    $resultCount++;
-                    $totalResultCount++;
+                    ++$resultCount;
+                    ++$totalResultCount;
                 }
             }
             unset($item);

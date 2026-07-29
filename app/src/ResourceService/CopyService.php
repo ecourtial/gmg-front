@@ -81,11 +81,10 @@ class CopyService extends AbstractService
     public function getList(
         string $filter,
         string $filterValue,
-        int $maxResultCount = self::MAX_RESULT_COUNT
-    ): ResourceCollectionResponseDto
-    {
+        int $maxResultCount = self::MAX_RESULT_COUNT,
+    ): ResourceCollectionResponseDto {
         // There is a limit of the API here... Consider allowing more accurate filtering
-        return $this->getCollection("{$filter}[]={$filterValue}&orderBy[]=gameTitle-asc&limit=" . $maxResultCount);
+        return $this->getCollection("{$filter}[]={$filterValue}&orderBy[]=gameTitle-asc&limit=".$maxResultCount);
     }
 
     public function getOriginals(): ResourceCollectionResponseDto

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\PageService;
@@ -11,8 +12,9 @@ readonly class PlatformPageService
 {
     public function __construct(
         private PlatformService $platformService,
-        private VersionService  $versionService,
-    ) {}
+        private VersionService $versionService,
+    ) {
+    }
 
     public function getPlatformPageDetails(int $platformId): PlatformPageDetailsDto
     {

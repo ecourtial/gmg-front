@@ -6,10 +6,6 @@ namespace App\ResourceService;
 
 use App\Api\ResourceCollectionResponseDto;
 use App\Entity\Dto\GameVersionDto;
-use App\Entity\Dto\GameVersionMentionDto;
-use App\Entity\Dto\MagazineDto;
-use App\Entity\Dto\MagazineIssueDto;
-use App\Entity\Dto\Specific\GameVersionRawDataDto;
 use App\Entity\Dto\Specific\VersionsByPriorityDto;
 use App\Entity\Dto\Specific\VersionsDataDto;
 
@@ -126,14 +122,16 @@ class VersionService extends AbstractService
 
     public function getByIds(array $versionsIds): ResourceCollectionResponseDto
     {
-        if (empty($versionsIds)) return new ResourceCollectionResponseDto();
+        if (empty($versionsIds)) {
+            return new ResourceCollectionResponseDto();
+        }
 
         $versionsFilter = '';
         foreach ($versionsIds as $versionId) {
-            $versionsFilter .= "&id[]=".$versionId;
+            $versionsFilter .= '&id[]='.$versionId;
         }
 
-        return $this->getCollection("orderBy[]=pageNumber-asc&limit=".self::MAX_RESULT_COUNT.$versionsFilter);
+        return $this->getCollection('orderBy[]=pageNumber-asc&limit='.self::MAX_RESULT_COUNT.$versionsFilter);
     }
 
     public function getFirst(): ResourceCollectionResponseDto
@@ -330,7 +328,6 @@ class VersionService extends AbstractService
                 ++$count;
             }
         }
-
 
         return new VersionsDataDto($data, $count);
     }

@@ -17,7 +17,7 @@ class GameService extends AbstractService
     public const string WITH_COMMENTS_FILTER = 'withComments';
 
     public const array FILTERS = [
-        self::WITH_COMMENTS_FILTER => []
+        self::WITH_COMMENTS_FILTER => [],
     ];
 
     public function getFirst(): ResourceCollectionResponseDto
@@ -39,7 +39,7 @@ class GameService extends AbstractService
 
     public function search(string $keywords): VersionsDataDto
     {
-        $data = $this->getCollection("title[]={$keywords}&orderBy[]=title-asc&page=1&limit=" . self::MAX_RESULT_COUNT);
+        $data = $this->getCollection("title[]={$keywords}&orderBy[]=title-asc&page=1&limit=".self::MAX_RESULT_COUNT);
 
         $versionCount = 0;
         foreach ($data->result as $result) {

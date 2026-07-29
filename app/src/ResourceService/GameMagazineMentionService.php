@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\ResourceService;
@@ -23,14 +24,16 @@ class GameMagazineMentionService extends AbstractService
 
     public function getByVersionsIds(array $versionsIds): ResourceCollectionResponseDto
     {
-        if (empty($versionsIds)) return new ResourceCollectionResponseDto();
+        if (empty($versionsIds)) {
+            return new ResourceCollectionResponseDto();
+        }
 
         $versionsFilter = '';
         foreach ($versionsIds as $versionId) {
-            $versionsFilter .= "&gameVersionId[]=".$versionId;
+            $versionsFilter .= '&gameVersionId[]='.$versionId;
         }
 
-        return $this->getCollection("orderBy[]=pageNumber-asc&limit=".self::MAX_RESULT_COUNT.$versionsFilter);
+        return $this->getCollection('orderBy[]=pageNumber-asc&limit='.self::MAX_RESULT_COUNT.$versionsFilter);
     }
 
     protected function getResourceNamePlural(): string

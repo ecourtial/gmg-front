@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\PageService;
@@ -7,7 +8,9 @@ use App\ResourceService\TransactionService;
 
 readonly class TransactionPageService
 {
-    public function __construct(private TransactionService $transactionService){}
+    public function __construct(private TransactionService $transactionService)
+    {
+    }
 
     public function getTransactionsData(int $versionId = 0): array
     {

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Controller;
@@ -6,11 +7,9 @@ namespace App\Controller;
 use App\Api\Enum\ApiResponseCode;
 use App\Exception\GenericApiException;
 use App\PageService\MagazineIssuePageService;
-use App\ResourceService\GameMagazineMentionService;
 use App\ResourceService\MagazineIssueCopyService;
 use App\ResourceService\MagazineIssueService;
 use App\ResourceService\MagazineService;
-use App\ResourceService\VersionService;
 use App\Twig\ToolsExtension;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -30,6 +29,7 @@ class MagazineIssueController extends AbstractController
         private readonly TranslatorInterface $translator,
     ) {
     }
+
     #[Route('/magazine-issue/{issueId<\d+>}', name: 'magazine_issue_details', methods: ['GET'])]
     public function get(int $issueId): Response
     {

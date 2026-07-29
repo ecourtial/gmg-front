@@ -26,7 +26,7 @@ class StoryController extends AbstractController
     #[Route('/stories', name: 'story_list', methods: ['GET'])]
     public function getList(Request $request): Response
     {
-        $versionId = (int)$request->query->get('version', 0);
+        $versionId = (int) $request->query->get('version', 0);
         $data = $this->service->getListOrderedByYear($versionId);
 
         if (0 === $versionId) {
@@ -35,7 +35,7 @@ class StoryController extends AbstractController
                     'stories_title',
                     ['%count%' => $data->totalResultCount]
                 );
-            $screenDescription =  $this->translator->trans('stories_description');
+            $screenDescription = $this->translator->trans('stories_description');
         } else {
             $version = $this->versionService->getById($versionId);
             $screenTitle = $this->translator

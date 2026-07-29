@@ -11,5 +11,6 @@ readonly class NoteDto
         public string $title,
         public string $content,
         public ?int $gameVersionId = null,
-    ) {}
+    ) {
+    }
 }

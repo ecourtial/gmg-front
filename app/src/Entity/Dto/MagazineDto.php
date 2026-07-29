@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Entity\Dto;
@@ -10,5 +11,6 @@ readonly class MagazineDto
         public string $title,
         public ?string $notes = null,
         public int $issueCount,
-    ) {}
+    ) {
+    }
 }

@@ -1,7 +1,9 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Entity\Dto;
+
 readonly class GameVersionCopyDto
 {
     public function __construct(
@@ -24,5 +26,6 @@ readonly class GameVersionCopyDto
         public string $platformName,
         public string $gameTitle,
         public int $transactionCount,
-    ){}
+    ) {
+    }
 }

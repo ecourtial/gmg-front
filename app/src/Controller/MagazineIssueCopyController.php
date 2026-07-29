@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Controller;
@@ -39,7 +40,7 @@ class MagazineIssueCopyController extends AbstractController
                 'magazine-issue-copy/form.html.twig',
                 [
                     'screenTitle' => $this->translator->trans('magazine_add_issue_copy'),
-                    'screenSubTitle' => $magazine->title . ' - ' . 'Issue #'.$issue->issueNumber . ' ('.$this->toolsExtension->getMonthLabel($issue->month).' '.$issue->year.')',
+                    'screenSubTitle' => $magazine->title.' - Issue #'.$issue->issueNumber.' ('.$this->toolsExtension->getMonthLabel($issue->month).' '.$issue->year.')',
                     'issueId' => $issueId,
                     'copyTypes' => MagazineIssueCopyType::cases(),
                 ]

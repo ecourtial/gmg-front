@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\PageService;
@@ -12,7 +13,8 @@ class MagazineIssuePageService
     public function __construct(
         private readonly GameMagazineMentionService $gameMagazineMentionService,
         private readonly VersionService $versionService,
-    ){}
+    ) {
+    }
 
     public function getSortedMentions(int $issueId): array
     {

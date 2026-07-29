@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Controller;
@@ -41,7 +42,7 @@ class GameMagazineMentionController extends AbstractController
                 'game-magazine-mention/form.html.twig',
                 [
                     'screenTitle' => $this->translator->trans('menu.add_mention_in_magazine'),
-                    'screenSubTitle' => $magazine->title . ' - ' . 'Issue #'.$issue->issueNumber . ' ('.$this->toolsExtension->getMonthLabel($issue->month).' '.$issue->year.')',
+                    'screenSubTitle' => $magazine->title.' - Issue #'.$issue->issueNumber.' ('.$this->toolsExtension->getMonthLabel($issue->month).' '.$issue->year.')',
                     'versions' => $this->versionService->getList()->versions->result,
                     'mentionTypes' => MentionTypeEnum::cases(),
                     'defaultMentionType' => MentionTypeEnum::MENTION->value,

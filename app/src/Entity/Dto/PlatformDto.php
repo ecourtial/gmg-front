@@ -7,9 +7,9 @@ namespace App\Entity\Dto;
 readonly class PlatformDto
 {
     public function __construct(
-        public int    $id,
+        public int $id,
         public string $name,
-        public int    $versionCount,
+        public int $versionCount,
     ) {
     }
 }

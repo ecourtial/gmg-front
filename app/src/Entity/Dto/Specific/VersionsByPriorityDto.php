@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Entity\Dto\Specific;
@@ -10,5 +11,6 @@ readonly class VersionsByPriorityDto
         public array $withoutPriority,
         public int $ownedCount,
         public int $totalResultCount,
-    ) {}
+    ) {
+    }
 }

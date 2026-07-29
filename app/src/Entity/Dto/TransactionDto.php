@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Entity\Dto;
@@ -16,5 +17,6 @@ readonly class TransactionDto
         public ?string $notes = null,
         public string $platformName,
         public string $gameTitle,
-    ){}
+    ) {
+    }
 }

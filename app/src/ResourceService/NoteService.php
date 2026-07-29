@@ -16,7 +16,7 @@ class NoteService extends AbstractService
     {
         $gameVersionIdFilter = '&gameVersionId[]=Null';
         if (0 < $gameVersionId) {
-            $gameVersionIdFilter='&gameVersionId[]='.$gameVersionId;
+            $gameVersionIdFilter = '&gameVersionId[]='.$gameVersionId;
         }
 
         return $this->getCollection('?orderBy[]=title-asc'.$gameVersionIdFilter.'&limit='.self::MAX_RESULT_COUNT);

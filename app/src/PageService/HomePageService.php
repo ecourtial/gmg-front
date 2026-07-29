@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\PageService;
 
 use App\Api\ResourceCollectionResponseDto;
-use App\Entity\Dto\GameDto;
 use App\Entity\Dto\GameVersionDto;
 use App\ResourceService\CopyService;
 use App\ResourceService\GameService;
@@ -19,7 +18,8 @@ readonly class HomePageService
         private CopyService $copyService,
         private GameService $gameService,
         private PlatformService $platformService,
-    ) {}
+    ) {
+    }
 
     /** @return array<string, mixed> */
     public function getHomeData(): array

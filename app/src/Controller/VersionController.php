@@ -82,7 +82,7 @@ class VersionController extends AbstractController
 
         $data = $this->service->getFilteredList($filter, copies: $copies);
 
-        if ($filter === VersionService::WITH_COMMENTS_FILTER) {
+        if (VersionService::WITH_COMMENTS_FILTER === $filter) {
             $data = $this->gameVersionPageService->getVersionsWithComments($data);
         }
 
@@ -148,6 +148,7 @@ class VersionController extends AbstractController
         }
 
         $data = $this->service->getFilteredListWithPrio($filter);
+
         return $this->render(
             'version/list-with-priority.html.twig',
             [

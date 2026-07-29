@@ -9,7 +9,9 @@ use App\Security\User;
 
 readonly class UserService
 {
-    public function __construct(private ClientFactory $clientFactory) {}
+    public function __construct(private ClientFactory $clientFactory)
+    {
+    }
 
     public function getByUsername(string $username): User
     {

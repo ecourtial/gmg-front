@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Api;
@@ -14,5 +15,6 @@ readonly class ResourceCollectionResponseDto
         public int $page = 0,
         public int $totalPageCount = 0,
         public array $result = [],
-    ){}
+    ) {
+    }
 }

@@ -12,7 +12,9 @@ use Twig\TwigFunction;
 
 class BadgeExtension extends AbstractExtension
 {
-    public function __construct(private readonly Packages $packages) {}
+    public function __construct(private readonly Packages $packages)
+    {
+    }
 
     private const array VERSIONS_BADGES = [
         'bestGameForever' => ['img' => 'diamond', 'title' => 'best_game_forever'],
