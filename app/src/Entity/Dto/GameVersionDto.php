@@ -26,7 +26,6 @@ readonly class GameVersionDto
         public int $hallOfFamePosition,
         public bool $playedItOften,
         public bool $ongoing,
-        public ?string $comments = null,
         public bool $todoWithHelp,
         public bool $bestGameForever,
         public int $toWatchPosition,
@@ -36,6 +35,7 @@ readonly class GameVersionDto
         public string $gameTitle,
         public int $storyCount,
         public int $copyCount,
+        public ?string $comments = null,
     ) {
     }
 }

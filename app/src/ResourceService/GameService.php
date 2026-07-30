@@ -20,6 +20,9 @@ class GameService extends AbstractService
         self::WITH_COMMENTS_FILTER => [],
     ];
 
+    /**
+     * @return ResourceCollectionResponseDto<GameDto>
+     */
     public function getFirst(): ResourceCollectionResponseDto
     {
         return $this->getCollection('page=1&limit=1');
@@ -57,10 +60,10 @@ class GameService extends AbstractService
     protected function hydrateObject(array $data): GameDto
     {
         return new GameDto(
-            $data['id'],
-            $data['title'],
-            $data['notes'],
-            $data['versionCount'],
+            (int) $data['id'],
+            (string) $data['title'],
+            isset($data['notes']) ? (string) $data['notes'] : null,
+            (int) $data['versionCount'],
         );
     }
 }

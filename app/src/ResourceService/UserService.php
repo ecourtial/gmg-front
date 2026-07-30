@@ -33,15 +33,52 @@ readonly class UserService
         return $this->getAuthenticatedUser($username, $newPassword);
     }
 
-    public function hydrateObject(array $data): User
+    /** @param array<string, mixed> $data */
+    private function hydrateObject(array $data): User
     {
+        $values = [];
+
+        if (
+            false === array_key_exists('id', $data)
+            || false === is_integer($data['id'])
+        ) {
+            throw new \InvalidArgumentException('Impossible to hydrate the user object: id is missing.');
+        } else {
+            $values['id'] = (int)$data['id'];
+        }
+
+        $stringKeys = ['username' => true, 'email' => true, 'password' => false, 'token' => false];
+        foreach ($stringKeys as $key => $isMandatoryValue) {
+            if (
+                false === $isMandatoryValue
+                && false === array_key_exists($key, $data)
+            ) {
+                continue;
+            }
+
+            if (false === is_string($data[$key])) {
+                throw new \InvalidArgumentException('Impossible to hydrate the user object: some string values are missing.');
+            } else {
+                $values[$key] = $data[$key];
+            }
+        }
+
+        if (
+            false === array_key_exists('active', $data)
+            || false === is_bool($data['active'])
+        ) {
+            throw new \InvalidArgumentException('Impossible to hydrate the user object: the "active" key is missing.');
+        } else {
+            $values['active'] = $data['active'];
+        }
+
         return new User(
-            intval($data['id']),
-            strval($data['username']),
-            strval($data['email']),
-            (bool) $data['active'],
-            isset($data['password']) ? strval($data['password']) : null,
-            isset($data['token']) ? strval($data['token']) : null
+            $values['id'],
+            $values['username'],
+            $values['email'],
+            $values['active'],
+            isset($values['password']) ? (string) $values['password'] : null,
+            isset($values['token']) ? (string)$values['token'] : null
         );
     }
 }

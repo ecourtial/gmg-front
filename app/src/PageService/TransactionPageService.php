@@ -58,7 +58,7 @@ readonly class TransactionPageService
         // Prepare the chart to show purchases distribution among platforms
         $tmpVersionData = [];
         foreach ($data->result as $entry) {
-            $platformName = strval($entry->platformName);
+            $platformName = (string) $entry->platformName;
 
             if (false === array_key_exists($platformName, $tmpVersionData)) {
                 $tmpVersionData[$platformName] = ['label' => $platformName, 'y' => 0];

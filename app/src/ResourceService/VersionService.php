@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\ResourceService;
 
 use App\Api\ResourceCollectionResponseDto;
+use App\Entity\Dto\GameVersionCopyDto;
 use App\Entity\Dto\GameVersionDto;
 use App\Entity\Dto\Specific\VersionsByPriorityDto;
 use App\Entity\Dto\Specific\VersionsDataDto;
@@ -120,6 +121,10 @@ class VersionService extends AbstractService
         ],
     ];
 
+    /**
+     * @param int[] $versionsIds
+     * @return ResourceCollectionResponseDto<GameVersionDto>
+     */
     public function getByIds(array $versionsIds): ResourceCollectionResponseDto
     {
         if (empty($versionsIds)) {
@@ -134,31 +139,49 @@ class VersionService extends AbstractService
         return $this->getCollection('orderBy[]=pageNumber-asc&limit='.self::MAX_RESULT_COUNT.$versionsFilter);
     }
 
+    /**
+     * @return ResourceCollectionResponseDto<GameVersionDto>
+     */
     public function getFirst(): ResourceCollectionResponseDto
     {
         return $this->getCollection('page=1&limit=1');
     }
 
+    /**
+     * @return ResourceCollectionResponseDto<GameVersionDto>
+     */
     public function getFinishedVersionsFirst(): ResourceCollectionResponseDto
     {
         return $this->getCollection('finished[]=1&page=1&limit=1');
     }
 
+    /**
+     * @return ResourceCollectionResponseDto<GameVersionDto>
+     */
     public function getOwnedGameFirst(): ResourceCollectionResponseDto
     {
         return $this->getCollection('copyCount[]=neq-0&limit=1');
     }
 
+    /**
+     * @return ResourceCollectionResponseDto<GameVersionDto>
+     */
     public function getTodoFirst(): ResourceCollectionResponseDto
     {
         return $this->getCollection('toDo[]=1&page=1&limit=1');
     }
 
+    /**
+     * @return ResourceCollectionResponseDto<GameVersionDto>
+     */
     public function getToWatchInBackgroundFirst(): ResourceCollectionResponseDto
     {
         return $this->getCollection('toWatchBackground[]=1&page=1&limit=1');
     }
 
+    /**
+     * @return ResourceCollectionResponseDto<GameVersionDto>
+     */
     public function getToWatchSeriousFirst(): ResourceCollectionResponseDto
     {
         return $this->getCollection('toWatchSerious[]=1&page=1&limit=1');
@@ -208,6 +231,9 @@ class VersionService extends AbstractService
         return new VersionsDataDto($versions, $count);
     }
 
+    /**
+     * @param ResourceCollectionResponseDto<GameVersionCopyDto>|null $copies
+     */
     public function getFilteredList(
         string $filter,
         int $maxResultCount = self::MAX_RESULT_COUNT,
@@ -233,11 +259,18 @@ class VersionService extends AbstractService
         return new VersionsDataDto($data, $count);
     }
 
+    /**
+     * @param ResourceCollectionResponseDto<GameVersionCopyDto> $copies
+     * @return ResourceCollectionResponseDto<GameVersionDto>
+     */
     public function getOriginals(ResourceCollectionResponseDto $copies): ResourceCollectionResponseDto
     {
         return $this->getFilteredList('originals', copies: $copies)->versions;
     }
 
+    /**
+     * @return ResourceCollectionResponseDto<GameVersionDto>
+     */
     public function getHallOfFame(): ResourceCollectionResponseDto
     {
         return $this->getCollection('hallOfFame[]=1&hallOfFameYear[]=neq-0&hallOfFamePosition[]=neq-0'
@@ -300,6 +333,9 @@ class VersionService extends AbstractService
         );
     }
 
+    /**
+     * @return ResourceCollectionResponseDto<GameVersionDto>
+     */
     public function getRandom(string $filter): ResourceCollectionResponseDto
     {
         $soloFilters = ['todoSoloSometimes', 'singleplayerRecurring', 'toDo'];
@@ -332,6 +368,10 @@ class VersionService extends AbstractService
         return new VersionsDataDto($data, $count);
     }
 
+    /**
+     * @param ResourceCollectionResponseDto<GameVersionCopyDto> $copies
+     * @return ResourceCollectionResponseDto<GameVersionDto>
+     */
     public function getOriginalsWhereCopyIsNotOnCompilation(ResourceCollectionResponseDto $copies): ResourceCollectionResponseDto
     {
         return $this->getListFromCopies($copies);
@@ -342,11 +382,18 @@ class VersionService extends AbstractService
         return 'versions';
     }
 
+    /**
+     * @return ResourceCollectionResponseDto<GameVersionDto>
+     */
     protected function getListFromVersions(string $filter, string $filterValue, int $maxResultCount = self::MAX_RESULT_COUNT): ResourceCollectionResponseDto
     {
         return $this->getCollection("{$filter}[]={$filterValue}&orderBy[]=gameTitle-asc&page=1&limit=".$maxResultCount);
     }
 
+    /**
+     * @param ResourceCollectionResponseDto<GameVersionCopyDto> $copies
+     * @return ResourceCollectionResponseDto<GameVersionDto>
+     */
     protected function getListFromCopies(
         ResourceCollectionResponseDto $copies,
         int $maxResultCount = self::MAX_RESULT_COUNT,
@@ -374,35 +421,35 @@ class VersionService extends AbstractService
     protected function hydrateObject(array $data): GameVersionDto
     {
         return new GameVersionDto(
-            $data['id'],
-            $data['platformId'],
-            $data['gameId'],
-            $data['releaseYear'],
-            $data['todoSoloSometimes'],
-            $data['todoMultiplayerSometimes'],
-            $data['singleplayerRecurring'],
-            $data['multiplayerRecurring'],
-            $data['toDo'],
-            $data['toBuy'],
-            $data['toWatchBackground'],
-            $data['toWatchSerious'],
-            $data['toRewatch'],
-            $data['topGame'],
-            $data['hallOfFame'],
-            $data['hallOfFameYear'],
-            $data['hallOfFamePosition'],
-            $data['playedItOften'],
-            $data['ongoing'],
-            $data['comments'],
-            $data['todoWithHelp'],
-            $data['bestGameForever'],
-            $data['toWatchPosition'],
-            $data['toDoPosition'],
-            $data['finished'],
-            $data['platformName'],
-            $data['gameTitle'],
-            $data['storyCount'],
-            $data['copyCount'],
+            (int) $data['id'],
+            (int) $data['platformId'],
+            (int) $data['gameId'],
+            (int) $data['releaseYear'],
+            (bool) $data['todoSoloSometimes'],
+            (bool) $data['todoMultiplayerSometimes'],
+            (bool) $data['singleplayerRecurring'],
+            (bool) $data['multiplayerRecurring'],
+            (bool) $data['toDo'],
+            (bool) $data['toBuy'],
+            (bool) $data['toWatchBackground'],
+            (bool) $data['toWatchSerious'],
+            (bool) $data['toRewatch'],
+            (bool) $data['topGame'],
+            (bool) $data['hallOfFame'],
+            (int) $data['hallOfFameYear'],
+            (int) $data['hallOfFamePosition'],
+            (bool) $data['playedItOften'],
+            (bool) $data['ongoing'],
+            (bool) $data['todoWithHelp'],
+            (bool) $data['bestGameForever'],
+            (int) $data['toWatchPosition'],
+            (int) $data['toDoPosition'],
+            (bool) $data['finished'],
+            (string) $data['platformName'],
+            (string) $data['gameTitle'],
+            (int) $data['storyCount'],
+            (int) $data['copyCount'],
+            isset($data['comments']) ? (string) $data['comments'] : null,
         );
     }
 }

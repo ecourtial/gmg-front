@@ -12,6 +12,9 @@ use App\Entity\Dto\NoteDto;
  */
 class NoteService extends AbstractService
 {
+    /**
+     * @return ResourceCollectionResponseDto<NoteDto>
+     */
     public function getList(int $gameVersionId): ResourceCollectionResponseDto
     {
         $gameVersionIdFilter = '&gameVersionId[]=Null';
@@ -30,10 +33,10 @@ class NoteService extends AbstractService
     protected function hydrateObject(array $data): NoteDto
     {
         return new NoteDto(
-            $data['id'],
-            $data['title'],
-            $data['content'],
-            $data['gameVersionId'],
+            (int) $data['id'],
+            (string) $data['title'],
+            (string) $data['content'],
+            (int) $data['gameVersionId'],
         );
     }
 }

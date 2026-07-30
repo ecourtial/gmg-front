@@ -12,11 +12,18 @@ use App\Entity\Dto\MagazineIssueDto;
  */
 class MagazineIssueService extends AbstractService
 {
+    /**
+     * @return ResourceCollectionResponseDto<MagazineIssueDto>
+     */
     public function getByMagazine(int $magazineId): ResourceCollectionResponseDto
     {
         return $this->getCollection("magazineId[]={$magazineId}&orderBy[]=year-asc&orderBy[]=month-asc&limit=".self::MAX_RESULT_COUNT);
     }
 
+    /**
+     * @param int[] $magazinesIds
+     * @return ResourceCollectionResponseDto<MagazineIssueDto>
+     */
     public function getByIds(array $magazinesIds): ResourceCollectionResponseDto
     {
         $query = 'id[]='.implode('&id[]=', $magazinesIds);
@@ -32,12 +39,12 @@ class MagazineIssueService extends AbstractService
     protected function hydrateObject(array $data): MagazineIssueDto
     {
         return new MagazineIssueDto(
-            $data['id'],
-            $data['magazineId'],
-            $data['issueNumber'],
-            $data['year'],
-            $data['month'],
-            $data['notes'],
+            (int) $data['id'],
+            (int) $data['magazineId'],
+            (int) $data['issueNumber'],
+            (int) $data['year'],
+            (int) $data['month'],
+            isset($data['notes']) ? (string) $data['notes'] : null,
         );
     }
 }

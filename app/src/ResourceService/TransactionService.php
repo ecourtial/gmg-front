@@ -12,6 +12,9 @@ use App\Entity\Dto\TransactionDto;
  */
 class TransactionService extends AbstractService
 {
+    /**
+     * @return ResourceCollectionResponseDto<TransactionDto>
+     */
     public function getTransactionsData(int $versionId): ResourceCollectionResponseDto
     {
         $versionFilter = '';
@@ -31,16 +34,16 @@ class TransactionService extends AbstractService
     protected function hydrateObject(array $data): TransactionDto
     {
         return new TransactionDto(
-            $data['id'],
-            $data['versionId'],
-            $data['copyId'],
-            $data['year'],
-            $data['month'],
-            $data['day'],
-            $data['type'],
-            $data['notes'],
-            $data['platformName'],
-            $data['gameTitle'],
+            (int) $data['id'],
+            (int)  $data['versionId'],
+            (int) $data['year'],
+            (int) $data['month'],
+            (int) $data['day'],
+            (string) $data['type'],
+            (string) $data['platformName'],
+            (string) $data['gameTitle'],
+            isset($data['copyId']) ? (int) $data['copyId'] : null,
+            (string) $data['notes'],
         );
     }
 }

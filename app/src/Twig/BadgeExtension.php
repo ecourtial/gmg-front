@@ -112,7 +112,6 @@ class BadgeExtension extends AbstractExtension
      */
     public function getStoryBadges(StoryDto $story): array
     {
-        /** @var array<string, scalar> $story */
         $badges = [];
 
         foreach (self::STORIES_BADGES as $key => $attributes) {

@@ -78,6 +78,9 @@ class CopyService extends AbstractService
         return $this->getCollection("versionId[]={$versionId}&limit=".self::MAX_RESULT_COUNT);
     }
 
+    /**
+     * @return ResourceCollectionResponseDto<GameVersionCopyDto>
+     */
     public function getList(
         string $filter,
         string $filterValue,
@@ -87,6 +90,9 @@ class CopyService extends AbstractService
         return $this->getCollection("{$filter}[]={$filterValue}&orderBy[]=gameTitle-asc&limit=".$maxResultCount);
     }
 
+    /**
+     * @return ResourceCollectionResponseDto<GameVersionCopyDto>
+     */
     public function getOriginals(): ResourceCollectionResponseDto
     {
         return $this->getList(
@@ -95,6 +101,9 @@ class CopyService extends AbstractService
         );
     }
 
+    /**
+     * @return ResourceCollectionResponseDto<GameVersionCopyDto>
+     */
     public function getOriginalsWhereCopyIsNotOnCompilation(): ResourceCollectionResponseDto
     {
         return $this->getList(
@@ -111,25 +120,25 @@ class CopyService extends AbstractService
     protected function hydrateObject(array $data): GameVersionCopyDto
     {
         return new GameVersionCopyDto(
-            $data['id'],
-            $data['versionId'],
-            $data['original'],
-            $data['language'],
-            $data['boxType'],
-            $data['isBoxRepro'],
-            $data['casingType'],
-            $data['supportType'],
-            $data['onCompilation'],
-            $data['reedition'],
-            $data['hasManual'],
-            $data['status'],
-            $data['type'],
-            $data['region'],
-            $data['comments'],
-            $data['isROM'],
-            $data['platformName'],
-            $data['gameTitle'],
-            $data['transactionCount'],
+            (int) $data['id'],
+            (int) $data['versionId'],
+            (bool) $data['original'],
+            (string) $data['language'],
+            (string) $data['boxType'],
+            (bool) $data['isBoxRepro'],
+            (string) $data['casingType'],
+            (string) $data['supportType'],
+            (bool) $data['onCompilation'],
+            (bool) $data['reedition'],
+            (bool) $data['hasManual'],
+            (string) $data['status'],
+            (string) $data['type'],
+            (string) $data['region'],
+            isset($data['comments']) ? (string) $data['comments'] : null,
+            (bool) $data['isROM'],
+            (string) $data['platformName'],
+            (string) $data['gameTitle'],
+            (int) $data['transactionCount'],
         );
     }
 }

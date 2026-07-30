@@ -108,7 +108,7 @@ abstract class AbstractService
     abstract protected function getResourceNamePlural(): string;
 
     /**
-     * @param array<string, mixed> $data
+     * @param array<string, int|string|bool> $data
      *
      * @return TDto
      */

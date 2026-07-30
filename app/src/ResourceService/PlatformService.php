@@ -12,6 +12,7 @@ use App\Entity\Dto\PlatformDto;
  */
 class PlatformService extends AbstractService
 {
+    /** @return ResourceCollectionResponseDto<PlatformDto> */
     public function getFirst(): ResourceCollectionResponseDto
     {
         return $this->getCollection('page=1&limit=1');
@@ -33,9 +34,9 @@ class PlatformService extends AbstractService
     protected function hydrateObject(array $data): PlatformDto
     {
         return new PlatformDto(
-            $data['id'],
-            $data['name'],
-            $data['versionCount'],
+            (int) $data['id'],
+            (string) $data['name'],
+            (int) $data['versionCount'],
         );
     }
 }

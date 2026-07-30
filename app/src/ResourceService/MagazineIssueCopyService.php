@@ -7,8 +7,14 @@ namespace App\ResourceService;
 use App\Api\ResourceCollectionResponseDto;
 use App\Entity\Dto\MagazineIssueCopyDto;
 
+/**
+ * @extends AbstractService<MagazineIssueCopyDto>
+ */
 class MagazineIssueCopyService extends AbstractService
 {
+    /**
+     * @return ResourceCollectionResponseDto<MagazineIssueCopyDto>
+     */
     public function getByIssueId(int $issueId): ResourceCollectionResponseDto
     {
         return $this->getCollection("magazineIssueId[]={$issueId}&orderBy[]=magazineIssueId-asc&limit=".self::MAX_RESULT_COUNT);
@@ -22,10 +28,10 @@ class MagazineIssueCopyService extends AbstractService
     protected function hydrateObject(array $data): MagazineIssueCopyDto
     {
         return new MagazineIssueCopyDto(
-            $data['id'],
-            $data['magazineIssueId'],
-            $data['type'],
-            $data['notes'],
+            (int) $data['id'],
+            (int) $data['magazineIssueId'],
+            (string) $data['type'],
+            isset($data['notes']) ? (string) $data['notes'] : null,
         );
     }
 }

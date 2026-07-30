@@ -45,14 +45,14 @@ class StoryService extends AbstractService
     protected function hydrateObject(array $data): StoryDto
     {
         return new StoryDto(
-            $data['id'],
-            $data['versionId'],
-            $data['year'],
-            $data['position'],
-            $data['watched'],
-            $data['played'],
-            $data['platformName'],
-            $data['gameTitle'],
+            (int) $data['id'],
+            (int) $data['versionId'],
+            (int) $data['year'],
+            (int) $data['position'],
+            (bool) $data['watched'],
+            (bool) $data['played'],
+            (string) $data['platformName'],
+            (string) $data['gameTitle'],
         );
     }
 }

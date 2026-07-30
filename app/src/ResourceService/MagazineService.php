@@ -12,11 +12,18 @@ use App\Entity\Dto\MagazineDto;
  */
 class MagazineService extends AbstractService
 {
+    /**
+     * @return ResourceCollectionResponseDto<MagazineDto>
+     */
     public function getList(): ResourceCollectionResponseDto
     {
         return $this->getCollection('orderBy[]=title-asc&limit='.self::MAX_RESULT_COUNT);
     }
 
+    /**
+     * @param int[] $magazinesIds
+     * @return ResourceCollectionResponseDto<MagazineDto>
+     */
     public function getByIds(array $magazinesIds): ResourceCollectionResponseDto
     {
         $query = 'id[]='.implode('&id[]=', $magazinesIds);
@@ -32,10 +39,10 @@ class MagazineService extends AbstractService
     protected function hydrateObject(array $data): MagazineDto
     {
         return new MagazineDto(
-            $data['id'],
-            $data['title'],
-            $data['notes'],
-            $data['issueCount'],
+            (int) $data['id'],
+            (string) $data['title'],
+            isset($data['notes']) ? (string) $data['notes'] : null,
+            (int) $data['issueCount'],
         );
     }
 }

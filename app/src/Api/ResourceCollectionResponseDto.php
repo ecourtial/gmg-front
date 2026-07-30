@@ -9,6 +9,9 @@ namespace App\Api;
  */
 readonly class ResourceCollectionResponseDto
 {
+    /**
+     * @param TDto[] $result
+     */
     public function __construct(
         public int $resultCount = 0,
         public int $totalResultCount = 0,
