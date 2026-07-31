@@ -5,9 +5,15 @@ declare(strict_types=1);
 namespace App\PageService;
 
 use App\Api\ResourceCollectionResponseDto;
+use App\Entity\Dto\GameVersionDto;
+use App\Entity\Dto\GameVersionMentionDto;
+use App\Entity\Dto\MagazineDto;
+use App\Entity\Dto\MagazineIssueDto;
 use App\Entity\Dto\Specific\GameDetailsPageDto;
 use App\Entity\Dto\Specific\GamesDataDto;
 use App\Entity\Dto\Specific\GameVersionMentionDetailsDto;
+use App\Entity\Dto\Specific\GameVersionRawDataDto;
+use App\Entity\Dto\Specific\VersionsDataDto;
 use App\ResourceService\GameMagazineMentionService;
 use App\ResourceService\GameService;
 use App\ResourceService\VersionService;
@@ -92,6 +98,13 @@ readonly class GamePageService
         throw new \LogicException("Unsupported game filter: '$filter'");
     }
 
+    /**
+     * @param MagazineDto[] $magazines
+     * @param array<int, GameVersionDto> $versions
+     * @param GameVersionMentionDto[] $mentions
+     * @param MagazineIssueDto[] $issues
+     * @return array
+     */
     private function formatMentions(array $magazines, array $versions, array $mentions, array $issues): array
     {
         $mentionsData = [];

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\ResourceService;
 
 use App\Api\ResourceCollectionResponseDto;
+use App\Api\RawSingleResourceApiResponseDto;
 use App\Entity\Dto\MagazineDto;
 
 /**
@@ -36,13 +37,13 @@ class MagazineService extends AbstractService
         return 'magazines';
     }
 
-    protected function hydrateObject(array $data): MagazineDto
+    protected function hydrateObject(RawSingleResourceApiResponseDto $dto): MagazineDto
     {
         return new MagazineDto(
-            (int) $data['id'],
-            (string) $data['title'],
-            isset($data['notes']) ? (string) $data['notes'] : null,
-            (int) $data['issueCount'],
+            (int) $dto->data['id'],
+            (string) $dto->data['title'],
+            isset($dto->data['notes']) ? (string) $dto->data['notes'] : null,
+            (int) $dto->data['issueCount'],
         );
     }
 }

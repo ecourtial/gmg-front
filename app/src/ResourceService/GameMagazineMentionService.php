@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\ResourceService;
 
 use App\Api\ResourceCollectionResponseDto;
+use App\Api\RawSingleResourceApiResponseDto;
 use App\Entity\Dto\GameVersionMentionDto;
 
 /**
@@ -51,15 +52,15 @@ class GameMagazineMentionService extends AbstractService
         return 'game-version-magazine-mentions';
     }
 
-    protected function hydrateObject(array $data): GameVersionMentionDto
+    protected function hydrateObject(RawSingleResourceApiResponseDto $dto): GameVersionMentionDto
     {
         return new GameVersionMentionDto(
-            (int) $data['id'],
-            (int) $data['magazineIssueId'],
-            (int) $data['gameVersionId'],
-            (string) $data['type'],
-            (int) $data['pageNumber'],
-            isset($data['notes']) ? (string) $data['notes'] : null,
+            (int) $dto->data['id'],
+            (int) $dto->data['magazineIssueId'],
+            (int) $dto->data['gameVersionId'],
+            (string) $dto->data['type'],
+            (int) $dto->data['pageNumber'],
+            isset($dto->data['notes']) ? (string) $dto->data['notes'] : null,
         );
     }
 }

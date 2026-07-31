@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\ResourceService;
 
 use App\Api\Client\ClientFactory;
+use App\Api\RawCollectionResourceApiResponseDto;
 use App\Api\ResourceCollectionResponseDto;
+use App\Api\RawSingleResourceApiResponseDto;
 
 /**
  * @template TDto of object
@@ -14,9 +16,7 @@ abstract class AbstractService
 {
     protected const int MAX_RESULT_COUNT = 1000;
 
-    public function __construct(private readonly ClientFactory $clientFactory)
-    {
-    }
+    public function __construct(private readonly ClientFactory $clientFactory) {}
 
     /**
      * @return TDto
@@ -24,9 +24,11 @@ abstract class AbstractService
     public function getById(int $entityId): object
     {
         return $this->hydrateObject(
-            $this->clientFactory
-                ->getAnonymousClient()
-                ->get("{$this->getResourceNamePlural()}/{$entityId}")
+            $this->formatSingleResourceApiResponseDto(
+                $this->clientFactory
+                    ->getAnonymousClient()
+                    ->get("{$this->getResourceNamePlural()}/{$entityId}")
+            )
         );
     }
 
@@ -38,10 +40,12 @@ abstract class AbstractService
     public function add(array $data): object
     {
         return $this->hydrateObject(
-            $this->clientFactory->getAuthenticatedClient()->post(
-                $this->getResourceNamePlural(),
-                [],
-                $data
+            $this->formatSingleResourceApiResponseDto(
+                $this->clientFactory->getAuthenticatedClient()->post(
+                    $this->getResourceNamePlural(),
+                    [],
+                    $data
+                )
             )
         );
     }
@@ -54,10 +58,12 @@ abstract class AbstractService
     public function update(int $entityId, array $data): object
     {
         return $this->hydrateObject(
-            $this->clientFactory->getAuthenticatedClient()->patch(
-                "{$this->getResourceNamePlural()}/{$entityId}",
-                [],
-                $data
+            $this->formatSingleResourceApiResponseDto(
+                $this->clientFactory->getAuthenticatedClient()->patch(
+                    "{$this->getResourceNamePlural()}/{$entityId}",
+                    [],
+                    $data
+                )
             )
         );
     }
@@ -65,6 +71,59 @@ abstract class AbstractService
     public function delete(int $entityId): void
     {
         $this->clientFactory->getAuthenticatedClient()->delete($this->getResourceNamePlural().'/'.$entityId);
+    }
+
+    /** @param array<string, mixed>  $data */
+    protected function formatSingleResourceApiResponseDto(array $data): RawSingleResourceApiResponseDto
+    {
+        foreach ($data as $key => $value) {
+            if (
+                false === is_bool($value)
+                && false === is_numeric($value)
+                && false === is_string($value)
+            ) {
+                throw new \InvalidArgumentException('Impossible to format single resource response in '.static::class.' because the value for the key '.$key.' is not supported!');
+            }
+        }
+
+        return new RawSingleResourceApiResponseDto($data);
+    }
+
+    /** @param array<string, mixed>  $data */
+    protected function formatResourceCollectionApiResponseDto(array $data): RawCollectionResourceApiResponseDto
+    {
+        $keys = ['resultCount', 'totalResultCount', 'page', 'totalPageCount'];
+
+        foreach ($keys as $key) {
+            if (
+                false === array_key_exists($key, $data)
+                || (
+                    false === is_bool($data[$key])
+                    && false === is_numeric($data[$key])
+                    && false === is_string($data[$key])
+                )
+            ) {
+                throw new \InvalidArgumentException('Impossible to format resource collection response in '.static::class.' because the value for the key '.$key.' is not supported!');
+            }
+        }
+
+        if (false === array_key_exists('result', $data) || false === is_array($data['result'])) {
+            throw new \InvalidArgumentException('Impossible to format resource collection response in '.static::class.' because the value for the result of the collection '.$key.' is not supported!');
+        }
+
+        $singleResourceCollection = [];
+        foreach ($data['result'] as $singleResult) {
+            /** @var array<string, mixed>  $singleResult */
+            $singleResourceCollection[] = $this->formatSingleResourceApiResponseDto($singleResult);
+        }
+
+        return new RawCollectionResourceApiResponseDto(
+            (int) $data['resultCount'],
+            (int) $data['totalResultCount'],
+            (int) $data['page'],
+            (int) $data['totalPageCount'],
+            $singleResourceCollection,
+        );
     }
 
     /**
@@ -79,28 +138,28 @@ abstract class AbstractService
         }
 
         return $this->hydrateResultCollection(
-            $client->get($this->getResourceNamePlural().'?'.$query)
+            $this->formatResourceCollectionApiResponseDto(
+                $client->get($this->getResourceNamePlural().'?'.$query)
+            )
         );
     }
 
     /**
-     * @param array<string, mixed> $data
-     *
      * @return ResourceCollectionResponseDto<TDto>
      */
-    private function hydrateResultCollection(array $data): ResourceCollectionResponseDto
+    private function hydrateResultCollection(RawCollectionResourceApiResponseDto $data): ResourceCollectionResponseDto
     {
         $resources = [];
 
-        foreach ($data['result'] as $item) {
+        foreach ($data->results as $item) {
             $resources[] = $this->hydrateObject($item);
         }
 
         return new ResourceCollectionResponseDto(
-            $data['resultCount'],
-            $data['totalResultCount'],
-            $data['page'],
-            $data['totalPageCount'],
+            $data->resultCount,
+            $data->totalResultCount,
+            $data->page,
+            $data->totalPageCount,
             $resources,
         );
     }
@@ -108,9 +167,7 @@ abstract class AbstractService
     abstract protected function getResourceNamePlural(): string;
 
     /**
-     * @param array<string, int|string|bool> $data
-     *
      * @return TDto
      */
-    abstract protected function hydrateObject(array $data): object;
+    abstract protected function hydrateObject(RawSingleResourceApiResponseDto $dto): object;
 }

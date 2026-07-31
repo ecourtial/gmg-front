@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\ResourceService;
 
 use App\Api\ResourceCollectionResponseDto;
+use App\Api\RawSingleResourceApiResponseDto;
 use App\Entity\Dto\GameVersionCopyDto;
 
 /**
@@ -117,28 +118,28 @@ class CopyService extends AbstractService
         return 'copies';
     }
 
-    protected function hydrateObject(array $data): GameVersionCopyDto
+    protected function hydrateObject(RawSingleResourceApiResponseDto $dto): GameVersionCopyDto
     {
         return new GameVersionCopyDto(
-            (int) $data['id'],
-            (int) $data['versionId'],
-            (bool) $data['original'],
-            (string) $data['language'],
-            (string) $data['boxType'],
-            (bool) $data['isBoxRepro'],
-            (string) $data['casingType'],
-            (string) $data['supportType'],
-            (bool) $data['onCompilation'],
-            (bool) $data['reedition'],
-            (bool) $data['hasManual'],
-            (string) $data['status'],
-            (string) $data['type'],
-            (string) $data['region'],
-            isset($data['comments']) ? (string) $data['comments'] : null,
-            (bool) $data['isROM'],
-            (string) $data['platformName'],
-            (string) $data['gameTitle'],
-            (int) $data['transactionCount'],
+            (int) $dto->data['id'],
+            (int) $dto->data['versionId'],
+            (bool) $dto->data['original'],
+            (string) $dto->data['language'],
+            (string) $dto->data['boxType'],
+            (bool) $dto->data['isBoxRepro'],
+            (string) $dto->data['casingType'],
+            (string) $dto->data['supportType'],
+            (bool) $dto->data['onCompilation'],
+            (bool) $dto->data['reedition'],
+            (bool) $dto->data['hasManual'],
+            (string) $dto->data['status'],
+            (string) $dto->data['type'],
+            (string) $dto->data['region'],
+            isset($dto->data['comments']) ? (string) $dto->data['comments'] : null,
+            (bool) $dto->data['isROM'],
+            (string) $dto->data['platformName'],
+            (string) $dto->data['gameTitle'],
+            (int) $dto->data['transactionCount'],
         );
     }
 }

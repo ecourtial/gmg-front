@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\ResourceService;
 
+use App\Api\RawSingleResourceApiResponseDto;
 use App\Entity\Dto\Specific\StoriesOrderedByYearDto;
 use App\Entity\Dto\StoryDto;
 
@@ -42,17 +43,17 @@ class StoryService extends AbstractService
         return 'stories';
     }
 
-    protected function hydrateObject(array $data): StoryDto
+    protected function hydrateObject(RawSingleResourceApiResponseDto $dto): StoryDto
     {
         return new StoryDto(
-            (int) $data['id'],
-            (int) $data['versionId'],
-            (int) $data['year'],
-            (int) $data['position'],
-            (bool) $data['watched'],
-            (bool) $data['played'],
-            (string) $data['platformName'],
-            (string) $data['gameTitle'],
+            (int) $dto->data['id'],
+            (int) $dto->data['versionId'],
+            (int) $dto->data['year'],
+            (int) $dto->data['position'],
+            (bool) $dto->data['watched'],
+            (bool) $dto->data['played'],
+            (string) $dto->data['platformName'],
+            (string) $dto->data['gameTitle'],
         );
     }
 }

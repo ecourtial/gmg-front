@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\ResourceService;
 
 use App\Api\ResourceCollectionResponseDto;
+use App\Api\RawSingleResourceApiResponseDto;
 use App\Entity\Dto\MagazineIssueCopyDto;
 
 /**
@@ -25,13 +26,13 @@ class MagazineIssueCopyService extends AbstractService
         return 'magazine-issue-copies';
     }
 
-    protected function hydrateObject(array $data): MagazineIssueCopyDto
+    protected function hydrateObject(RawSingleResourceApiResponseDto $dto): MagazineIssueCopyDto
     {
         return new MagazineIssueCopyDto(
-            (int) $data['id'],
-            (int) $data['magazineIssueId'],
-            (string) $data['type'],
-            isset($data['notes']) ? (string) $data['notes'] : null,
+            (int) $dto->data['id'],
+            (int) $dto->data['magazineIssueId'],
+            (string) $dto->data['type'],
+            isset($dto->data['notes']) ? (string) $dto->data['notes'] : null,
         );
     }
 }

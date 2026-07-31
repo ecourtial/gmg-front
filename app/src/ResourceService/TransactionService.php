@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\ResourceService;
 
 use App\Api\ResourceCollectionResponseDto;
+use App\Api\RawSingleResourceApiResponseDto;
 use App\Entity\Dto\TransactionDto;
 
 /**
@@ -31,19 +32,19 @@ class TransactionService extends AbstractService
         return 'transactions';
     }
 
-    protected function hydrateObject(array $data): TransactionDto
+    protected function hydrateObject(RawSingleResourceApiResponseDto $dto): TransactionDto
     {
         return new TransactionDto(
-            (int) $data['id'],
-            (int)  $data['versionId'],
-            (int) $data['year'],
-            (int) $data['month'],
-            (int) $data['day'],
-            (string) $data['type'],
-            (string) $data['platformName'],
-            (string) $data['gameTitle'],
-            isset($data['copyId']) ? (int) $data['copyId'] : null,
-            (string) $data['notes'],
+            (int) $dto->data['id'],
+            (int)  $dto->data['versionId'],
+            (int) $dto->data['year'],
+            (int) $dto->data['month'],
+            (int) $dto->data['day'],
+            (string) $dto->data['type'],
+            (string) $dto->data['platformName'],
+            (string) $dto->data['gameTitle'],
+            isset($dto->data['copyId']) ? (int) $dto->data['copyId'] : null,
+            (string) $dto->data['notes'],
         );
     }
 }

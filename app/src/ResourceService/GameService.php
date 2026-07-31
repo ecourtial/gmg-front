@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\ResourceService;
 
 use App\Api\ResourceCollectionResponseDto;
+use App\Api\RawSingleResourceApiResponseDto;
 use App\Entity\Dto\GameDto;
 use App\Entity\Dto\Specific\GamesDataDto;
 use App\Entity\Dto\Specific\VersionsDataDto;
@@ -40,7 +41,7 @@ class GameService extends AbstractService
         return new GamesDataDto($data, $count);
     }
 
-    public function search(string $keywords): VersionsDataDto
+    public function search(string $keywords): GamesDataDto
     {
         $data = $this->getCollection("title[]={$keywords}&orderBy[]=title-asc&page=1&limit=".self::MAX_RESULT_COUNT);
 
@@ -49,7 +50,7 @@ class GameService extends AbstractService
             $versionCount += $result->versionCount;
         }
 
-        return new VersionsDataDto($data, $versionCount);
+        return new GamesDataDto($data, $versionCount);
     }
 
     protected function getResourceNamePlural(): string
@@ -57,13 +58,13 @@ class GameService extends AbstractService
         return 'games';
     }
 
-    protected function hydrateObject(array $data): GameDto
+    protected function hydrateObject(RawSingleResourceApiResponseDto $dto): GameDto
     {
         return new GameDto(
-            (int) $data['id'],
-            (string) $data['title'],
-            isset($data['notes']) ? (string) $data['notes'] : null,
-            (int) $data['versionCount'],
+            (int) $dto->data['id'],
+            (string) $dto->data['title'],
+            isset($dto->data['notes']) ? (string) $dto->data['notes'] : null,
+            (int) $dto->data['versionCount'],
         );
     }
 }

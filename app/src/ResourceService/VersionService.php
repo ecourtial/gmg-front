@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\ResourceService;
 
 use App\Api\ResourceCollectionResponseDto;
+use App\Api\RawSingleResourceApiResponseDto;
 use App\Entity\Dto\GameVersionCopyDto;
 use App\Entity\Dto\GameVersionDto;
 use App\Entity\Dto\Specific\VersionsByPriorityDto;
@@ -418,38 +419,38 @@ class VersionService extends AbstractService
         return $this->getCollection("orderBy[]=gameTitle-asc{$query}&page=1&limit=".$maxResultCount);
     }
 
-    protected function hydrateObject(array $data): GameVersionDto
+    protected function hydrateObject(RawSingleResourceApiResponseDto $dto): GameVersionDto
     {
         return new GameVersionDto(
-            (int) $data['id'],
-            (int) $data['platformId'],
-            (int) $data['gameId'],
-            (int) $data['releaseYear'],
-            (bool) $data['todoSoloSometimes'],
-            (bool) $data['todoMultiplayerSometimes'],
-            (bool) $data['singleplayerRecurring'],
-            (bool) $data['multiplayerRecurring'],
-            (bool) $data['toDo'],
-            (bool) $data['toBuy'],
-            (bool) $data['toWatchBackground'],
-            (bool) $data['toWatchSerious'],
-            (bool) $data['toRewatch'],
-            (bool) $data['topGame'],
-            (bool) $data['hallOfFame'],
-            (int) $data['hallOfFameYear'],
-            (int) $data['hallOfFamePosition'],
-            (bool) $data['playedItOften'],
-            (bool) $data['ongoing'],
-            (bool) $data['todoWithHelp'],
-            (bool) $data['bestGameForever'],
-            (int) $data['toWatchPosition'],
-            (int) $data['toDoPosition'],
-            (bool) $data['finished'],
-            (string) $data['platformName'],
-            (string) $data['gameTitle'],
-            (int) $data['storyCount'],
-            (int) $data['copyCount'],
-            isset($data['comments']) ? (string) $data['comments'] : null,
+            (int) $dto->data['id'],
+            (int) $dto->data['platformId'],
+            (int) $dto->data['gameId'],
+            (int) $dto->data['releaseYear'],
+            (bool) $dto->data['todoSoloSometimes'],
+            (bool) $dto->data['todoMultiplayerSometimes'],
+            (bool) $dto->data['singleplayerRecurring'],
+            (bool) $dto->data['multiplayerRecurring'],
+            (bool) $dto->data['toDo'],
+            (bool) $dto->data['toBuy'],
+            (bool) $dto->data['toWatchBackground'],
+            (bool) $dto->data['toWatchSerious'],
+            (bool) $dto->data['toRewatch'],
+            (bool) $dto->data['topGame'],
+            (bool) $dto->data['hallOfFame'],
+            (int) $dto->data['hallOfFameYear'],
+            (int) $dto->data['hallOfFamePosition'],
+            (bool) $dto->data['playedItOften'],
+            (bool) $dto->data['ongoing'],
+            (bool) $dto->data['todoWithHelp'],
+            (bool) $dto->data['bestGameForever'],
+            (int) $dto->data['toWatchPosition'],
+            (int) $dto->data['toDoPosition'],
+            (bool) $dto->data['finished'],
+            (string) $dto->data['platformName'],
+            (string) $dto->data['gameTitle'],
+            (int) $dto->data['storyCount'],
+            (int) $dto->data['copyCount'],
+            isset($dto->data['comments']) ? (string) $dto->data['comments'] : null,
         );
     }
 }

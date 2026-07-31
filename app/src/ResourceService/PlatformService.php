@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\ResourceService;
 
 use App\Api\ResourceCollectionResponseDto;
+use App\Api\RawSingleResourceApiResponseDto;
 use App\Entity\Dto\PlatformDto;
 
 /**
@@ -31,12 +32,12 @@ class PlatformService extends AbstractService
         return 'platforms';
     }
 
-    protected function hydrateObject(array $data): PlatformDto
+    protected function hydrateObject(RawSingleResourceApiResponseDto $dto): PlatformDto
     {
         return new PlatformDto(
-            (int) $data['id'],
-            (string) $data['name'],
-            (int) $data['versionCount'],
+            (int) $dto->data['id'],
+            (string) $dto->data['name'],
+            (int) $dto->data['versionCount'],
         );
     }
 }

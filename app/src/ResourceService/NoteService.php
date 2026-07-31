@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\ResourceService;
 
 use App\Api\ResourceCollectionResponseDto;
+use App\Api\RawSingleResourceApiResponseDto;
 use App\Entity\Dto\NoteDto;
 
 /**
@@ -30,13 +31,13 @@ class NoteService extends AbstractService
         return 'notes';
     }
 
-    protected function hydrateObject(array $data): NoteDto
+    protected function hydrateObject(RawSingleResourceApiResponseDto $dto): NoteDto
     {
         return new NoteDto(
-            (int) $data['id'],
-            (string) $data['title'],
-            (string) $data['content'],
-            (int) $data['gameVersionId'],
+            (int) $dto->data['id'],
+            (string) $dto->data['title'],
+            (string) $dto->data['content'],
+            (int) $dto->data['gameVersionId'],
         );
     }
 }
