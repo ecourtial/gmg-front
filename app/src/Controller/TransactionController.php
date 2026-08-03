@@ -37,7 +37,7 @@ class TransactionController extends AbstractController
             $screenTitle = $this->translator
                 ->trans(
                     'transactions_title',
-                    ['%count%' => $data['totalResultCount']]
+                    ['%count%' => $data->totalResultCount]
                 );
             $screenDescription = $this->translator->trans('transactions_description');
         } else {
@@ -55,9 +55,9 @@ class TransactionController extends AbstractController
             [
                 'screenTitle' => $screenTitle,
                 'screenDescription' => $screenDescription,
-                'transactions' => $data['transactions'],
-                'gamesBoughtChartData' => \json_encode($data['gamesBoughtChartData']),
-                'copiesDistributionAmongPlatformsStats' => \json_encode($data['copiesDistributionAmongPlatformsStats']),
+                'transactions' => $data->transactions,
+                'gamesBoughtChartData' => \json_encode($data->gamesBoughtChartData),
+                'copiesDistributionAmongPlatformsStats' => \json_encode($data->copiesDistributionAmongPlatformsStats),
             ]
         );
     }

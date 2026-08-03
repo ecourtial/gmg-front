@@ -81,6 +81,7 @@ abstract class AbstractService
                 false === is_bool($value)
                 && false === is_numeric($value)
                 && false === is_string($value)
+                && false === is_null($value)
             ) {
                 throw new \InvalidArgumentException('Impossible to format single resource response in '.static::class.' because the value for the key '.$key.' is not supported!');
             }

@@ -58,7 +58,7 @@ class VersionController extends AbstractController
                 'screenSubTitle' => $this->isGranted('ROLE_USER') ? $version->comments : '',
                 'version' => $version,
                 'mentionsByType' => $this->gameVersionPageService->getMentionsByType($id),
-                'transactionsCount' => $transactions['totalResultCount'],
+                'transactionsCount' => $transactions->totalResultCount,
                 'notes' => $notes->result,
             ]
         );
@@ -133,7 +133,7 @@ class VersionController extends AbstractController
                         ]
                     ),
                 'version' => $version,
-                'transactionsCount' => $transactions['totalResultCount'],
+                'transactionsCount' => $transactions->totalResultCount,
                 'mentionsByType' => $this->gameVersionPageService->getMentionsByType($version->id),
                 'notes' => $notes->result,
             ]

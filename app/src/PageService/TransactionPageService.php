@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\PageService;
 
+use App\Entity\Dto\Specific\CopiesDistributionAmongPlatformsStatsEntry;
+use App\Entity\Dto\Specific\GamesBoughtChartDataEntry;
+use App\Entity\Dto\Specific\TransactionDataDto;
 use App\ResourceService\TransactionService;
 
 readonly class TransactionPageService
@@ -12,7 +15,7 @@ readonly class TransactionPageService
     {
     }
 
-    public function getTransactionsData(int $versionId = 0): array
+    public function getTransactionsData(int $versionId = 0): TransactionDataDto
     {
         $data = $this->transactionService->getTransactionsData($versionId);
 
@@ -52,13 +55,13 @@ readonly class TransactionPageService
 
             $date = (string) (new \DateTimeImmutable($currentYear.'-01'))->getTimestamp();
             $date = str_pad($date, 13, '0');
-            $result['gamesBoughtChartData'][] = ['x' => (int) $date, 'y' => $currentYearCount];
+            $result['gamesBoughtChartData'][] = new GamesBoughtChartDataEntry((int) $date, $currentYearCount);
         }
 
         // Prepare the chart to show purchases distribution among platforms
         $tmpVersionData = [];
         foreach ($data->result as $entry) {
-            $platformName = (string) $entry->platformName;
+            $platformName = $entry->platformName;
 
             if (false === array_key_exists($platformName, $tmpVersionData)) {
                 $tmpVersionData[$platformName] = ['label' => $platformName, 'y' => 0];
@@ -68,9 +71,14 @@ readonly class TransactionPageService
         }
 
         foreach ($tmpVersionData as $entry) {
-            $result['copiesDistributionAmongPlatformsStats'][] = $entry;
+            $result['copiesDistributionAmongPlatformsStats'][] = new CopiesDistributionAmongPlatformsStatsEntry($entry['label'], $entry['y']);
         }
 
-        return $result;
+        return new TransactionDataDto(
+            $data->totalResultCount,
+            $result['transactions'],
+            $result['gamesBoughtChartData'],
+            $result['copiesDistributionAmongPlatformsStats']
+        );
     }
 }
