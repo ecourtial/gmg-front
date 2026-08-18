@@ -63,8 +63,8 @@ class GameService extends AbstractService
         return new GameDto(
             (int) $dto->data['id'],
             (string) $dto->data['title'],
-            isset($dto->data['notes']) ? (string) $dto->data['notes'] : null,
             (int) $dto->data['versionCount'],
+            isset($dto->data['notes']) ? (string) $dto->data['notes'] : null,
         );
     }
 }

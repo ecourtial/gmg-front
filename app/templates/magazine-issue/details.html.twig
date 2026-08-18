@@ -70,7 +70,7 @@
     <hr>
     <h2 class="colored_h2">{% trans %}games_mentions{% endtrans %}</h2>
 
-    {% for mentionType, platform in mentions %}
+    {% for mentionType, platform in mentions.data %}
         <h3 class="colored_h3">{{ mentionType|trans()}}</h3>
         {% for platformName, platformData in platform %}
             <h4 class="colored_h4">{{ platformName }}</h4>

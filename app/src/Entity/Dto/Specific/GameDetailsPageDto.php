@@ -11,7 +11,7 @@ readonly class GameDetailsPageDto
     public function __construct(
         public GameDto $gameDto,
         public VersionsDataDto $versions,
-        public array $mentions,
+        public GameVersionMentionListDto $mentions,
     ) {
     }
 }

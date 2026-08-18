@@ -28,7 +28,7 @@
     {% include 'version/list-content.html.twig' %}
 
     <h2 class="colored_h2">{% trans %}games_mentions{% endtrans %}</h2>
-    {% for mentionType, mentions in mentions %}
+    {% for mentionType, mentions in mentions.data %}
         <h3 class="colored_h3">{{ mentionType|trans()}}</h3>
         {% for platformName, mentionsList in mentions %}
             <h4 class="colored_h4">{{ platformName }}</h4>

@@ -20,7 +20,6 @@ readonly class TransactionPageService
         $data = $this->transactionService->getTransactionsData($versionId);
 
         $result = [
-            'totalResultCount' => $data->totalResultCount,
             'transactions' => [],
             'gamesBoughtChartData' => [],
             'copiesDistributionAmongPlatformsStats' => [],

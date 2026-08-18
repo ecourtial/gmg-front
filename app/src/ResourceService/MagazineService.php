@@ -42,8 +42,8 @@ class MagazineService extends AbstractService
         return new MagazineDto(
             (int) $dto->data['id'],
             (string) $dto->data['title'],
-            isset($dto->data['notes']) ? (string) $dto->data['notes'] : null,
             (int) $dto->data['issueCount'],
+            isset($dto->data['notes']) ? (string) $dto->data['notes'] : null,
         );
     }
 }

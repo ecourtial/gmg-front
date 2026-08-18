@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Api\Enum\ApiResponseCode;
+use App\Api\ResourceCollectionResponseDto;
+use App\Entity\Dto\Specific\GamesDataDto;
 use App\Exception\GenericApiException;
 use App\PageService\GamePageService;
 use App\ResourceService\GameService;
@@ -154,7 +156,7 @@ class GameController extends AbstractController
     public function search(Request $request): Response
     {
         $query = \trim($request->request->getString('query'));
-        $data = '' !== $query ? $this->service->search($query) : ['result' => [], 'totalResultCount' => 0, 'versionCount' => 0];
+        $data = '' !== $query ? $this->service->search($query) : new GamesDataDto(new ResourceCollectionResponseDto(), 0);
 
         return $this->render(
             'game/list.html.twig',
@@ -162,13 +164,13 @@ class GameController extends AbstractController
                 'screenTitle' => $this->translator
                     ->trans(
                         'search_results',
-                        ['%count%' => $data->versions->totalResultCount]
+                        ['%count%' => $data->games->totalResultCount]
                     ),
                 'screenSubTitle' => $this->translator->trans(
                     'search_results_subtitle',
                     ['%query%' => $query]
                 ),
-                'games' => $data->versions->result,
+                'games' => $data->games->result,
             ]
         );
     }

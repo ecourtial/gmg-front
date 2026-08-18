@@ -88,8 +88,8 @@ class MagazineIssueController extends AbstractController
                 'magazine-issue/form.html.twig',
                 [
                     'screenTitle' => $this->translator->trans('magazine_edit_issue'),
-                    'screenSubTitle' => $this->translator->trans('issue').' #'.$issue['issueNumber'].' ('.$this->toolsExtension->getMonthLabel($issue['month']).' '.$issue['year'].')',
-                    'magazines' => $this->magazineService->getList()['result'],
+                    'screenSubTitle' => $this->translator->trans('issue').' #'.$issue->issueNumber.' ('.$this->toolsExtension->getMonthLabel($issue->month).' '.$issue->year.')',
+                    'magazines' => $this->magazineService->getList()->result,
                     'selectedMagazine' => $issue->magazineId,
                     'issue' => $issue,
                 ]

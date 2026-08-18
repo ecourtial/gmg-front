@@ -12,6 +12,7 @@ use App\Entity\Dto\MagazineIssueDto;
 use App\Entity\Dto\Specific\GameDetailsPageDto;
 use App\Entity\Dto\Specific\GamesDataDto;
 use App\Entity\Dto\Specific\GameVersionMentionDetailsDto;
+use App\Entity\Dto\Specific\GameVersionMentionListDto;
 use App\Entity\Dto\Specific\GameVersionRawDataDto;
 use App\Entity\Dto\Specific\VersionsDataDto;
 use App\ResourceService\GameMagazineMentionService;
@@ -103,9 +104,8 @@ readonly class GamePageService
      * @param array<int, GameVersionDto> $versions
      * @param GameVersionMentionDto[] $mentions
      * @param MagazineIssueDto[] $issues
-     * @return array
      */
-    private function formatMentions(array $magazines, array $versions, array $mentions, array $issues): array
+    private function formatMentions(array $magazines, array $versions, array $mentions, array $issues): GameVersionMentionListDto
     {
         $mentionsData = [];
 
@@ -137,6 +137,6 @@ readonly class GamePageService
                     );
         }
 
-        return $mentionsData;
+        return new GameVersionMentionListDto($mentionsData);
     }
 }

@@ -9,8 +9,8 @@ readonly class MagazineDto
     public function __construct(
         public int $id,
         public string $title,
-        public ?string $notes = null,
         public int $issueCount,
+        public ?string $notes = null,
     ) {
     }
 }

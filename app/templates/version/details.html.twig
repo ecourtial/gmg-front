@@ -102,7 +102,7 @@
     <hr>
 
     <h2 class="colored_h2">{% trans %}games_mentions{% endtrans %}</h2>
-    {% for mentionType, mentions in mentionsByType %}
+    {% for mentionType, mentions in mentionsByType.data %}
         <h3 class="colored_h3">{{ mentionType|trans()}}</h3>
         <table class="table">
             <thead>
@@ -116,10 +116,10 @@
             <tbody>
             {% for mention in mentions %}
                 <tr>
-                    <td>{{ mention['mentionId'] }}</td>
-                    <td>{{ mention['magazineTitle'] }} #{{ mention['magazineIssueNumber'] }} ({{ get_month_label(mention['magazineIssueMonth']) }} {{mention['magazineIssueYear']}}) - <a href="{{ path('magazine_issue_details', {issueId: mention['magazineIssueId']}) }}">{{ 'see.details'|trans }}</a></td>
-                    <td>{{ mention['pageNumber'] }}</td>
-                    <td>{% if is_granted('ROLE_USER') %}{{ mention['notes'] }}{% endif %}</td>
+                    <td>{{ mention.mentionId }}</td>
+                    <td>{{ mention.magazineTitle }} #{{ mention.magazineIssueNumber }} ({{ get_month_label(mention.magazineIssueMonth) }} {{mention.magazineIssueYear}}) - <a href="{{ path('magazine_issue_details', {issueId: mention.magazineIssueId}) }}">{{ 'see.details'|trans }}</a></td>
+                    <td>{{ mention.pageNumber }}</td>
+                    <td>{% if is_granted('ROLE_USER') %}{{ mention.notes }}{% endif %}</td>
                 </tr>
             {% endfor %}
             </tbody>

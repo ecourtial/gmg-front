@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\PageService;
 
 use App\Entity\Dto\Specific\GameVersionMagazineMentionPageDto;
+use App\Entity\Dto\Specific\GameVersionMentionInMagazineIssueDto;
 use App\ResourceService\GameMagazineMentionService;
 use App\ResourceService\VersionService;
 
@@ -16,7 +17,7 @@ class MagazineIssuePageService
     ) {
     }
 
-    public function getSortedMentions(int $issueId): array
+    public function getSortedMentions(int $issueId): GameVersionMentionInMagazineIssueDto
     {
         $gameMentions = $this->gameMagazineMentionService->getByIssueId($issueId)->result;
 
@@ -66,6 +67,6 @@ class MagazineIssuePageService
             unset($mentionByConsole);
         }
 
-        return $sortedMentions;
+        return new GameVersionMentionInMagazineIssueDto($sortedMentions);
     }
 }

@@ -101,7 +101,7 @@ class SecurityController extends AbstractController
 
             return $this->redirect($this->logoutUrlGenerator->getLogoutUrl());
         } catch (GenericApiException $exception) {
-            if (ApiResponseCode::BAD_CREDENTIALS_API_CODE === $exception->getApiReturnCode()) {
+            if (ApiResponseCode::BAD_CREDENTIALS_API_CODE->value === (int) $exception->getApiReturnCode()) {
                 $this->addFlash('alert', 'authentication.bad_current_password');
 
                 return $this->redirectToRoute('change_password');

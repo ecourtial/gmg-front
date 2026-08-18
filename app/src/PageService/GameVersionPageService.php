@@ -6,6 +6,8 @@ namespace App\PageService;
 
 use App\Api\ResourceCollectionResponseDto;
 use App\Entity\Dto\GameVersionMentionDto;
+use App\Entity\Dto\Specific\GameVersionMentionDetailsDto;
+use App\Entity\Dto\Specific\GameVersionMentionListDto;
 use App\Entity\Dto\Specific\GameVersionRawDataDto;
 use App\Entity\Dto\Specific\VersionsDataDto;
 use App\ResourceService\GameMagazineMentionService;
@@ -53,7 +55,7 @@ class GameVersionPageService
         );
     }
 
-    public function getMentionsByType(int $versionId): array
+    public function getMentionsByType(int $versionId): GameVersionMentionListDto
     {
         $mentions = $this->gameMagazineMentionService->getByVersionId($versionId)->result;
         $rawMentions = $this->prepareMentions($mentions);
@@ -70,19 +72,19 @@ class GameVersionPageService
             $magazineIssueId = $mention->magazineIssueId;
             $issue = $rawMentions->issues[$magazineIssueId];
 
-            $mentionsData[$mentionType][] = [
-                'mentionId' => $mention->id,
-                'magazineTitle' => $rawMentions->magazines[$issue->magazineId]->title,
-                'magazineIssueId' => $magazineIssueId,
-                'magazineIssueYear' => $issue->year,
-                'magazineIssueMonth' => $issue->month,
-                'magazineIssueNumber' => $issue->issueNumber,
-                'pageNumber' => $mention->pageNumber,
-                'notes' => $mention->notes,
-            ];
+            $mentionsData[$mentionType][] = new GameVersionMentionDetailsDto(
+                $mention->id,
+                $rawMentions->magazines[$issue->magazineId]->title,
+                $magazineIssueId,
+                $issue->year,
+                $issue->month,
+                $issue->issueNumber,
+                $mention->pageNumber,
+                $mention->notes,
+            );
         }
 
-        return $mentionsData;
+        return new GameVersionMentionListDto($mentionsData);
     }
 
     /**
