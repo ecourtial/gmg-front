@@ -23,7 +23,7 @@ class NoteService extends AbstractService
             $gameVersionIdFilter = '&gameVersionId[]='.$gameVersionId;
         }
 
-        return $this->getCollection('?orderBy[]=title-asc'.$gameVersionIdFilter.'&limit='.self::MAX_RESULT_COUNT);
+        return $this->getCollection('orderBy[]=title-asc'.$gameVersionIdFilter.'&limit='.self::MAX_RESULT_COUNT);
     }
 
     protected function getResourceNamePlural(): string
