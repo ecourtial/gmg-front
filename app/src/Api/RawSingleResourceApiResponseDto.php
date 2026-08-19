@@ -7,7 +7,9 @@ namespace App\Api;
 readonly class RawSingleResourceApiResponseDto
 {
     /**
-     * @param array<string, string>|array<string, int>|array<string, float>|array<string, boolean>|array<string, null> $data
+     * @param array<string, string>|array<string, int>|array<string, float>|array<string, bool>|array<string, null> $data
      */
-    public function __construct(public array $data) {}
+    public function __construct(public array $data)
+    {
+    }
 }

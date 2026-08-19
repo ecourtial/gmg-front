@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\ResourceService;
 
-use App\Api\ResourceCollectionResponseDto;
 use App\Api\RawSingleResourceApiResponseDto;
+use App\Api\ResourceCollectionResponseDto;
 use App\Entity\Dto\TransactionDto;
 
 /**
@@ -36,7 +36,7 @@ class TransactionService extends AbstractService
     {
         return new TransactionDto(
             (int) $dto->data['id'],
-            (int)  $dto->data['versionId'],
+            (int) $dto->data['versionId'],
             (int) $dto->data['year'],
             (int) $dto->data['month'],
             (int) $dto->data['day'],

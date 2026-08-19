@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Entity\Dto\Specific;
@@ -9,7 +10,7 @@ readonly class TransactionDataDto
 {
     /**
      * @param array<int, array<int, list<TransactionDto>>> $transactions
-     * @param GamesBoughtChartDataEntry[] $gamesBoughtChartData
+     * @param GamesBoughtChartDataEntry[]                  $gamesBoughtChartData
      * @param CopiesDistributionAmongPlatformsStatsEntry[] $copiesDistributionAmongPlatformsStats
      */
     public function __construct(
@@ -17,5 +18,6 @@ readonly class TransactionDataDto
         public array $transactions,
         public array $gamesBoughtChartData,
         public array $copiesDistributionAmongPlatformsStats,
-    ) {}
+    ) {
+    }
 }

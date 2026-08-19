@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\ResourceService;
 
-use App\Api\ResourceCollectionResponseDto;
 use App\Api\RawSingleResourceApiResponseDto;
+use App\Api\ResourceCollectionResponseDto;
 use App\Entity\Dto\GameVersionCopyDto;
 use App\Entity\Dto\GameVersionDto;
 use App\Entity\Dto\Specific\VersionsByPriorityDto;
@@ -124,6 +124,7 @@ class VersionService extends AbstractService
 
     /**
      * @param int[] $versionsIds
+     *
      * @return ResourceCollectionResponseDto<GameVersionDto>
      */
     public function getByIds(array $versionsIds): ResourceCollectionResponseDto
@@ -262,6 +263,7 @@ class VersionService extends AbstractService
 
     /**
      * @param ResourceCollectionResponseDto<GameVersionCopyDto> $copies
+     *
      * @return ResourceCollectionResponseDto<GameVersionDto>
      */
     public function getOriginals(ResourceCollectionResponseDto $copies): ResourceCollectionResponseDto
@@ -371,6 +373,7 @@ class VersionService extends AbstractService
 
     /**
      * @param ResourceCollectionResponseDto<GameVersionCopyDto> $copies
+     *
      * @return ResourceCollectionResponseDto<GameVersionDto>
      */
     public function getOriginalsWhereCopyIsNotOnCompilation(ResourceCollectionResponseDto $copies): ResourceCollectionResponseDto
@@ -393,6 +396,7 @@ class VersionService extends AbstractService
 
     /**
      * @param ResourceCollectionResponseDto<GameVersionCopyDto> $copies
+     *
      * @return ResourceCollectionResponseDto<GameVersionDto>
      */
     protected function getListFromCopies(

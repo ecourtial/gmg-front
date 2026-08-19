@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\ResourceService;
 
-use App\Api\ResourceCollectionResponseDto;
 use App\Api\RawSingleResourceApiResponseDto;
+use App\Api\ResourceCollectionResponseDto;
 use App\Entity\Dto\MagazineIssueDto;
 
 /**
@@ -23,6 +23,7 @@ class MagazineIssueService extends AbstractService
 
     /**
      * @param int[] $magazinesIds
+     *
      * @return ResourceCollectionResponseDto<MagazineIssueDto>
      */
     public function getByIds(array $magazinesIds): ResourceCollectionResponseDto

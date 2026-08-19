@@ -43,9 +43,8 @@ readonly class UserService
             || false === is_integer($data['id'])
         ) {
             throw new \InvalidArgumentException('Impossible to hydrate the user object: id is missing.');
-        } else {
-            $values['id'] = (int)$data['id'];
         }
+        $values['id'] = (int) $data['id'];
 
         $stringKeys = ['username' => true, 'email' => true, 'password' => false, 'token' => false];
         foreach ($stringKeys as $key => $isMandatoryValue) {
@@ -58,9 +57,8 @@ readonly class UserService
 
             if (false === is_string($data[$key])) {
                 throw new \InvalidArgumentException('Impossible to hydrate the user object: some string values are missing.');
-            } else {
-                $values[$key] = $data[$key];
             }
+            $values[$key] = $data[$key];
         }
 
         if (
@@ -68,9 +66,8 @@ readonly class UserService
             || false === is_bool($data['active'])
         ) {
             throw new \InvalidArgumentException('Impossible to hydrate the user object: the "active" key is missing.');
-        } else {
-            $values['active'] = $data['active'];
         }
+        $values['active'] = $data['active'];
 
         return new User(
             $values['id'],
@@ -78,7 +75,7 @@ readonly class UserService
             $values['email'],
             $values['active'],
             isset($values['password']) ? (string) $values['password'] : null,
-            isset($values['token']) ? (string)$values['token'] : null
+            isset($values['token']) ? (string) $values['token'] : null
         );
     }
 }

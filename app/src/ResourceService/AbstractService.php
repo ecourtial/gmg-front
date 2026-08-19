@@ -6,8 +6,8 @@ namespace App\ResourceService;
 
 use App\Api\Client\ClientFactory;
 use App\Api\RawCollectionResourceApiResponseDto;
-use App\Api\ResourceCollectionResponseDto;
 use App\Api\RawSingleResourceApiResponseDto;
+use App\Api\ResourceCollectionResponseDto;
 
 /**
  * @template TDto of object
@@ -16,7 +16,9 @@ abstract class AbstractService
 {
     protected const int MAX_RESULT_COUNT = 1000;
 
-    public function __construct(private readonly ClientFactory $clientFactory) {}
+    public function __construct(private readonly ClientFactory $clientFactory)
+    {
+    }
 
     /**
      * @return TDto

@@ -13,5 +13,6 @@ readonly class RawCollectionResourceApiResponseDto
         public int $page,
         public int $totalPageCount,
         public array $results,
-    ) {}
+    ) {
+    }
 }

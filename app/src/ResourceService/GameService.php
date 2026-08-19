@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace App\ResourceService;
 
-use App\Api\ResourceCollectionResponseDto;
 use App\Api\RawSingleResourceApiResponseDto;
+use App\Api\ResourceCollectionResponseDto;
 use App\Entity\Dto\GameDto;
 use App\Entity\Dto\Specific\GamesDataDto;
-use App\Entity\Dto\Specific\VersionsDataDto;
 
 /**
  * @extends AbstractService<GameDto>

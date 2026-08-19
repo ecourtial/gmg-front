@@ -71,6 +71,7 @@ readonly class HomePageService
         return $responses;
     }
 
+    /** @param ResourceCollectionResponseDto<GameVersionDto> $data */
     protected function orderForChart(ResourceCollectionResponseDto $data): \Generator
     {
         $tmpVersionData = []; // Because the chat library crashes if there is a key
@@ -92,7 +93,7 @@ readonly class HomePageService
     /**
      * @param GameVersionDto[] $games
      *
-     * @return array<int, GameVersionDto>
+     * @return array<int, list<GameVersionDto>>
      */
     private function orderGames(array $games): array
     {

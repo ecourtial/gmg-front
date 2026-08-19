@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\ResourceService;
 
-use App\Api\ResourceCollectionResponseDto;
 use App\Api\RawSingleResourceApiResponseDto;
+use App\Api\ResourceCollectionResponseDto;
 use App\Entity\Dto\GameVersionMentionDto;
 
 /**
@@ -31,6 +31,7 @@ class GameMagazineMentionService extends AbstractService
 
     /**
      * @param int[] $versionsIds
+     *
      * @return ResourceCollectionResponseDto<GameVersionMentionDto>
      */
     public function getByVersionsIds(array $versionsIds): ResourceCollectionResponseDto
