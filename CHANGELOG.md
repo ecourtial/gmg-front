@@ -27,6 +27,7 @@ Hence, the major version bump here too.
 * From the version screen, we can now access to a filtered transactions list for this version.
 * We can add notes to a game version.
 * Display "My profile" instead of "User" in the navbar when the user is logged-in.
+* We can create categories to group game versions.
 
 #### Fixes
 * Version: in the form, the release year has now a field of type 'number'.

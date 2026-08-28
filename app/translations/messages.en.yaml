@@ -333,3 +333,12 @@ Watchable-demo: Watchable demo with the magazine
 Full-game-included: Full game included
 Cheat: Cheat
 page_number: Page number
+
+# Categories
+categories: Categories
+categories_list: List of categories (%count% entries)
+category_name: Name
+category_description: Description
+add_category: Add a new category
+add_category_title: Add a new category for game versions
+category_details: Content of the category (contains %count% version(s) of game(s))
