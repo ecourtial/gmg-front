@@ -95,4 +95,58 @@ class GameVersionCategoryController extends AbstractController
 
         return $this->redirectToRoute('game_version_category_details', ['id' => $id]);
     }
+
+    #[Route('/game-version-category/edit/{id<\d+>}', name: 'edit_game_version_category', methods: ['GET', 'POST']), IsGranted('ROLE_USER')]
+    public function edit(Request $request, int $id): Response
+    {
+        $category = $this->gameVersionCategoryService->getById($id);
+
+        if ('GET' === $request->getMethod()) {
+            return $this->render(
+                'game-version-category/form.html.twig',
+                [
+                    'screenTitle' => $this->translator->trans('edit_category', ['%name%' => $category->name]),
+                    'category' => $category,
+                ]
+            );
+        }
+
+        if (false === $this->isCsrfTokenValid('add_game_version_category', $request->request->getString('_csrf_token'))) {
+            $this->addFlash('alert', 'see.invalid_csrf_token');
+
+            return $this->redirectToRoute('edit_game_version_category', ['id' => $id]);
+        }
+
+        $payload = $request->request->all();
+        unset($payload['_csrf_token']);
+
+        $this->gameVersionCategoryService->update($id, $payload);
+
+        return $this->redirectToRoute('game_version_category_details', ['id' => $id]);
+    }
+
+    #[Route('/game-version-category/delete/{id<\d+>}', name: 'delete_game_version_category', methods: ['POST']), IsGranted('ROLE_USER')]
+    public function delete(Request $request, int $id): Response
+    {
+        if (false === $this->isCsrfTokenValid('delete_game_version_category', $request->request->getString('_csrf_token'))) {
+            $this->addFlash('alert', 'see.invalid_csrf_token');
+
+            return $this->redirectToRoute('game_version_category_details', ['id' => $id]);
+        }
+
+        try {
+            $this->gameVersionCategoryService->delete($id);
+            $this->addFlash('alert', 'entry_deleted_with_success');
+        } catch (GenericApiException $exception) {
+            if (Response::HTTP_NOT_FOUND === $exception->getCode()) {
+                // Ignore, not a problem because someone might have done it
+            } elseif (Response::HTTP_BAD_REQUEST === $exception->getCode() && ApiResponseCode::RESOURCE_HAS_LINKED_RESOURCES->value === $exception->getApiReturnCode()) {
+                $this->addFlash('alert', 'category_has_versions');
+
+                return $this->redirectToRoute('game_version_category_details', ['id' => $id]);
+            }
+        }
+
+        return $this->redirectToRoute('game_version_categories_list');
+    }
 }

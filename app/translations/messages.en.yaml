@@ -342,3 +342,5 @@ category_description: Description
 add_category: Add a new category
 add_category_title: Add a new category for game versions
 category_details: Content of the category (contains %count% version(s) of game(s))
+edit_category: "Edit a category: <i>%name%</i>"
+category_has_versions: Cannot delete this category because it has versions.

@@ -41,6 +41,8 @@ abstract class AbstractService
      */
     public function add(array $data): object
     {
+        unset($data['_csrf_token']);
+
         return $this->hydrateObject(
             $this->formatSingleResourceApiResponseDto(
                 $this->clientFactory->getAuthenticatedClient()->post(
@@ -59,6 +61,8 @@ abstract class AbstractService
      */
     public function update(int $entityId, array $data): object
     {
+        unset($data['_csrf_token']);
+
         return $this->hydrateObject(
             $this->formatSingleResourceApiResponseDto(
                 $this->clientFactory->getAuthenticatedClient()->patch(
