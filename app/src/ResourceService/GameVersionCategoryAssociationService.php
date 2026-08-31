@@ -15,7 +15,7 @@ class GameVersionCategoryAssociationService extends AbstractService
 {
     public function getListByCategoryId(int $categoryId): ResourceCollectionResponseDto
     {
-        return $this->getCollection('categoryId='.$categoryId.'&limit='.self::MAX_RESULT_COUNT);
+        return $this->getCollection('categoryId[]='.$categoryId.'&limit='.self::MAX_RESULT_COUNT);
     }
 
     protected function getResourceNamePlural(): string

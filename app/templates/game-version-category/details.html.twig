@@ -1,8 +1,10 @@
 {% extends 'base.html.twig' %}
 {% block body %}
+    <a href="{{ url('game_version_categories_list') }}">{{ 'return_to_categories'|trans }}</a>
     {% if is_granted('ROLE_USER') %}
-        <p><i>{{ category.description|default('')|raw|nl2br }}</i></p>
-        <form action="{{ url('delete_game_version_category', {id: game.id}) }}" method="post" data-confirmation="true" id="delete-form">
+        <hr>
+        <p>{{ 'category_description'|trans }}: <i>{{ category.description|default('')|raw|nl2br }}</i></p>
+        <form action="{{ url('delete_game_version_category', {id: category.id}) }}" method="post" data-confirmation="true" id="delete-form">
             <input type="hidden" name="_csrf_token" value="{{ csrf_token('delete_game_version_category') }}" />
             <button type="submit" id="deletePostSubmitButton" class="btn btn-lg btn-block btn-danger" onclick="return areYouSure('{{ 'delete_entry_confirmation'|trans }}');">
                 <i class="fa fa-trash" aria-hidden="true"></i>

@@ -336,6 +336,7 @@ page_number: Page number
 
 # Categories
 categories: Categories
+return_to_categories: Return to the list of categories
 categories_list: List of categories (%count% entries)
 category_name: Name
 category_description: Description
