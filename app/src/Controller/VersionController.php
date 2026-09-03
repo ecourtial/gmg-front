@@ -30,19 +30,15 @@ class VersionController extends AbstractController
         private readonly TranslatorInterface $translator,
         private readonly GameService $gameService,
         private readonly PlatformService $platformService,
-        private readonly NoteService $noteService,
         private readonly CopyService $copyService,
         private readonly GameVersionPageService $gameVersionPageService,
-        private readonly TransactionPageService $transactionPageService,
     ) {
     }
 
     #[Route('/version/{id<\d+>}', name: 'version_details', methods: ['GET'])]
     public function versionDetails(int $id): Response
     {
-        $version = $this->service->getById($id);
-        $transactions = $this->transactionPageService->getTransactionsData($id);
-        $notes = $this->noteService->getList($id);
+        $versionData = $this->gameVersionPageService->getById($id);
 
         return $this->render(
             'version/details.html.twig',
@@ -51,15 +47,15 @@ class VersionController extends AbstractController
                     ->trans(
                         'game.version_details',
                         [
-                            '%title%' => $version->gameTitle,
-                            '%platform%' => $version->platformName,
+                            '%title%' => $versionData->gameVersion->gameTitle,
+                            '%platform%' => $versionData->gameVersion->platformName,
                         ]
                     ),
-                'screenSubTitle' => $this->isGranted('ROLE_USER') ? $version->comments : '',
-                'version' => $version,
-                'mentionsByType' => $this->gameVersionPageService->getMentionsByType($id),
-                'transactionsCount' => $transactions->totalResultCount,
-                'notes' => $notes->result,
+                'screenSubTitle' => $this->isGranted('ROLE_USER') ? $versionData->gameVersion->comments : '',
+                'version' => $versionData->gameVersion,
+                'mentionsByType' => $versionData->mentions,
+                'transactionsCount' => $versionData->transactionData->totalResultCount,
+                'notes' => $versionData->notes->result,
             ]
         );
     }
@@ -118,8 +114,7 @@ class VersionController extends AbstractController
         }
 
         $version = $result->result[0];
-        $transactions = $this->transactionPageService->getTransactionsData($version->id);
-        $notes = $this->noteService->getList($version->id);
+        $versionData = $this->gameVersionPageService->getById($version->id);
 
         return $this->render(
             'version/details.html.twig',
@@ -133,9 +128,9 @@ class VersionController extends AbstractController
                         ]
                     ),
                 'version' => $version,
-                'transactionsCount' => $transactions->totalResultCount,
-                'mentionsByType' => $this->gameVersionPageService->getMentionsByType($version->id),
-                'notes' => $notes->result,
+                'transactionsCount' => $versionData->transactionData->totalResultCount,
+                'mentionsByType' => $versionData->mentions,
+                'notes' => $versionData->notes->result,
             ]
         );
     }

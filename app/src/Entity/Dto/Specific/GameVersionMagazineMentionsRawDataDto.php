@@ -8,7 +8,7 @@ use App\Entity\Dto\GameVersionMentionDto;
 use App\Entity\Dto\MagazineDto;
 use App\Entity\Dto\MagazineIssueDto;
 
-readonly class GameVersionRawDataDto
+readonly class GameVersionMagazineMentionsRawDataDto
 {
     /**
      * @param MagazineDto[]           $magazines

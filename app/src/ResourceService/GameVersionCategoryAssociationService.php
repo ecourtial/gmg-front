@@ -18,6 +18,11 @@ class GameVersionCategoryAssociationService extends AbstractService
         return $this->getCollection('categoryId[]='.$categoryId.'&limit='.self::MAX_RESULT_COUNT);
     }
 
+    public function getListByVersionId(int $gameVersionId): ResourceCollectionResponseDto
+    {
+        return $this->getCollection('versionId[]='.$gameVersionId.'&limit='.self::MAX_RESULT_COUNT);
+    }
+
     protected function getResourceNamePlural(): string
     {
         return 'game-version-category-associations';

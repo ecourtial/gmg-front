@@ -8,11 +8,15 @@ use App\Api\ResourceCollectionResponseDto;
 use App\Entity\Dto\GameVersionMentionDto;
 use App\Entity\Dto\Specific\GameVersionMentionDetailsDto;
 use App\Entity\Dto\Specific\GameVersionMentionListDto;
-use App\Entity\Dto\Specific\GameVersionRawDataDto;
+use App\Entity\Dto\Specific\GameVersionMagazineMentionsRawDataDto;
+use App\Entity\Dto\Specific\GameVersionPageDto;
 use App\Entity\Dto\Specific\VersionsDataDto;
 use App\ResourceService\GameMagazineMentionService;
+use App\ResourceService\GameVersionCategoryAssociationService;
 use App\ResourceService\MagazineIssueService;
 use App\ResourceService\MagazineService;
+use App\ResourceService\NoteService;
+use App\ResourceService\VersionService;
 
 class GameVersionPageService
 {
@@ -20,7 +24,28 @@ class GameVersionPageService
         private readonly GameMagazineMentionService $gameMagazineMentionService,
         private readonly MagazineService $magazineService,
         private readonly MagazineIssueService $magazineIssueService,
+        private readonly GameVersionCategoryAssociationService $gameVersionCategoryAssociationService,
+        private readonly TransactionPageService $transactionPageService,
+        private readonly NoteService $noteService,
+        private readonly VersionService $versionService,
     ) {
+    }
+
+    public function getById(int $gameVersionId): GameVersionPageDto
+    {
+        $version = $this->versionService->getById($gameVersionId);
+        $transactions = $this->transactionPageService->getTransactionsData($gameVersionId);
+        $notes = $this->noteService->getList($gameVersionId);
+        $categories = $this->gameVersionCategoryAssociationService->getListByVersionId($gameVersionId);
+        $mentionsByType = $this->getMentionsByType($gameVersionId);
+
+        return new GameVersionPageDto(
+            $version,
+            $transactions,
+            $notes,
+            $categories,
+            $mentionsByType
+        );
     }
 
     public function getVersionsWithComments(VersionsDataDto $data): VersionsDataDto
@@ -87,10 +112,16 @@ class GameVersionPageService
         return new GameVersionMentionListDto($mentionsData);
     }
 
+    public function getCategoriesForVersion(int $versionId): array
+    {
+        $associations = $this->gameVersionCategoryAssociationService->getListByVersionId($versionId);
+        dd($associations);
+    }
+
     /**
      * @param GameVersionMentionDto[] $mentions
      */
-    public function prepareMentions(array $mentions): GameVersionRawDataDto
+    public function prepareMentions(array $mentions): GameVersionMagazineMentionsRawDataDto
     {
         $issues = [];
         $magazines = [];
@@ -115,6 +146,6 @@ class GameVersionPageService
             $magazines[$magazine->id] = $magazine;
         }
 
-        return new GameVersionRawDataDto($magazines, $issues, $mentions);
+        return new GameVersionMagazineMentionsRawDataDto($magazines, $issues, $mentions);
     }
 }
