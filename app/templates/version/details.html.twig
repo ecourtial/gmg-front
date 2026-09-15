@@ -47,6 +47,8 @@
     <p>{% trans with {'%count%': version.storyCount}%} entity.storyCount {% endtrans %} - <a href="{{ url('story_list') }}?version={{version.id}}">{{ 'see_stories'|trans }}</a>
     <p>{% trans with {'%count%': version.copyCount}%} entity.copyCount {% endtrans %} <a href="{{ path('copies_per_version', {versionId: version.id}) }}">{% trans %} see_copies {% endtrans %}</a> </p>
     <p>{{ 'entity.transactionCount'|trans }}: {{ transactionsCount}} <a href="{{ path('transaction_list') }}?version={{version.id}}">{% trans %} see_transactions {% endtrans %}</a> </p>
+    <p>{% trans with {'%count%': categories|length}%} version_belongs_to_x_categories {% endtrans %} <a href="#categories">{% trans %} see.details {% endtrans %}</a></p>
+    <hr>
     <p><strong>{% trans %} entity.id {% endtrans %}:</strong> {{ version.id }}</p>
     <p><strong>{% trans %} entity.badges {% endtrans %}:</strong>
         {% for badge, alt in get_badges_for_version(version, true) %}
@@ -125,5 +127,26 @@
             </tbody>
         </table>
     {% endfor %}
+    <hr>
+
+    <h2 id="categories" class="colored_h2">{% trans %}categories{% endtrans %} ({{ categories|length }})</h2>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">{% trans %} entity.id {% endtrans %}</th>
+            <th scope="col">{% trans %} category_name {% endtrans %}</th>
+            <th scope="col">{% trans %} entity.notes {% endtrans %}</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for category in categories %}
+            <tr>
+                <td>{{ category.id }}</td>
+                <td><i>{{ category.categoryName }} <a href="{{ path('game_version_category_details', {id: category.id}) }}">{{ 'see.details'|trans }}</a></i></td>
+                <td>{% if is_granted('ROLE_USER') %}{{ category.notes }}{% endif %}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 
 {% endblock %}

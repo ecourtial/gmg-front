@@ -56,6 +56,7 @@ class VersionController extends AbstractController
                 'mentionsByType' => $versionData->mentions,
                 'transactionsCount' => $versionData->transactionData->totalResultCount,
                 'notes' => $versionData->notes->result,
+                'categories' => $versionData->categories->result,
             ]
         );
     }
