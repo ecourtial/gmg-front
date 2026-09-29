@@ -110,8 +110,6 @@ class TransactionController extends AbstractController
             return $this->redirectToRoute('copies_per_version', ['versionId' => $versionId]);
         }
 
-        unset($payload['_csrf_token']);
-
         $this->service->add($payload);
 
         return $this->redirectToRoute('transaction_list');

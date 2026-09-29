@@ -71,7 +71,6 @@ class MagazineIssueController extends AbstractController
         }
 
         $payload = $request->request->all();
-        unset($payload['_csrf_token']);
 
         $issue = $this->magazineIssueService->add($payload);
 
@@ -103,7 +102,6 @@ class MagazineIssueController extends AbstractController
         }
 
         $payload = $request->request->all();
-        unset($payload['_csrf_token']);
 
         $this->magazineIssueService->update($id, $payload);
 

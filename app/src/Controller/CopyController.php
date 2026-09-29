@@ -70,7 +70,6 @@ class CopyController extends AbstractController
 
         $payload = $request->request->all();
         $payload['status'] = 'In';
-        unset($payload['_csrf_token']);
 
         $copy = $this->service->add($payload);
 
@@ -102,7 +101,6 @@ class CopyController extends AbstractController
 
         $payload = $request->request->all();
         $payload['status'] = 'In';
-        unset($payload['_csrf_token']);
 
         $this->service->update($id, $payload);
 

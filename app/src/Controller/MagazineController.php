@@ -81,9 +81,6 @@ class MagazineController extends AbstractController
         }
 
         $payload = $request->request->all();
-
-        unset($payload['_csrf_token']);
-
         $id = $this->magazineService->add($payload)->id;
 
         return $this->redirectToRoute('magazine_details', ['id' => $id]);
@@ -111,7 +108,6 @@ class MagazineController extends AbstractController
         }
 
         $payload = $request->request->all();
-        unset($payload['_csrf_token']);
 
         $this->magazineService->update($id, $payload);
 

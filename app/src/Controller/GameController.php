@@ -117,7 +117,6 @@ class GameController extends AbstractController
         }
 
         $payload = $request->request->all();
-        unset($payload['_csrf_token']);
         $id = $this->service->add($payload)->id;
 
         return $this->redirectToRoute('game_details', ['id' => $id]);
@@ -145,7 +144,6 @@ class GameController extends AbstractController
         }
 
         $payload = $request->request->all();
-        unset($payload['_csrf_token']);
 
         $this->service->update($id, $payload);
 

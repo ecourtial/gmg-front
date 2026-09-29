@@ -58,7 +58,6 @@ class GameMagazineMentionController extends AbstractController
         }
 
         $payload = $request->request->all();
-        unset($payload['_csrf_token']);
 
         $this->gameMagazineMentionService->add($payload);
 

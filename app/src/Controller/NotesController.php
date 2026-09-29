@@ -104,7 +104,6 @@ class NotesController extends AbstractController
         }
 
         $payload = $request->request->all();
-        unset($payload['_csrf_token']);
         $id = $this->service->add($payload)->id;
 
         return $this->redirectToRoute('note_details', ['id' => $id]);
@@ -132,7 +131,6 @@ class NotesController extends AbstractController
         }
 
         $payload = $request->request->all();
-        unset($payload['_csrf_token']);
 
         $this->service->update($id, $payload);
 

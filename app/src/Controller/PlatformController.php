@@ -104,7 +104,6 @@ class PlatformController extends AbstractController
         }
 
         $payload = $request->request->all();
-        unset($payload['_csrf_token']);
 
         $id = $this->service->add($payload)->id;
 
@@ -133,7 +132,6 @@ class PlatformController extends AbstractController
         }
 
         $payload = $request->request->all();
-        unset($payload['_csrf_token']);
 
         $this->service->update($id, $payload);
 

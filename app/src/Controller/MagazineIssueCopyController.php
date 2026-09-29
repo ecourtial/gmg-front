@@ -54,7 +54,6 @@ class MagazineIssueCopyController extends AbstractController
         }
 
         $payload = $request->request->all();
-        unset($payload['_csrf_token']);
 
         $this->magazineIssueCopyService->add($payload);
 

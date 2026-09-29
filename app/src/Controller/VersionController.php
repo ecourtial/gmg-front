@@ -215,8 +215,6 @@ class VersionController extends AbstractController
         }
 
         $payload = $request->request->all();
-        unset($payload['_csrf_token']);
-
         $id = $this->service->add($payload)->id;
 
         return $this->redirectToRoute('version_details', ['id' => $id]);
@@ -248,8 +246,6 @@ class VersionController extends AbstractController
         }
 
         $payload = $request->request->all();
-        unset($payload['_csrf_token']);
-
         $this->service->update($id, $payload);
 
         return $this->redirectToRoute('version_details', ['id' => $id]);

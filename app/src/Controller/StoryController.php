@@ -77,8 +77,6 @@ class StoryController extends AbstractController
         }
 
         $payload = $request->request->all();
-        unset($payload['_csrf_token']);
-
         $this->service->add($payload);
 
         return $this->redirectToRoute('story_list');
@@ -108,8 +106,6 @@ class StoryController extends AbstractController
         }
 
         $payload = $request->request->all();
-        unset($payload['_csrf_token']);
-
         $this->service->update($id, $payload);
 
         return $this->redirectToRoute('story_list');

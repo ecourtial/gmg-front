@@ -336,6 +336,7 @@ page_number: Page number
 
 # Categories
 categories: Categories
+category: Category
 return_to_categories: Return to the list of categories
 categories_list: List of categories (%count% entries)
 category_name: Name
@@ -346,3 +347,7 @@ category_details: Content of the category (contains %count% version(s) of game(s
 edit_category: "Edit a category: <i>%name%</i>"
 version_belongs_to_x_categories: "This version belongs to %count% categories"
 category_has_versions: Cannot delete this category because it has versions.
+add_a_version_to_this_category: Add a game version to this category
+add_a_version_to_a_category: Add a game version to a category
+add_version_to_a_category: Add this game version to a category
+remove_from_category: Remove from category

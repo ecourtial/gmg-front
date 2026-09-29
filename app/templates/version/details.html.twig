@@ -139,10 +139,16 @@
         </tr>
         </thead>
         <tbody>
+        <a href="{{ url('add_game_version_to_category') }}?version={{ version.id }}">
+            <button type="submit" class="btn btn-lg btn-block btn-success">
+                <i class="fa fa-trash" aria-hidden="true"></i>
+                {{ 'add_version_to_a_category'|trans }}
+            </button>
+        </a>
         {% for category in categories %}
             <tr>
-                <td>{{ category.id }}</td>
-                <td><i>{{ category.categoryName }} <a href="{{ path('game_version_category_details', {id: category.id}) }}">{{ 'see.details'|trans }}</a></i></td>
+                <td>{{ category.categoryId }}</td>
+                <td><i>{{ category.categoryName }} <a href="{{ path('game_version_category_details', {id: category.categoryId}) }}">{{ 'see.details'|trans }}</a></i></td>
                 <td>{% if is_granted('ROLE_USER') %}{{ category.notes }}{% endif %}</td>
             </tr>
         {% endfor %}

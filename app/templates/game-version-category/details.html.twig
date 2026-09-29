@@ -18,13 +18,15 @@
                 {{ 'menu.edit'|trans }}
             </button>
         </a>
-{#        <a href="{{ url('add_version') }}?game={{ game.id }}">#}
-{#            <button type="submit" class="btn btn-lg btn-block btn-success">#}
-{#                <i class="fa fa-trash" aria-hidden="true"></i>#}
-{#                {{ 'menu.add_version'|trans }}#}
-{#            </button>#}
-{#        </a>#}
+        <a href="{{ url('add_game_version_to_category') }}?category={{ category.id }}">
+            <button type="submit" class="btn btn-lg btn-block btn-success">
+                <i class="fa fa-trash" aria-hidden="true"></i>
+                {{ 'add_a_version_to_this_category'|trans }}
+            </button>
+        </a>
     {% endif %}
     <hr>
-    {% include 'version/list-content.html.twig' %}
+    {% include 'version/list-content.html.twig' with {
+        extra_actions_template: 'game-version-category/versions-actions.html.twig'
+    } %}
 {% endblock %}

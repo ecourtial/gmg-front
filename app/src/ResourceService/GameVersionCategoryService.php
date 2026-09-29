@@ -15,7 +15,7 @@ class GameVersionCategoryService extends AbstractService
 {
     public function getList(): ResourceCollectionResponseDto
     {
-        return $this->getCollection('orderBy[]=title-asc&limit='.self::MAX_RESULT_COUNT);
+        return $this->getCollection('orderBy[]=name-asc&limit='.self::MAX_RESULT_COUNT);
     }
 
     protected function getResourceNamePlural(): string
