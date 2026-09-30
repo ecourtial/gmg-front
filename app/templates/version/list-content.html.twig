@@ -31,9 +31,6 @@
                     {% if is_granted('ROLE_USER') %}
                         <a href="{{ url('edit_version', {id: version.id}) }}">{{ 'menu.edit'|trans }}</a>
                     {% endif %}
-                    {% if extra_actions_template is defined %}
-                        {% include extra_actions_template with { version: version } only %}
-                    {% endif %}
                 </td>
             </tr>
         {% endfor %}

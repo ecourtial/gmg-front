@@ -26,7 +26,37 @@
         </a>
     {% endif %}
     <hr>
-    {% include 'version/list-content.html.twig' with {
-        extra_actions_template: 'game-version-category/versions-actions.html.twig'
-    } %}
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">{% trans %} entity.id {% endtrans %}</th>
+                <th scope="col">{% trans %} games_title {% endtrans %}</th>
+                <th scope="col">{% trans %} entity.platform {% endtrans %}</th>
+                <th scope="col">{% trans %} menu.actions {% endtrans %}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for association in associations %}
+                <tr>
+                    <td>{{ association.versionId }}</td>
+                    <td>
+                        {{ association.gameTitle }} - <a href="{{ path('version_details', {id: association.versionId}) }}">{% trans %}see.details{% endtrans %}</a>
+                    </td>
+                    <td>{{ association.versionPlatformName }}</td>
+                    <td>
+                        {% if is_granted('ROLE_USER') %}
+                            <a href="{{ url('edit_version', {id: association.versionId}) }}">{{ 'menu.edit'|trans }}</a>
+                            <form action="{{ url('remove_game_version_from_category', {associationId: association.id}) }}" method="post" data-confirmation="true" id="delete-form">
+                                <input type="hidden" name="_csrf_token" value="{{ csrf_token('remove_game_version_from_category') }}" />
+                                <button type="submit" id="deletePostSubmitButton" class="btn btn-lg btn-block btn-danger btn-in-list" onclick="return areYouSure('{{ 'delete_entry_confirmation'|trans }}');">
+                                    <i class="fa fa-trash" aria-hidden="true"></i>
+                                    {{ 'remove_from_category'|trans }}
+                                </button>
+                            </form>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
 {% endblock %}

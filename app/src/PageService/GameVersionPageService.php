@@ -6,9 +6,9 @@ namespace App\PageService;
 
 use App\Api\ResourceCollectionResponseDto;
 use App\Entity\Dto\GameVersionMentionDto;
+use App\Entity\Dto\Specific\GameVersionMagazineMentionsRawDataDto;
 use App\Entity\Dto\Specific\GameVersionMentionDetailsDto;
 use App\Entity\Dto\Specific\GameVersionMentionListDto;
-use App\Entity\Dto\Specific\GameVersionMagazineMentionsRawDataDto;
 use App\Entity\Dto\Specific\GameVersionPageDto;
 use App\Entity\Dto\Specific\VersionsDataDto;
 use App\ResourceService\GameMagazineMentionService;

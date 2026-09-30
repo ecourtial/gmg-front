@@ -16,7 +16,7 @@ class GameVersionCategoryAssociationService extends AbstractService
     public function getListByCategoryId(int $categoryId): ResourceCollectionResponseDto
     {
         /** @TODO could we do this sorting on the API side? */
-        $associations =  $this->getCollection('categoryId[]='.$categoryId.'&limit='.self::MAX_RESULT_COUNT);
+        $associations = $this->getCollection('categoryId[]='.$categoryId.'&limit='.self::MAX_RESULT_COUNT);
         $data = $associations->result;
 
         return $this->getSortedByName($associations, $data);
@@ -25,7 +25,7 @@ class GameVersionCategoryAssociationService extends AbstractService
     public function getListByVersionId(int $gameVersionId): ResourceCollectionResponseDto
     {
         /** @TODO could we do this sorting on the API side? */
-        $associations =  $this->getCollection('versionId[]='.$gameVersionId.'&limit='.self::MAX_RESULT_COUNT);
+        $associations = $this->getCollection('versionId[]='.$gameVersionId.'&limit='.self::MAX_RESULT_COUNT);
         $data = $associations->result;
 
         return $this->getSortedByName($associations, $data);

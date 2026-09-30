@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Entity\Dto\Specific;
@@ -11,7 +12,7 @@ use App\Entity\Dto\NoteDto;
 readonly class GameVersionPageDto
 {
     /**
-     * @param ResourceCollectionResponseDto<NoteDto> $notes
+     * @param ResourceCollectionResponseDto<NoteDto>             $notes
      * @param ResourceCollectionResponseDto<GameVersionCategory> $categories
      */
     public function __construct(
@@ -20,5 +21,6 @@ readonly class GameVersionPageDto
         public ResourceCollectionResponseDto $notes,
         public ResourceCollectionResponseDto $categories,
         public GameVersionMentionListDto $mentions,
-    ) {}
+    ) {
+    }
 }

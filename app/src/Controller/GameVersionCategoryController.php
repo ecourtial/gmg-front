@@ -67,7 +67,7 @@ class GameVersionCategoryController extends AbstractController
                         ]
                     ),
                 'category' => $categoryDetails->category,
-                'versions' => $categoryDetails->versions->result,
+                'associations' => $categoryDetails->associations->result,
             ]
         );
     }
@@ -175,8 +175,20 @@ class GameVersionCategoryController extends AbstractController
         return $this->redirectToRoute('game_version_category_details', ['id' => $association->categoryId]);
     }
 
-    public function removeVersionFromCategory(Request $request, int $versionId, int $categoryId): Response
+    #[Route('/game-version-category/remove-version-from-category/{associationId<\d+>}', name: 'remove_game_version_from_category', methods: ['POST']), IsGranted('ROLE_USER')]
+    public function removeVersionFromCategory(Request $request, int $associationId): Response
     {
+        $association = $this->gameVersionCategoryAssociationService->getById($associationId);
 
+        if (false === $this->isCsrfTokenValid('remove_game_version_from_category', $request->request->getString('_csrf_token'))) {
+            $this->addFlash('alert', 'see.invalid_csrf_token');
+
+            return $this->redirectToRoute('game_version_categories_list');
+        }
+
+        $this->gameVersionCategoryAssociationService->delete($associationId);
+        $this->addFlash('alert', 'entry_deleted_with_success');
+
+        return $this->redirectToRoute('game_version_category_details', ['id' => $association->categoryId]);
     }
 }
