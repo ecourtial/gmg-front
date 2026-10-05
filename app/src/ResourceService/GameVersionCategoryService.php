@@ -13,6 +13,9 @@ use App\Entity\Dto\GameVersionCategory;
  */
 class GameVersionCategoryService extends AbstractService
 {
+    /**
+     * @return ResourceCollectionResponseDto<GameVersionCategory>
+     */
     public function getList(): ResourceCollectionResponseDto
     {
         return $this->getCollection('orderBy[]=name-asc&limit='.self::MAX_RESULT_COUNT);

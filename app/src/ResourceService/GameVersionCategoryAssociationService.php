@@ -13,6 +13,9 @@ use App\Entity\Dto\GameVersionCategoryAssociation;
  */
 class GameVersionCategoryAssociationService extends AbstractService
 {
+    /**
+     * @return ResourceCollectionResponseDto<GameVersionCategoryAssociation>
+     */
     public function getListByCategoryId(int $categoryId): ResourceCollectionResponseDto
     {
         /** @TODO could we do this sorting on the API side? */
@@ -22,6 +25,9 @@ class GameVersionCategoryAssociationService extends AbstractService
         return $this->getSortedByName($associations, $data);
     }
 
+    /**
+     * @return ResourceCollectionResponseDto<GameVersionCategoryAssociation>
+     */
     public function getListByVersionId(int $gameVersionId): ResourceCollectionResponseDto
     {
         /** @TODO could we do this sorting on the API side? */
@@ -49,6 +55,12 @@ class GameVersionCategoryAssociationService extends AbstractService
         );
     }
 
+    /**
+     * @param ResourceCollectionResponseDto<GameVersionCategoryAssociation> $associations
+     * @param GameVersionCategoryAssociation[]                              $data
+     *
+     * @return ResourceCollectionResponseDto<GameVersionCategoryAssociation>
+     */
     protected function getSortedByName(ResourceCollectionResponseDto $associations, array $data): ResourceCollectionResponseDto
     {
         usort($data, function (GameVersionCategoryAssociation $a, GameVersionCategoryAssociation $b) {

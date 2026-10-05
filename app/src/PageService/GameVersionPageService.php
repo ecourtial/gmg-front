@@ -112,12 +112,6 @@ class GameVersionPageService
         return new GameVersionMentionListDto($mentionsData);
     }
 
-    public function getCategoriesForVersion(int $versionId): array
-    {
-        $associations = $this->gameVersionCategoryAssociationService->getListByVersionId($versionId);
-        dd($associations);
-    }
-
     /**
      * @param GameVersionMentionDto[] $mentions
      */
