@@ -18,7 +18,7 @@ Hence, the major version bump here too.
 * Refit of the menu: the layout, and the menu is now darker and sticky when the user scrolls down.
 * Add a new resource: magazine. You can manage issues, copies, games mentions.
 * In the version details screen: the comments are now displayed as the subtitle of the page.
-* Some fields, like notes, comment... are now hidden of the user is not logged-in.
+* Some fields, like notes, comments... are now hidden if the user is not logged-in.
 * New filter for versions: show versions with comments.
 * New filter for games: show versions with comments.
 * The routes for listing filtered versions, versions with priority or random version, now uses the "version" name as resource in the URL to be more consistent.
