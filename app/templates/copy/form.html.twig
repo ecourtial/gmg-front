@@ -1,137 +1,197 @@
 {% extends 'base.html.twig' %}
+
 {% block body %}
     <form method="POST" action="">
         <fieldset>
             <div class="form-group">
-                <label>
-                    {{ 'entity.version'|trans }}
-                    <select name="versionId">
-                        {% for version in versions %}
-                            <option value="{{ version.id }}" {% if version.id == selectedVersion %}selected{% endif %}>{{ version.gameTitle }} ({{ version.platformName }})</option>
-                        {% endfor %}
-                    </select>
-                </label>
+                <label for="versionId">{{ 'entity.version'|trans }}</label>
+                <select id="versionId" name="versionId">
+                    {% for version in versions %}
+                        <option value="{{ version.id }}" {% if version.id == selectedVersion %}selected{% endif %}>
+                            {{ version.gameTitle }} ({{ version.platformName }})
+                        </option>
+                    {% endfor %}
+                </select>
             </div>
 
             <div class="form-group">
                 <label for="type">{{ 'entity.type'|trans }}</label>
-                <select name="type">
+                <select id="type" name="type">
                     {% for type in constant('App\\ResourceService\\CopyService::TYPES') %}
-                        <option value="{{ type }}" {% if copy.type|default('') == type %}selected{% endif %}>{{ type }}</option>
+                        <option value="{{ type }}" {% if copy.type|default('') == type %}selected{% endif %}>
+                            {{ type }}
+                        </option>
                     {% endfor %}
                 </select>
             </div>
 
             <div class="form-group">
                 <label for="region">{{ 'entity.region'|trans }}</label>
-                <select name="region">
+                <select id="region" name="region">
                     {% for type in constant('App\\ResourceService\\CopyService::REGIONS') %}
-                        <option value="{{ type }}" {% if copy.region|default('') == type %}selected{% endif %}>{{ type }}</option>
+                        <option value="{{ type }}" {% if copy.region|default('') == type %}selected{% endif %}>
+                            {{ type }}
+                        </option>
                     {% endfor %}
                 </select>
             </div>
 
             <div class="form-group">
-                <label for="original">{{ 'entity.isROM'|trans }}</label>
-                <select name="isROM">
-                    <option value="0" {% if copy.isROM|default(0) == 0 %}selected{% endif %}>{{ 'see.no'|trans }}</option>
-                    <option value="1" {% if copy.isROM|default(0) == 1 %}selected{% endif %}>{{ 'see.yes'|trans }}</option>
+                <label for="isROM">{{ 'entity.isROM'|trans }}</label>
+                <select id="isROM" name="isROM">
+                    <option value="0" {% if not copy.isROM %}selected{% endif %}>
+                        {{ 'see.no'|trans }}
+                    </option>
+                    <option value="1" {% if copy.isROM %}selected{% endif %}>
+                        {{ 'see.yes'|trans }}
+                    </option>
                 </select>
             </div>
 
             <div class="form-group">
                 <label for="original">{{ 'entity.original'|trans }}</label>
-                <select name="original">
-                    <option value="0" {% if copy.original|default(0) == 0 %}selected{% endif %}>{{ 'see.no'|trans }}</option>
-                    <option value="1" {% if copy.original|default(0) == 1 %}selected{% endif %}>{{ 'see.yes'|trans }}</option>
+                <select id="original" name="original">
+                    <option value="0" {% if not copy.original %}selected{% endif %}>
+                        {{ 'see.no'|trans }}
+                    </option>
+                    <option value="1" {% if copy.original %}selected{% endif %}>
+                        {{ 'see.yes'|trans }}
+                    </option>
                 </select>
             </div>
 
             <div class="form-group">
                 <label for="language">{{ 'entity.language'|trans }}</label>
-                <select name="language">
+                <select id="language" name="language">
                     {% for key, tr in constant('App\\ResourceService\\CopyService::LANGUAGES') %}
-                        <option value="{{ key }}" {% if copy.language|default('') == key %}selected{% endif %}>{{ constant('App\\ResourceService\\CopyService::LANGUAGES')[key]|trans }}</option>
+                        <option value="{{ key }}" {% if copy.language|default('') == key %}selected{% endif %}>
+                            {{ tr|trans }}
+                        </option>
                     {% endfor %}
                 </select>
             </div>
 
             <div class="form-group">
                 <label for="boxType">{{ 'entity.boxType'|trans }}</label>
-                <select name="boxType">
+                <select id="boxType" name="boxType">
                     {% for type in constant('App\\ResourceService\\CopyService::BOX_TYPES') %}
-                        <option value="{{ type }}" {% if copy.boxType|default('') == type %}selected{% endif %}>{{ type }}</option>
+                        <option value="{{ type }}" {% if copy.boxType|default('') == type %}selected{% endif %}>
+                            {{ type }}
+                        </option>
                     {% endfor %}
                 </select>
             </div>
 
             <div class="form-group">
                 <label for="isBoxRepro">{{ 'entity.isBoxRepro'|trans }}</label>
-                <select name="isBoxRepro">
-                    <option value="0" {% if copy.isBoxRepro|default(0) == 0 %}selected{% endif %}>{{ 'see.no'|trans }}</option>
-                    <option value="1" {% if copy.isBoxRepro|default(0) == 1 %}selected{% endif %}>{{ 'see.yes'|trans }}</option>
+                <select id="isBoxRepro" name="isBoxRepro">
+                    <option value="0" {% if not copy.isBoxRepro %}selected{% endif %}>
+                        {{ 'see.no'|trans }}
+                    </option>
+                    <option value="1" {% if copy.isBoxRepro %}selected{% endif %}>
+                        {{ 'see.yes'|trans }}
+                    </option>
                 </select>
             </div>
 
             <div class="form-group">
                 <label for="casingType">{{ 'entity.casingType'|trans }}</label>
-                <select name="casingType">
+                <select id="casingType" name="casingType">
                     {% for type in constant('App\\ResourceService\\CopyService::CASING_TYPES') %}
-                        <option value="{{ type }}" {% if copy.casingType|default('') == type %}selected{% endif %}>{{ type }}</option>
+                        <option value="{{ type }}" {% if copy.casingType|default('') == type %}selected{% endif %}>
+                            {{ type }}
+                        </option>
                     {% endfor %}
                 </select>
             </div>
 
             <div class="form-group">
                 <label for="supportType">{{ 'entity.supportType'|trans }}</label>
-                <select name="supportType">
+                <select id="supportType" name="supportType">
                     {% for type in constant('App\\ResourceService\\CopyService::SUPPORT_TYPES') %}
-                        <option value="{{ type }}" {% if copy.supportType|default('') == type %}selected{% endif %}>{{ type }}</option>
+                        <option value="{{ type }}" {% if copy.supportType|default('') == type %}selected{% endif %}>
+                            {{ type }}
+                        </option>
                     {% endfor %}
                 </select>
             </div>
 
             <div class="form-group">
                 <label for="onCompilation">{{ 'entity.onCompilation'|trans }}</label>
-                <select name="onCompilation">
-                    <option value="0" {% if copy.onCompilation|default(0) == 0 %}selected{% endif %}>{{ 'see.no'|trans }}</option>
-                    <option value="1" {% if copy.onCompilation|default(0) == 1 %}selected{% endif %}>{{ 'see.yes'|trans }}</option>
+                <select id="onCompilation" name="onCompilation">
+                    <option value="0" {% if not copy.onCompilation %}selected{% endif %}>
+                        {{ 'see.no'|trans }}
+                    </option>
+                    <option value="1" {% if copy.onCompilation %}selected{% endif %}>
+                        {{ 'see.yes'|trans }}
+                    </option>
                 </select>
             </div>
 
             <div class="form-group">
                 <label for="reedition">{{ 'entity.reedition'|trans }}</label>
-                <select name="reedition">
-                    <option value="0" {% if copy.reedition|default(0) == 0 %}selected{% endif %}>{{ 'see.no'|trans }}</option>
-                    <option value="1" {% if copy.reedition|default(0) == 1 %}selected{% endif %}>{{ 'see.yes'|trans }}</option>
+                <select id="reedition" name="reedition">
+                    <option value="0" {% if not copy.reedition %}selected{% endif %}>
+                        {{ 'see.no'|trans }}
+                    </option>
+                    <option value="1" {% if copy.reedition %}selected{% endif %}>
+                        {{ 'see.yes'|trans }}
+                    </option>
                 </select>
             </div>
 
             <div class="form-group">
                 <label for="hasManual">{{ 'entity.hasManual'|trans }}</label>
-                <select name="hasManual">
-                    <option value="0" {% if copy.hasManual|default(0) == 0 %}selected{% endif %}>{{ 'see.no'|trans }}</option>
-                    <option value="1" {% if copy.hasManual|default(0) == 1 %}selected{% endif %}>{{ 'see.yes'|trans }}</option>
+                <select id="hasManual" name="hasManual">
+                    <option value="0" {% if not copy.hasManual %}selected{% endif %}>
+                        {{ 'see.no'|trans }}
+                    </option>
+                    <option value="1" {% if copy.hasManual %}selected{% endif %}>
+                        {{ 'see.yes'|trans }}
+                    </option>
                 </select>
             </div>
 
             <div class="form-group">
                 <label for="comments">{{ 'entity.comments'|trans }}</label>
                 <br/>
-                <textarea name="comments">{{ copy.comments|default('') }}</textarea>
+                <textarea id="comments" name="comments">{{ copy.comments|default('') }}</textarea>
             </div>
 
-            <input type="hidden" name="_csrf_token" value="{{ csrf_token('add_copy') }}" />
+            <input
+                type="hidden"
+                name="_csrf_token"
+                value="{{ csrf_token('add_copy') }}"
+            />
+
             <button type="submit" id="loginSubmitButton" class="btn btn-primary">
-                <i class="fa fa-sign-in" aria-hidden="true"></i> {{ 'menu.save'|trans }}
+                <i class="fa fa-sign-in" aria-hidden="true"></i>
+                {{ 'menu.save'|trans }}
             </button>
         </fieldset>
     </form>
+
     {% if copy is defined %}
         <hr>
-        <form action="{{ url('delete_copy', {id: copy.id}) }}" method="post" data-confirmation="true" id="delete-form">
-            <input type="hidden" name="_csrf_token" value="{{ csrf_token('delete_copy') }}" />
-            <button type="submit" id="deletePostSubmitButton" class="btn btn-lg btn-block btn-danger" onclick="return areYouSure('{{ 'delete_entry_confirmation'|trans }}');">
+
+        <form
+            action="{{ url('delete_copy', {id: copy.id}) }}"
+            method="post"
+            data-confirmation="true"
+            id="delete-form"
+        >
+            <input
+                type="hidden"
+                name="_csrf_token"
+                value="{{ csrf_token('delete_copy') }}"
+            />
+
+            <button
+                type="submit"
+                id="deletePostSubmitButton"
+                class="btn btn-lg btn-block btn-danger"
+                onclick="return areYouSure('{{ 'delete_entry_confirmation'|trans }}');"
+            >
                 <i class="fa fa-trash" aria-hidden="true"></i>
                 {{ 'delete_action'|trans }}
             </button>
