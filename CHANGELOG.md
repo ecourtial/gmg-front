@@ -31,6 +31,7 @@ Hence, the major version bump here too.
 
 #### Fixes
 * Version: in the form, the release year has now a field of type 'number'.
+* Fixes all the forms which have select Yes/No dropdown.
 
 ### v1.8.0
 * Bump to Symfony 7.2
