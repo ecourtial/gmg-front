@@ -5,7 +5,7 @@ namespace App\Security;
 use App\Api\Enum\ApiResponseCode;
 use App\Exception\GenericApiException;
 use App\Exception\Security\InvalidCaptchaException;
-use App\Service\UserService;
+use App\ResourceService\UserService;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,8 +22,10 @@ use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPasspor
 
 class UserAuthenticator extends AbstractAuthenticator
 {
-    public function __construct(private readonly UserService $userService, private readonly Router $router)
-    {
+    public function __construct(
+        private readonly UserService $userService,
+        private readonly Router $router,
+    ) {
     }
 
     /**

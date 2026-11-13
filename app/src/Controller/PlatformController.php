@@ -6,8 +6,8 @@ namespace App\Controller;
 
 use App\Api\Enum\ApiResponseCode;
 use App\Exception\GenericApiException;
-use App\Service\PlatformService;
-use App\Service\VersionService;
+use App\PageService\PlatformPageService;
+use App\ResourceService\PlatformService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,7 +19,7 @@ class PlatformController extends AbstractController
 {
     public function __construct(
         private readonly PlatformService $service,
-        private readonly VersionService $versionService,
+        private readonly PlatformPageService $pageService,
         private readonly TranslatorInterface $translator,
     ) {
     }
@@ -32,7 +32,7 @@ class PlatformController extends AbstractController
         return $this->render(
             'platform/list.html.twig',
             [
-                'screenTitle' => $this->translator->trans('platforms.title', ['%count%' => $data['totalResultCount']]),
+                'screenTitle' => $this->translator->trans('platforms.title', ['%count%' => $data->totalResultCount]),
                 'data' => $data,
             ]
         );
@@ -41,10 +41,7 @@ class PlatformController extends AbstractController
     #[Route('/platform/{id<\d+>}', name: 'platform_details', methods: ['GET'])]
     public function getPlatform(int $id): Response
     {
-        $data = $this->versionService->getByPlatform($id);
-        /** @var array{result: mixed, totalResultCount: mixed} $versions */
-        $versions = $data['versions'];
-        $platform = $this->service->getById($id);
+        $pageDetails = $this->pageService->getPlatformPageDetails($id);
 
         return $this->render(
             'platform/details.html.twig',
@@ -53,14 +50,14 @@ class PlatformController extends AbstractController
                     ->trans(
                         'games_for_platform_title',
                         [
-                            '%name%' => $platform['name'],
-                            '%count%' => $versions['totalResultCount'],
+                            '%name%' => $pageDetails->platform->name,
+                            '%count%' => $pageDetails->versionsData->versions->totalResultCount,
                         ]
                     ),
                 'screenSubTitle' => $this->translator
-                    ->trans('have_copy_for_x_of_them', ['%count%' => $data['ownedCount']]),
-                'versions' => $versions['result'],
-                'platform' => $platform,
+                    ->trans('have_copy_for_x_of_them', ['%count%' => $pageDetails->versionsData->ownedCount]),
+                'versions' => $pageDetails->versionsData->versions->result,
+                'platform' => $pageDetails->platform,
             ]
         );
     }
@@ -107,9 +104,8 @@ class PlatformController extends AbstractController
         }
 
         $payload = $request->request->all();
-        unset($payload['_csrf_token']);
 
-        $id = $this->service->add($payload)['id'];
+        $id = $this->service->add($payload)->id;
 
         return $this->redirectToRoute('platform_details', ['id' => $id]);
     }
@@ -123,7 +119,7 @@ class PlatformController extends AbstractController
             return $this->render(
                 'platform/form.html.twig',
                 [
-                    'screenTitle' => $this->translator->trans('menu.edit_platform', ['%name%' => $platform['name']]),
+                    'screenTitle' => $this->translator->trans('menu.edit_platform', ['%name%' => $platform->name]),
                     'platform' => $platform,
                 ]
             );
@@ -136,7 +132,6 @@ class PlatformController extends AbstractController
         }
 
         $payload = $request->request->all();
-        unset($payload['_csrf_token']);
 
         $this->service->update($id, $payload);
 

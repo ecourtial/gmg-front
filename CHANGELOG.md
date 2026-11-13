@@ -1,21 +1,24 @@
 # Changelog
 
-### v1.9.0
+### v2.0.0
 
-Version that support the new version (5.0) of the backend.
+This version supports the new version (5.0) of the backend, which includes a breaking change by changing some API routes (no the content, but the path of the routes).
+Hence, the major version bump here too.
 
 #### Tech
 * Bump to Symfony 8.0.
 * Bump to PHP >=8.4.
 * The dev environment is in Docker now.
 * Use HTTP constants instead of the raw code.
+* ApiResource are no longer an array, but a DTO.
+* Added a service layer for each kind of page, to lighten the controllers, and avoid resource service to call endpoints of other resources.
 
 #### Features
 * Refit of the listing of platforms, games, versions and notes.
 * Refit of the menu: the layout, and the menu is now darker and sticky when the user scrolls down.
 * Add a new resource: magazine. You can manage issues, copies, games mentions.
 * In the version details screen: the comments are now displayed as the subtitle of the page.
-* Some fields, like notes, comment... are now hidden of the user is not logged-in.
+* Some fields, like notes, comments... are now hidden if the user is not logged-in.
 * New filter for versions: show versions with comments.
 * New filter for games: show versions with comments.
 * The routes for listing filtered versions, versions with priority or random version, now uses the "version" name as resource in the URL to be more consistent.
@@ -23,9 +26,12 @@ Version that support the new version (5.0) of the backend.
 * From the version screen, we can now access to a filtered stories list for this version.
 * From the version screen, we can now access to a filtered transactions list for this version.
 * We can add notes to a game version.
+* Display "My profile" instead of "User" in the navbar when the user is logged-in.
+* We can create categories to group game versions.
 
 #### Fixes
 * Version: in the form, the release year has now a field of type 'number'.
+* Fixes all the forms which have select Yes/No dropdown.
 
 ### v1.8.0
 * Bump to Symfony 7.2

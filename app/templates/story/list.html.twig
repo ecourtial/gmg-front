@@ -5,13 +5,13 @@
         <ul>
         {% for story in entries %}
             <li>
-                {{ story['position'] }} - {{ story['gameTitle'] }} ({{ story['platformName'] }})
+                {{ story.position }} - {{ story.gameTitle }} ({{ story.platformName }})
                 {% for badge, alt in get_story_badges(story) %}
                     {% set path = 'assets/img/badges/' ~ badge ~ '.png' %}
                     <img src="{{ asset(path) }}" title="{{ alt|trans }}"/>
                 {% endfor %}
                 {% if is_granted('ROLE_USER') %}
-                    - <a href="{{ url('edit_story', {id: story['id']}) }}">{{ 'menu.edit'|trans }}</a>
+                    - <a href="{{ url('edit_story', {id: story.id}) }}">{{ 'menu.edit'|trans }}</a>
                 {% endif %}
             </li>
         {% endfor %}

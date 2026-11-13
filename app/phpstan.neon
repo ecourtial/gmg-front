@@ -2,3 +2,8 @@ parameters:
     level: max
     paths:
         - src/
+    ignoreErrors:
+            # Used only by some JavaScript in a template.
+            -
+                identifier: constructor.unusedParameter
+                path: src/Entity/Dto/Specific/CopiesDistributionAmongPlatformsStatsEntry.php

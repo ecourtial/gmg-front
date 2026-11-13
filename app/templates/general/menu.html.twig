@@ -22,6 +22,7 @@
                             </li>
                         {% endif %}
                         <li><a class="dropdown-item" href="{{ url('games_list') }}">{{ 'menu.all'|trans }}</a></li>
+                        <li><a class="dropdown-item" href="{{ url('game_version_categories_list') }}">{{ 'categories'|trans }}</a></li>
                         <li class="dropdown-submenu">
                             <a class="dropdown-item dropdown-toggle" href="#">
                                 {{ 'see.random'|trans }}
@@ -36,7 +37,7 @@
                                 {{ 'menu.filters'|trans }}
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="{{ path('versions_filtered_list', {filter: 'originals'}) }}">{{ 'menu.originals'|trans }}</a></li>
+                                {% if is_granted('ROLE_USER') %}<li><a class="dropdown-item" href="{{ path('versions_filtered_list', {filter: 'originals'}) }}">{{ 'menu.originals'|trans }}</a></li>{% endif %}
                                 <li><a class="dropdown-item" href="{{ path('versions_filtered_list', {filter: 'bigBoxes'}) }}">{{ 'menu.PC_big_boxes'|trans }}</a></li>
                                 <li><a class="dropdown-item" href="{{ path('versions_filtered_list', {filter: 'finished'}) }}">{{ 'menu.finished'|trans }}</a></li>
                                 <li><a class="dropdown-item" href="{{ path('versions_filtered_list', {filter: 'not_finished'}) }}">{{ 'menu.not_finished'|trans }}</a></li>
@@ -76,7 +77,7 @@
                 {% if is_granted('ROLE_USER') %}
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            {{ 'menu.user'|trans }}
+                            {{ 'user.label.my_profile'|trans }}
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <li class="nav-item">

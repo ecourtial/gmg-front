@@ -2,35 +2,33 @@
 
 declare(strict_types=1);
 
-namespace App\Service;
+namespace App\PageService;
 
-class TransactionService extends AbstractService
+use App\Entity\Dto\Specific\CopiesDistributionAmongPlatformsStatsEntry;
+use App\Entity\Dto\Specific\GamesBoughtChartDataEntry;
+use App\Entity\Dto\Specific\TransactionDataDto;
+use App\ResourceService\TransactionService;
+
+readonly class TransactionPageService
 {
-    /** @return array<string, mixed> */
-    public function getList(int $versionId = 0): array
+    public function __construct(private TransactionService $transactionService)
     {
-        $versionFilter = '';
+    }
 
-        if (0 !== $versionId) {
-            $versionFilter = '&versionId[]='.$versionId;
-        }
-
-        /** @var array{result: list<array<string, scalar>>, totalResultCount: int} $data */
-        $data = $this->clientFactory
-            ->getAnonymousClient()
-            ->get('transactions?orderBy[]=year-asc&orderBy[]=month-asc'.$versionFilter.'&orderBy[]=day-asc&limit='.self::MAX_RESULT_COUNT);
+    public function getTransactionsData(int $versionId = 0): TransactionDataDto
+    {
+        $data = $this->transactionService->getTransactionsData($versionId);
 
         $result = [
-            'totalResultCount' => $data['totalResultCount'],
             'transactions' => [],
             'gamesBoughtChartData' => [],
             'copiesDistributionAmongPlatformsStats' => [],
         ];
 
         // Prepare the list
-        foreach ($data['result'] as $entry) {
-            $year = strval($entry['year']);
-            $month = strval($entry['month']);
+        foreach ($data->result as $entry) {
+            $year = strval($entry->year);
+            $month = strval($entry->month);
 
             if (false === \array_key_exists($year, $result['transactions'])) {
                 $result['transactions'][$year] = [];
@@ -46,8 +44,8 @@ class TransactionService extends AbstractService
         // Prepare the by year repartition chart
         $currentYear = '';
         $currentYearCount = 0;
-        foreach ($data['result'] as $entry) {
-            $entryYear = strval($entry['year']);
+        foreach ($data->result as $entry) {
+            $entryYear = strval($entry->year);
             if ($currentYear !== $entryYear) {
                 $currentYear = $entryYear;
                 $currentYearCount = 0;
@@ -56,13 +54,13 @@ class TransactionService extends AbstractService
 
             $date = (string) (new \DateTimeImmutable($currentYear.'-01'))->getTimestamp();
             $date = str_pad($date, 13, '0');
-            $result['gamesBoughtChartData'][] = ['x' => (int) $date, 'y' => $currentYearCount];
+            $result['gamesBoughtChartData'][] = new GamesBoughtChartDataEntry((int) $date, $currentYearCount);
         }
 
         // Prepare the chart to show purchases distribution among platforms
         $tmpVersionData = [];
-        foreach ($data['result'] as $entry) {
-            $platformName = strval($entry['platformName']);
+        foreach ($data->result as $entry) {
+            $platformName = $entry->platformName;
 
             if (false === array_key_exists($platformName, $tmpVersionData)) {
                 $tmpVersionData[$platformName] = ['label' => $platformName, 'y' => 0];
@@ -72,14 +70,14 @@ class TransactionService extends AbstractService
         }
 
         foreach ($tmpVersionData as $entry) {
-            $result['copiesDistributionAmongPlatformsStats'][] = $entry;
+            $result['copiesDistributionAmongPlatformsStats'][] = new CopiesDistributionAmongPlatformsStatsEntry($entry['label'], $entry['y']);
         }
 
-        return $result;
-    }
-
-    protected function getResourceType(): string
-    {
-        return 'transaction';
+        return new TransactionDataDto(
+            $data->totalResultCount,
+            $result['transactions'],
+            $result['gamesBoughtChartData'],
+            $result['copiesDistributionAmongPlatformsStats']
+        );
     }
 }

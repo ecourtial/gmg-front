@@ -19,14 +19,14 @@
         </tr>
         </thead>
         <tbody>
-        {% for platform in data['result'] %}
+        {% for platform in data.result %}
             <tr>
-                <td>{{ platform['id'] }}</td>
-                <td>{{ platform['name'] }} - <a href="{{ path('platform_details', {id: platform['id']}) }}">{{ 'see.details'|trans }}</a></td>
-                <td>{{ platform['versionCount'] }}</td>
+                <td>{{ platform.id }}</td>
+                <td>{{ platform.name }} - <a href="{{ path('platform_details', {id: platform.id}) }}">{{ 'see.details'|trans }}</a></td>
+                <td>{{ platform.versionCount }}</td>
                 <td>
                     {% if is_granted('ROLE_USER') %}
-                        <a href="{{ url('edit_platform', {id: platform['id']}) }}">{{ 'menu.edit'|trans }}</a>
+                        <a href="{{ url('edit_platform', {id: platform.id}) }}">{{ 'menu.edit'|trans }}</a>
                     {% endif %}
                 </td>
             </tr>

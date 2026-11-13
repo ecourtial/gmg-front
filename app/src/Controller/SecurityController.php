@@ -11,7 +11,7 @@ namespace App\Controller;
 
 use App\Api\Enum\ApiResponseCode;
 use App\Exception\GenericApiException;
-use App\Service\UserService;
+use App\ResourceService\UserService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -92,7 +92,7 @@ class SecurityController extends AbstractController
         assert($user instanceof \App\Security\User);
 
         try {
-            $this->userService->changePassword(
+            $this->userService->changeUserPassword(
                 $user->getId(),
                 $user->getUserIdentifier(),
                 $request->request->getString('_current_password'),
@@ -101,7 +101,7 @@ class SecurityController extends AbstractController
 
             return $this->redirect($this->logoutUrlGenerator->getLogoutUrl());
         } catch (GenericApiException $exception) {
-            if (ApiResponseCode::BAD_CREDENTIALS_API_CODE === $exception->getApiReturnCode()) {
+            if (ApiResponseCode::BAD_CREDENTIALS_API_CODE->value === (int) $exception->getApiReturnCode()) {
                 $this->addFlash('alert', 'authentication.bad_current_password');
 
                 return $this->redirectToRoute('change_password');

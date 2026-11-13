@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Security;
 
 use App\Exception\GenericApiException;
-use App\Service\UserService;
+use App\ResourceService\UserService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\DisabledException;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;

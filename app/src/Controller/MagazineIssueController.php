@@ -1,15 +1,15 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Controller;
 
 use App\Api\Enum\ApiResponseCode;
 use App\Exception\GenericApiException;
-use App\Service\GameMagazineMentionService;
-use App\Service\MagazineIssueCopyService;
-use App\Service\MagazineIssueService;
-use App\Service\MagazineService;
-use App\Service\VersionService;
+use App\PageService\MagazineIssuePageService;
+use App\ResourceService\MagazineIssueCopyService;
+use App\ResourceService\MagazineIssueService;
+use App\ResourceService\MagazineService;
 use App\Twig\ToolsExtension;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,38 +23,26 @@ class MagazineIssueController extends AbstractController
     public function __construct(
         private readonly MagazineService $magazineService,
         private readonly MagazineIssueService $magazineIssueService,
-        private readonly GameMagazineMentionService $gameMagazineMentionService,
-        private readonly VersionService $versionService,
         private readonly MagazineIssueCopyService $magazineIssueCopyService,
+        private readonly MagazineIssuePageService $magazineIssuePageService,
         private readonly ToolsExtension $toolsExtension,
         private readonly TranslatorInterface $translator,
     ) {
     }
+
     #[Route('/magazine-issue/{issueId<\d+>}', name: 'magazine_issue_details', methods: ['GET'])]
     public function get(int $issueId): Response
     {
         $issue = $this->magazineIssueService->getById($issueId);
-        /** @var array{result: mixed, totalResultCount: mixed, ownedCount: mixed} $versions */
-        $magazine = $this->magazineService->getById($issue['magazineId']);
-        $gameMentions = $this->gameMagazineMentionService->getByIssueId($issueId)['result'];
-
-        /** @todo refactorize as we could perform only one call to the API using filterBy[] */
-        $gamesVersions = [];
-        foreach ($gameMentions as $gameMention) {
-            $gameVersionId = $gameMention['gameVersionId'];
-            if (false === array_key_exists($gameVersionId, $gamesVersions)) {
-                $gamesVersions[$gameVersionId] = $this->versionService->getById($gameVersionId);
-            }
-        }
-
-        $sortedMentions = $this->magazineIssueService->formatMentions($gameMentions, $gamesVersions);
-        $copies = $this->magazineIssueCopyService->getByIssueId($issueId)['result'];
+        $magazine = $this->magazineService->getById($issue->magazineId);
+        $sortedMentions = $this->magazineIssuePageService->getSortedMentions($issueId);
+        $copies = $this->magazineIssueCopyService->getByIssueId($issueId)->result;
 
         return $this->render(
             'magazine-issue/details.html.twig',
             [
-                'screenTitle' => $magazine['title'],
-                'screenSubTitle' => $this->translator->trans('issue').' #'.$issue['issueNumber'].' ('.$this->toolsExtension->getMonthLabel($issue['month']).' '.$issue['year'].')',
+                'screenTitle' => $magazine->title,
+                'screenSubTitle' => $this->translator->trans('issue').' #'.$issue->issueNumber.' ('.$this->toolsExtension->getMonthLabel($issue->month).' '.$issue->year.')',
                 'issue' => $issue,
                 'copies' => $copies,
                 'mentions' => $sortedMentions,
@@ -70,7 +58,7 @@ class MagazineIssueController extends AbstractController
                 'magazine-issue/form.html.twig',
                 [
                     'screenTitle' => $this->translator->trans('menu.magazine_add_issue'),
-                    'magazines' => $this->magazineService->getList()['result'],
+                    'magazines' => $this->magazineService->getList()->result,
                     'selectedMagazine' => $request->query->get('selectedMagazine', 0),
                 ]
             );
@@ -83,11 +71,10 @@ class MagazineIssueController extends AbstractController
         }
 
         $payload = $request->request->all();
-        unset($payload['_csrf_token']);
 
         $issue = $this->magazineIssueService->add($payload);
 
-        return $this->redirectToRoute('magazine_issue_details', ['issueId' => $issue['id']]);
+        return $this->redirectToRoute('magazine_issue_details', ['issueId' => $issue->id]);
     }
 
     #[Route('/magazine-issue/edit/{id<\d+>}', name: 'edit_magazine_issue', methods: ['GET', 'POST']), IsGranted('ROLE_USER')]
@@ -100,9 +87,9 @@ class MagazineIssueController extends AbstractController
                 'magazine-issue/form.html.twig',
                 [
                     'screenTitle' => $this->translator->trans('magazine_edit_issue'),
-                    'screenSubTitle' => $this->translator->trans('issue').' #'.$issue['issueNumber'].' ('.$this->toolsExtension->getMonthLabel($issue['month']).' '.$issue['year'].')',
-                    'magazines' => $this->magazineService->getList()['result'],
-                    'selectedMagazine' => $issue['magazineId'],
+                    'screenSubTitle' => $this->translator->trans('issue').' #'.$issue->issueNumber.' ('.$this->toolsExtension->getMonthLabel($issue->month).' '.$issue->year.')',
+                    'magazines' => $this->magazineService->getList()->result,
+                    'selectedMagazine' => $issue->magazineId,
                     'issue' => $issue,
                 ]
             );
@@ -115,7 +102,6 @@ class MagazineIssueController extends AbstractController
         }
 
         $payload = $request->request->all();
-        unset($payload['_csrf_token']);
 
         $this->magazineIssueService->update($id, $payload);
 
@@ -136,7 +122,7 @@ class MagazineIssueController extends AbstractController
             $this->magazineIssueService->delete($id);
             $this->addFlash('alert', 'entry_deleted_with_success');
 
-            return $this->redirectToRoute('magazine_details', ['id' => $issue['magazineId']]);
+            return $this->redirectToRoute('magazine_details', ['id' => $issue->magazineId]);
         } catch (GenericApiException $exception) {
             if (Response::HTTP_NOT_FOUND === $exception->getCode()) {
                 // Ignore, not a problem because someone might have done it in the meantime.

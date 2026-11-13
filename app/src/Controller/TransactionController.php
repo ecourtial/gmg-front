@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Exception\GenericApiException;
-use App\Service\CopyService;
-use App\Service\TransactionService;
-use App\Service\VersionService;
+use App\PageService\TransactionPageService;
+use App\ResourceService\CopyService;
+use App\ResourceService\TransactionService;
+use App\ResourceService\VersionService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,28 +23,29 @@ class TransactionController extends AbstractController
         private readonly TranslatorInterface $translator,
         private readonly VersionService $versionService,
         private readonly CopyService $copyService,
+        private readonly TransactionPageService $transactionPageService,
     ) {
     }
 
     #[Route('/transactions', name: 'transaction_list', methods: ['GET'])]
     public function getList(Request $request): Response
     {
-        $versionId = (int)$request->query->get('version', 0);
-        $data = $this->service->getList($versionId);
+        $versionId = (int) $request->query->get('version', 0);
+        $data = $this->transactionPageService->getTransactionsData($versionId);
 
         if (0 === $versionId) {
             $screenTitle = $this->translator
                 ->trans(
                     'transactions_title',
-                    ['%count%' => $data['totalResultCount']]
-            );
-            $screenDescription =  $this->translator->trans('transactions_description');
+                    ['%count%' => $data->totalResultCount]
+                );
+            $screenDescription = $this->translator->trans('transactions_description');
         } else {
             $version = $this->versionService->getById($versionId);
             $screenTitle = $this->translator
                 ->trans(
                     'transactions_for_version',
-                    ['%title%' => $version['gameTitle']]
+                    ['%title%' => $version->gameTitle]
                 );
             $screenDescription = '';
         }
@@ -53,9 +55,9 @@ class TransactionController extends AbstractController
             [
                 'screenTitle' => $screenTitle,
                 'screenDescription' => $screenDescription,
-                'transactions' => $data['transactions'],
-                'gamesBoughtChartData' => \json_encode($data['gamesBoughtChartData']),
-                'copiesDistributionAmongPlatformsStats' => \json_encode($data['copiesDistributionAmongPlatformsStats']),
+                'transactions' => $data->transactions,
+                'gamesBoughtChartData' => \json_encode($data->gamesBoughtChartData),
+                'copiesDistributionAmongPlatformsStats' => \json_encode($data->copiesDistributionAmongPlatformsStats),
             ]
         );
     }
@@ -107,8 +109,6 @@ class TransactionController extends AbstractController
 
             return $this->redirectToRoute('copies_per_version', ['versionId' => $versionId]);
         }
-
-        unset($payload['_csrf_token']);
 
         $this->service->add($payload);
 

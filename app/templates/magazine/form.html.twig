@@ -4,11 +4,11 @@
         <fieldset>
             <div class="form-group">
                 <label for="name">{{ 'magazine_title'|trans }}</label>
-                <input type="text" id="title" name="title" value="{{ magazine['title']|default('') }}" class="form-control"/>
+                <input type="text" id="title" name="title" value="{{ magazine.title|default('') }}" class="form-control"/>
             </div>
             <div class="form-group">
                 <label for="notes">{{ 'menu.notes'|trans }}</label>
-                <textarea id="notes" name="notes" class="form-control">{{ magazine['notes']|default('') }}</textarea>
+                <textarea id="notes" name="notes" class="form-control">{{ magazine.notes|default('') }}</textarea>
             </div>
             <input type="hidden" name="_csrf_token" value="{{ csrf_token('add_magazine') }}" />
             <button type="submit" id="loginSubmitButton" class="btn btn-primary">

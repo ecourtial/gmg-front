@@ -20,9 +20,9 @@
         <tbody>
         {% for magazine in magazines %}
             <tr>
-                <td>{{ magazine['id'] }}</td>
-                <td>{{ magazine['title'] }} - <a href="{{ path('magazine_details', {id: magazine['id']}) }}">{{ 'see.details'|trans }}</a></td>
-                <td>{{ magazine['issueCount'] }}</td>
+                <td>{{ magazine.id }}</td>
+                <td>{{ magazine.title }} - <a href="{{ path('magazine_details', {id: magazine.id}) }}">{{ 'see.details'|trans }}</a></td>
+                <td>{{ magazine.issueCount }}</td>
             </tr>
         {% endfor %}
         </tbody>
