@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    {% if is_granted('ROLE_USER') %}
+        <a href="{{ url('add_game_version_category') }}">
+            <button type="submit" class="btn btn-lg btn-block btn-success">
+                <i class="fa fa-trash" aria-hidden="true"></i>
+                {{ 'add_category'|trans }}
+            </button>
+        </a>
+    {% endif %}
+    <hr>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">{% trans %} entity.id {% endtrans %}</th>
+            <th scope="col">{% trans %} category_name {% endtrans %}</th>
+            <th scope="col">{% trans %} version_count {% endtrans %}</th>
+            <th scope="col">{% trans %} category_description {% endtrans %}</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for category in categories %}
+            <tr>
+                <td>{{ category.id }}</td>
+                <td>{{ category.name }} - <a href="{{ path('game_version_category_details', {id: category.id}) }}">{{ 'see.details'|trans }}</a></td>
+                <td>{{ category.versionCount }}</td>
+                {% if is_granted('ROLE_USER') %}
+                    <td>{{ category.description }}</td>
+                {% else %}
+                    <td></td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

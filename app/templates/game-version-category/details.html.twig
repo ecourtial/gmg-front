@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <a href="{{ url('game_version_categories_list') }}">{{ 'return_to_categories'|trans }}</a>
+    {% if is_granted('ROLE_USER') %}
+        <hr>
+        <p>{{ 'category_description'|trans }}: <i>{{ category.description|default('')|raw|nl2br }}</i></p>
+        <form action="{{ url('delete_game_version_category', {id: category.id}) }}" method="post" data-confirmation="true" id="delete-form">
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('delete_game_version_category') }}" />
+            <button type="submit" id="deletePostSubmitButton" class="btn btn-lg btn-block btn-danger" onclick="return areYouSure('{{ 'delete_entry_confirmation'|trans }}');">
+                <i class="fa fa-trash" aria-hidden="true"></i>
+                {{ 'delete_action'|trans }}
+            </button>
+        </form>
+        <br/>
+        <a href="{{ url('edit_game_version_category', {'id': category.id}) }}">
+            <button type="submit" class="btn btn-lg btn-block btn-outline-info">
+                <i class="fa fa-trash" aria-hidden="true"></i>
+                {{ 'menu.edit'|trans }}
+            </button>
+        </a>
+        <a href="{{ url('add_game_version_to_category') }}?category={{ category.id }}">
+            <button type="submit" class="btn btn-lg btn-block btn-success">
+                <i class="fa fa-trash" aria-hidden="true"></i>
+                {{ 'add_a_version_to_this_category'|trans }}
+            </button>
+        </a>
+    {% endif %}
+    <hr>
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">{% trans %} entity.id {% endtrans %}</th>
+                <th scope="col">{% trans %} games_title {% endtrans %}</th>
+                <th scope="col">{% trans %} entity.platform {% endtrans %}</th>
+                <th scope="col">{% trans %} menu.actions {% endtrans %}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for association in associations %}
+                <tr>
+                    <td>{{ association.versionId }}</td>
+                    <td>
+                        {{ association.gameTitle }} - <a href="{{ path('version_details', {id: association.versionId}) }}">{% trans %}see.details{% endtrans %}</a>
+                    </td>
+                    <td>{{ association.versionPlatformName }}</td>
+                    <td>
+                        {% if is_granted('ROLE_USER') %}
+                            <a href="{{ url('edit_version', {id: association.versionId}) }}">{{ 'menu.edit'|trans }}</a>
+                            <form action="{{ url('remove_game_version_from_category', {associationId: association.id}) }}" method="post" data-confirmation="true" id="delete-form">
+                                <input type="hidden" name="_csrf_token" value="{{ csrf_token('remove_game_version_from_category') }}" />
+                                <button type="submit" id="deletePostSubmitButton" class="btn btn-lg btn-block btn-danger btn-in-list" onclick="return areYouSure('{{ 'delete_entry_confirmation'|trans }}');">
+                                    <i class="fa fa-trash" aria-hidden="true"></i>
+                                    {{ 'remove_from_category'|trans }}
+                                </button>
+                            </form>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+{% endblock %}
